@@ -1,0 +1,8 @@
+# ninja log v5
+1	123	7206790830479056	vc418_client_autogen/timestamp	b3e5738ed08ad871
+1	123	7206790830479056	vc418_client_autogen/mocs_compilation.cpp	b3e5738ed08ad871
+1	123	7206790830479056	C:/Users/Akumah Ndeh/Documents/Work/School/VCS418/vc418_client/cmake-build-debug/vc418_client_autogen/timestamp	b3e5738ed08ad871
+1	123	7206790830479056	C:/Users/Akumah Ndeh/Documents/Work/School/VCS418/vc418_client/cmake-build-debug/vc418_client_autogen/mocs_compilation.cpp	b3e5738ed08ad871
+124	196	7206790831709047	CMakeFiles/vc418_client.dir/vc418_client_autogen/mocs_compilation.cpp.obj	99b408c996d34356
+132	1638	7206790846109061	CMakeFiles/vc418_client.dir/main.cpp.obj	4a13e1f80b9eb8d2
+1640	2116	7206790847459063	vc418_client.exe	8caf12b4a962ca9b

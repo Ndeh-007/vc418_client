@@ -1,0 +1,5 @@
+C:/Users/Akumah Ndeh/Documents/Work/School/VCS418/vc418_client/cmake-build-debug/CMakeFiles/vc418_client.dir
+C:/Users/Akumah Ndeh/Documents/Work/School/VCS418/vc418_client/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Akumah Ndeh/Documents/Work/School/VCS418/vc418_client/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/Akumah Ndeh/Documents/Work/School/VCS418/vc418_client/cmake-build-debug/CMakeFiles/vc418_client_autogen_timestamp_deps.dir
+C:/Users/Akumah Ndeh/Documents/Work/School/VCS418/vc418_client/cmake-build-debug/CMakeFiles/vc418_client_autogen.dir

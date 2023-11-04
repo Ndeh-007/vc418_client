@@ -1,0 +1,56 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N803" />
+          <option value="N802" />
+          <option value="N806" />
+          <option value="N801" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="main.qApp" />
+          <option value="matplotlib.backends.backend_qt5agg.FigureCanvas" />
+          <option value="PySide6.QtWidgets.clicked.connect" />
+          <option value="PySide6.QtWidgets.currentIndexChanged.connect" />
+          <option value="PySide6.QtCore.timeout.connect" />
+          <option value="PySide6.QtGui.triggered.connect" />
+          <option value="PySide6.QtWidgets.textEdited.connect" />
+          <option value="PySide6.QtWidgets.editingFinished.connect" />
+          <option value="views.components.sections.header.action_bars.action_bar.ActionBarButtonHorizontal.clicked" />
+          <option value="PySide6.QtWidgets.stateChanged.connect" />
+          <option value="views.components.sections.header.home_toolbar.ToolbarButton.clicked" />
+          <option value="views.components.sections.header.menu_bar.MenuBar.triggered" />
+          <option value="PySide6.QtWidgets.tabCloseRequested.connect" />
+          <option value="views.components.dialog.dialog.CustomDialogButtonBox.accepted" />
+          <option value="views.components.dialog.dialog.CustomDialogButtonBox.rejected" />
+          <option value="models.processes.process_thread.processStarted.connect" />
+          <option value="views.components.sections.header.home_toolbar.ToolbarButton.triggered" />
+          <option value="views.components.sections.project.project_explorer_context_menu.ProjectExplorerContextMenu.triggered" />
+          <option value="views.components.common.geometry_units_combo_box.GeometryUnitsComboBox.*" />
+          <option value="PySide6.QtCore.readyReadStandardOutput.connect" />
+          <option value="PySide6.QtCore.readyReadStandardError.connect" />
+          <option value="PySide6.QtCore.stateChanged.connect" />
+          <option value="PySide6.QtCore.finished.connect" />
+          <option value="views.components.common.input_fields.QIntLineEdit.*" />
+          <option value="views.components.common.input_fields.QDoubleLineEdit.*" />
+          <option value="PySide6.QtWidgets.changed.connect" />
+          <option value="PySide6.QtWidgets.focusItemChanged.connect" />
+          <option value="PySide6.QtWidgets.selectionChanged.connect" />
+          <option value="models.designer.well_annotation_item.WellAnnotationItem.pxHeight" />
+          <option value="PySide6.QtWidgets.idToggled.connect" />
+          <option value="PySide6.QtWidgets.idClicked.connect" />
+          <option value="views.components.sections.main.tabs.well_designer.designer_control_panel_layers.LayersContextMenu.*" />
+          <option value="PySide6.QtWidgets.actionTriggered.connect" />
+          <option value="PySide6.QtWidgets.textChanged.connect" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>

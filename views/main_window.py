@@ -1,13 +1,13 @@
-from PySide6.QtCore import QSize, Qt
+from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QVBoxLayout, QMainWindow
+from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout
 
 from controllers.components.menu_bar_controller import MenuBarController
-from views.pages.home_page import HomePage
-from qframelesswindow import FramelessMainWindow, StandardTitleBar
+from controllers.components.status_bar_controller import StatusBarController
+from controllers.pages.HomePageController import HomePageController
 
 
-class MainWindow(FramelessMainWindow):
+class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -19,16 +19,16 @@ class MainWindow(FramelessMainWindow):
         :return:
         """
         self.setWindowIcon(QIcon(":resources/images/logo.png"))
-        self.setIconSize(QSize(32, 32))
 
         self.setWindowTitle("VH-418")
-        homePage = HomePage()
+
+        menubar = MenuBarController()
+        self.setMenuBar(menubar)
+
+        homePage = HomePageController()
         self.setCentralWidget(homePage)
 
-        menubar = MenuBarController(None)
-        titleBar = StandardTitleBar(self)
-        titleBar.setIcon(QIcon(":resources/images/logo.png"))
-        # titleBar.setTitle("VH-418")
-        self.setTitleBar(titleBar)
-        self.titleBar.layout().insertWidget(3, menubar, 0, Qt.AlignmentFlag.AlignLeft)
-        self.titleBar.raise_()
+        statusBar = StatusBarController()
+        self.setStatusBar(statusBar)
+
+        self.resize(1080, 800)

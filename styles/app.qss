@@ -1,3 +1,37 @@
 QFrame#AppIconHolder{
     padding: 5px 10px 5px 10px;
 }
+
+QFrame#SectionHeader{
+    background-color: light_rbg;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-radius: 0px;
+}
+
+QToolBar#SectionHeaderLabel{
+    font-weight: bold;
+    color: dark_tint_rbg;
+}
+
+QFrame#PropertiesExplorerView{
+    background-color: light_rbg;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 0px 0px 0px 1px;
+}
+
+QFrame#ProgramsExplorerView{
+    background-color: light_rbg;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 0px 1px 0px 0px;
+}
+
+QFrame#OutputExplorerView{
+    background-color: light_rbg;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+}

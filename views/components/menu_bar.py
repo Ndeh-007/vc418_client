@@ -8,5 +8,12 @@ class MenuBarView(QMenuBar):
 
         # define menubar actions
         fileAction = QAction("File", self)
+        viewAction = QAction("View", self)
+        serverAction = QAction("Server", self)
+        helpAction = QAction("Help", self)
         self.addAction(fileAction)
+        self.addAction(viewAction)
+        self.addAction(serverAction)
+        self.addAction(helpAction)
 
+        self.setObjectName("MenuBar")

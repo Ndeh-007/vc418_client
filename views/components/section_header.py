@@ -38,11 +38,10 @@ class IconLabel(QToolBar):
         button.setIcon(btn_icon)
 
         label = QLabel(text)
+        label.setObjectName("SectionHeaderLabel")
 
         self.addWidget(button)
         self.addWidget(label)
-
-        self.setObjectName("SectionHeaderLabel")
 
 
 class SectionHeaderToolbar(QToolBar):

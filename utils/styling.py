@@ -1,3 +1,6 @@
+from PySide6.QtGui import QPalette, QColor
+from PySide6.QtWidgets import QWidget
+
 from styles.color import appColors
 
 
@@ -30,3 +33,16 @@ def parse_stylesheet_data(sheet: str):
         parsed_value = parsed_value.replace(key, color)
 
     return parsed_value
+
+
+def setPaletteColor(widget: QWidget, color: str):
+    """
+    changes the palette color of the provided widget
+    :param widget:
+    :param color:
+    :return:
+    """
+    widget.setAutoFillBackground(True)
+    palette = widget.palette()
+    palette.setColor(QPalette.Window, QColor(color))
+    widget.setPalette(palette)

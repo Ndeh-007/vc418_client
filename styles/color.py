@@ -17,7 +17,7 @@ class AppColorsRBG:
         self.white_rgb = "#ffffff"
         self.black_rgb = "#000000"
 
-        self.primary_rbg = "#3880ff"
+        self.primary_rbg = "#219DD2"
         self.primary_tint_rbg = "#6370ff"
         self.primary_shade_rbg = "#4854e0"
 
@@ -57,7 +57,7 @@ class AppColorsRBG:
             "white_rbg": "#ffffff",
             "black_rbg": "#000000",
 
-            "primary_rbg": "#3880ff",
+            "primary_rbg": "#219DD2",
             "primary_tint_rbg": "#6370ff",
             "primary_shade_rbg": "#4854e0",
 
@@ -98,7 +98,7 @@ class AppColorsRBG:
 class AppColors(AppColorsRBG):
     def __init__(self):
         super().__init__()
-        self.primary = 0xFF3880ff
+        self.primary = 0xFF219DD2
         self.primary_tint = 0xFF6370ff
         self.primary_shade = 0xFF4854e0
 

@@ -1,3 +1,30 @@
+QMenuBar#MenuBar{
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+    background: light_tint_rbg;
+}
+
+QMenuBar::item {
+    padding: 5px 5px;
+    background: transparent;
+    border-radius: 0px;
+    color: dark_rbg;
+}
+
+QMenuBar::item:hover{
+    border: 1px solid secondary_shade_rbg;
+    background: secondary_shade_rbg;
+}
+
+QMenuBar::item:selected {
+    background: secondary_shade_rbg;
+}
+
+QMenuBar::item:pressed {
+    background: secondary_shade_rbg;
+}
+
 QFrame#AppIconHolder{
     padding: 5px 10px 5px 10px;
 }
@@ -10,7 +37,7 @@ QFrame#SectionHeader{
     border-radius: 0px;
 }
 
-QToolBar#SectionHeaderLabel{
+QLabel#SectionHeaderLabel{
     font-weight: bold;
     color: dark_tint_rbg;
 }
@@ -19,14 +46,14 @@ QFrame#PropertiesExplorerView{
     background-color: light_rbg;
     border-color: light_shade_rbg;
     border-style: solid;
-    border-width: 0px 0px 0px 1px;
+    border-width: 0px 0px 1px 1px;
 }
 
 QFrame#ProgramsExplorerView{
     background-color: light_rbg;
     border-color: light_shade_rbg;
     border-style: solid;
-    border-width: 0px 1px 0px 0px;
+    border-width: 0px 1px 1px 0px;
 }
 
 QFrame#OutputExplorerView{
@@ -34,4 +61,92 @@ QFrame#OutputExplorerView{
     border-color: light_shade_rbg;
     border-style: solid;
     border-width: 1px 0px 1px 0px;
+}
+
+
+QFrame#PreviewExplorer{
+    background-color: light_rbg;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 0px 1px 1px 1px;
+    border-radius: 0px;
+}
+
+QTextEdit#outputTextArea{
+    border: 0px solid light_shade_rbg;
+}
+
+QSplitter::handle:horizontal {
+    background-color: light_tint_rbg;
+}
+
+QSplitter::handle:vertical {
+   background-color: light_tint_rbg;
+}
+
+QSplitter::handle:pressed {
+   background-color: light_tint_rbg;
+}
+
+QSplitter {
+   background-color: light_rbg;
+}
+
+
+QTabWidget#PreviewTabs::pane{
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 1px 0px 0px 0px;
+    border-radius: 0px;
+}
+
+
+QTabBar::tab {
+    padding: 5px 7px;
+    min-width: 20ex;
+}
+
+QTabBar::tab:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 secondary_tint_rbg, stop: 0.4 secondary_tint_rbg,
+                                stop: 0.5 secondary_tint_rbg, stop: 1.0 secondary_tint_rbg);
+}
+
+QTabBar::tab:selected {
+    color: primary_rbg;
+    border-color: primary_rbg;
+    border-style: solid;
+    border-width: 0px 0px 2px 0px;
+}
+
+QTabBar::tab:!selected {
+    color: dark_tint_rbg;
+    border-style: solid;
+    border-width: 0px 0px 0px 0px;
+}
+
+QTabBar::close-button {
+    image: url(":resources/images/close-medium.png");
+    subcontrol-position: right;
+}
+
+QTabBar::close-button:hover {
+    image: url(":resources/images/close-dark.png");
+    background: secondary_shade_rbg;
+}
+
+QLabel#PreviewExplorerPlaceholderLabel{
+    font-weight: bold;
+    font-size: 12px;
+    color: medium_shade_rbg
+}
+
+QLabel#PreviewExplorerPlaceholderLabelValue{
+    font-size: 12px;
+    color: medium_rbg
+}
+
+QLabel#ServerStatusLabel{
+    font-size: 10px;
+    color: medium_rbg
 }

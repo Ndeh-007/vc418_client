@@ -1,21 +1,37 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QListView
 
 from views.components.section_header import SectionHeader
 
 
-class PropertiesExplorerView(QFrame):
+class PropertyExplorerView(QFrame):
     def __init__(self):
         super().__init__()
 
         layout = QGridLayout()
         layout.setContentsMargins(0, 0, 0, 0)
 
+        # region header
         header = SectionHeader("Properties")
         layout.addWidget(header)
+        # endregion
 
-        tallbtn = QPushButton("sdofjsd")
+        # region body
 
-        layout.addWidget(tallbtn)
+        # region body
+        body = QFrame()
+        bodyLayout = QVBoxLayout()
+        bodyLayout.setContentsMargins(0, 0, 0, 0)
+
+        self.programsListView = QListView()
+        self.programsListView.setFrameStyle(QFrame.Shape.NoFrame)
+        bodyLayout.addWidget(self.programsListView)
+
+        body.setLayout(bodyLayout)
+
+        layout.addWidget(body)
+        # endregion
+
+        # endregion
 
         layout.setVerticalSpacing(0)
         layout.setRowStretch(0, 0)

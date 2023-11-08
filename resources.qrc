@@ -3,6 +3,12 @@
 <RCC version="1.0">
     <qresource>
         <file>resources/images/logo.png</file>
+        <file>resources/images/burnt_logo.png</file>
         <file>resources/images/logo.ico</file>
+        <file>resources/images/chevron-down.png</file>
+        <file>resources/images/close-medium.png</file>
+        <file>resources/images/close-dark.png</file>
+        <file>resources/images/file.png</file>
+        <file>resources/images/file.ico</file>
     </qresource>
 </RCC>

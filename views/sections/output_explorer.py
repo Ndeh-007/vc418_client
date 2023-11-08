@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QLabel
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QLabel, QTextEdit
 
 from views.components.section_header import SectionHeader
 
@@ -13,8 +13,11 @@ class OutputExplorerView(QFrame):
         header = SectionHeader("Output")
         layout.addWidget(header)
 
-        tallBtn = QPushButton("SectionBody")
-        layout.addWidget(tallBtn)
+        self.logger = QTextEdit()
+        self.logger.setReadOnly(True)
+        self.logger.setFrameStyle(QFrame.Shape.NoFrame)
+        self.logger.setObjectName("outputTextArea")
+        layout.addWidget(self.logger)
 
         layout.setVerticalSpacing(0)
         layout.setRowStretch(0, 0)
@@ -22,5 +25,3 @@ class OutputExplorerView(QFrame):
 
         self.setLayout(layout)
         self.setObjectName("OutputExplorerView")
-
-        # self.setMaximumHeight(100)

@@ -7,7 +7,7 @@ from PySide6.QtWidgets import QApplication
 from views.main_window import MainWindow
 
 import resources.resources
-from workers.styling import read_style
+from utils.styling import read_style
 
 myAppID = u'ubc.ComplexFluidsGroup.ComplexFluids.0'
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myAppID)

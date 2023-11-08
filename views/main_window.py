@@ -11,9 +11,9 @@ class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self.__init_ui__()
+        self.__init_ui__(parent)
 
-    def __init_ui__(self):
+    def __init_ui__(self, parent):
         """
         initialize the user interface
         :return:
@@ -25,7 +25,7 @@ class MainWindow(QMainWindow):
         menubar = MenuBarController()
         self.setMenuBar(menubar)
 
-        homePage = HomePageController()
+        homePage = HomePageController(parent)
         self.setCentralWidget(homePage)
 
         statusBar = StatusBarController()

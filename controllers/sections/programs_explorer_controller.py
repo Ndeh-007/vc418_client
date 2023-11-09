@@ -8,6 +8,15 @@ from views.sections.programs_explorer import ProgramsExplorerView
 class ProgramsExplorerController(ProgramsExplorerView):
     def __init__(self):
         super().__init__()
+        self.model = ProgramListModel()
+        self.programsListView.setModel(self.model)
+
+        self.initialize()
+        self.configure()
+
+    # region - Initialize
+
+    def initialize(self):
         file = QImage(':resources/images/file.png')
         data = [
             ProgramItemModel("File 1", file),
@@ -16,6 +25,23 @@ class ProgramsExplorerController(ProgramsExplorerView):
             ProgramItemModel("File 4", file),
             ProgramItemModel("File 4", file),
         ]
+        self.model.addItems(data)
+    # endregion
 
-        model = ProgramListModel(data)
-        self.programsListView.setModel(model)
+    # region - configure
+
+    def configure(self):
+        """
+        connect required slots and signals
+        :return:
+        """
+        self.model.onItemClicked.connect(self.handleListItemClicked)
+
+    # end region
+
+    # region - Event Handlers
+
+    def handleListItemClicked(self, item: ProgramItemModel):
+        pass
+
+    # endregion

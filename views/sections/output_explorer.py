@@ -1,5 +1,7 @@
+import qtawesome
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QLabel, QTextEdit
 
+from styles.color import appColors
 from views.components.section_header import SectionHeader
 
 
@@ -10,7 +12,25 @@ class OutputExplorerView(QFrame):
         layout = QGridLayout()
         layout.setContentsMargins(0, 0, 0, 0)
 
-        header = SectionHeader("Output")
+        # region - Header control buttons
+        controlButtons = []
+
+        self.clearBtn = QPushButton()
+        ic = qtawesome.icon("msc.clear-all", color=appColors.dark_rbg)
+        self.clearBtn.setIcon(ic)
+        self.clearBtn.setFlat(True)
+
+        self.minimizeBtn = QPushButton()
+        ic = qtawesome.icon("msc.chrome-minimize", color=appColors.dark_rbg)
+        self.minimizeBtn.setIcon(ic)
+        self.minimizeBtn.setFlat(True)
+
+        controlButtons.append(self.clearBtn)
+        controlButtons.append(self.minimizeBtn)
+
+        # endregion
+
+        header = SectionHeader("Output", control_buttons=controlButtons)
         layout.addWidget(header)
 
         self.logger = QTextEdit()

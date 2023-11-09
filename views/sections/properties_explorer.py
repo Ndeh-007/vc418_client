@@ -1,5 +1,7 @@
+import qtawesome
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QListView
 
+from styles.color import appColors
 from views.components.section_header import SectionHeader
 
 
@@ -11,7 +13,20 @@ class PropertyExplorerView(QFrame):
         layout.setContentsMargins(0, 0, 0, 0)
 
         # region header
-        header = SectionHeader("Properties")
+
+        # region - Header control buttons
+        controlButtons = []
+
+        self.minimizeBtn = QPushButton()
+        ic = qtawesome.icon("msc.chrome-minimize", color=appColors.dark_rbg)
+        self.minimizeBtn.setIcon(ic)
+        self.minimizeBtn.setFlat(True)
+
+        controlButtons.append(self.minimizeBtn)
+
+        # endregion
+
+        header = SectionHeader("Properties", control_buttons=controlButtons)
         layout.addWidget(header)
         # endregion
 

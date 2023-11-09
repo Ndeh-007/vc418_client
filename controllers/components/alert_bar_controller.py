@@ -1,7 +1,9 @@
 import qtawesome
 
 from interfaces.structs import AlertType
+from models.signal_data_models import SystemAlert
 from styles.color import appColors
+from utils.signal_bus import signalBus
 from views.components.alert_bar import AlertBarView
 from utils.styling import setPaletteColor
 
@@ -12,6 +14,8 @@ class AlertBarController(AlertBarView):
 
         self.initialize()
         self.configure()
+
+        self.__connectSignals()
 
     def initialize(self):
         self.__toggleVisibility(False)
@@ -48,7 +52,7 @@ class AlertBarController(AlertBarView):
             self.label.setStyleSheet(f"color: {appColors.light_rbg};")
             ic = qtawesome.icon("msc.close", color=appColors.light_rbg)
             self.closeButton.setIcon(ic)
-            setPaletteColor(self, appColors.tertiary_rbg)
+            setPaletteColor(self, appColors.primary_rbg)
             ic = qtawesome.icon("msc.info", color=appColors.light_rbg)
             self.bannerIconWidget.setIcon(ic)
 
@@ -65,5 +69,14 @@ class AlertBarController(AlertBarView):
     def unErect(self):
         self.__toggleVisibility(False)
 
+    # region - event handlers
     def __handleCloseButtonClicked(self):
         self.__toggleVisibility(self.closeButton.isHidden())
+
+    def __handleSystemAlert(self, options: SystemAlert):
+        self.erect(options.message(), options.alertType())
+
+    # endregion
+
+    def __connectSignals(self):
+        signalBus.onSystemAlert.connect(self.__handleSystemAlert)

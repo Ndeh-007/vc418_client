@@ -9,6 +9,7 @@ class AlertBarView(QFrame):
         super().__init__()
 
         layout = QHBoxLayout()
+        layout.setContentsMargins(5, 5, 5, 5)
 
         self.bannerIconWidget = qtawesome.IconWidget()
         ic = qtawesome.icon("msc.info")
@@ -16,7 +17,7 @@ class AlertBarView(QFrame):
         if showBannerIcon:
             layout.addWidget(self.bannerIconWidget)
 
-        self.label = QLabel("")
+        self.label = QLabel()
         layout.addWidget(self.label)
 
         layout.addStretch()
@@ -27,4 +28,4 @@ class AlertBarView(QFrame):
         self.closeButton.setFlat(True)
 
         layout.addWidget(self.closeButton)
-
+        self.setLayout(layout)

@@ -17,7 +17,7 @@ class HomePageView(QFrame):
         layout.setSpacing(0)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        self.alertBar = AlertBarController(True)
+        self.alertBar = AlertBarController(showBannerIcon=True)
         self.applicationBody = QWidget()
         applicationBodyLayout = QGridLayout()
         applicationBodyLayout.setContentsMargins(0, 0, 0, 0)
@@ -49,7 +49,7 @@ class HomePageView(QFrame):
         layout.addWidget(self.loadingBar)
 
         layout.setRowStretch(0, 0)
-        layout.setRowStretch(1, 1)
+        layout.setRowStretch(1, 0)
         layout.setRowStretch(2, 0)
 
         self.setLayout(layout)

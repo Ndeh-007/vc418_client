@@ -2,6 +2,7 @@ import qtawesome
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QListView
 
 from styles.color import appColors
+from views.components.programs_list_view import ProgramsListView
 from views.components.section_header import SectionHeader
 
 
@@ -36,7 +37,7 @@ class ProgramsExplorerView(QFrame):
         bodyLayout = QVBoxLayout()
         bodyLayout.setContentsMargins(0, 0, 0, 0)
 
-        self.programsListView = QListView()
+        self.programsListView = ProgramsListView()
         self.programsListView.setFrameStyle(QFrame.Shape.NoFrame)
         bodyLayout.addWidget(self.programsListView)
 

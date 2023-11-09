@@ -4,13 +4,12 @@ from typing import Any
 import PySide6
 from PySide6.QtCore import QAbstractListModel, QObject, Signal
 from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtGui import Qt
 
 from models.explorer.program_item_model import ProgramItemModel
 
 
 class ProgramListModel(QAbstractListModel, QObject):
-    onItemClicked = Signal(ProgramItemModel)
-
     def __init__(self, items: list[ProgramItemModel] = None):
         super().__init__()
 
@@ -30,8 +29,11 @@ class ProgramListModel(QAbstractListModel, QObject):
         return len(self.items)
 
     def addItems(self, items: list[ProgramItemModel]):
-        rC = self.rowCount()
         for i, item in enumerate(items):
             self.items.append(item)
-            index = self.createIndex(rC + i, 1)
-            self.setData(index, item)
+
+    def flags(self, index: PySide6.QtCore.QModelIndex) -> PySide6.QtCore.Qt.ItemFlag:
+        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
+
+    def getDataAtIndex(self, index: PySide6.QtCore.QModelIndex):
+        return self.items[index.row()]

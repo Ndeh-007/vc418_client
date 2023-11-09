@@ -38,3 +38,13 @@ class PreviewExplorerView(QFrame):
 
         self.setObjectName("PreviewExplorer")
         self.previewTabs.setObjectName("PreviewTabs")
+
+    def toggleLayout(self):
+        """
+        switches the layout between showing the tabs and the placeholder
+        :return:
+        """
+        if self.previewTabs.currentIndex() == 0:
+            self.previewTabs.setCurrentIndex(1)
+        else:
+            self.previewTabs.setCurrentIndex(0)

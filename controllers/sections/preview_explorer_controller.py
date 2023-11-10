@@ -35,7 +35,7 @@ class PreviewExplorerController(PreviewExplorerView):
         self.previewTabs.removeTab(index)
 
         # if the last tab was removed
-        if self.previewTabs.count == 0:
+        if self.previewTabs.count() < 1:
             self.toggleLayout()
 
     def __handleOpenTab(self, tabItem: TabItemModel):
@@ -47,18 +47,29 @@ class PreviewExplorerController(PreviewExplorerView):
         """
 
         # check if this is the first tab
-        if self.previewTabs.count() == 0:
+        if self.previewTabs.count() < 1:
             self.toggleLayout()
 
         if self.tabManager.tabExists(tabItem):
             self.__makeTabCurrent(tabItem)
         else:
             self.tabManager.addTab(tabItem.id(), tabItem)
+            self.previewTabs.addTab(tabItem.content(), tabItem.title())
             self.previewTabs.setCurrentIndex(self.previewTabs.count() - 1)
 
     # endregion
 
     # region - workers
+
+    def toggleLayout(self):
+        """
+        switches the layout between showing the tabs and the placeholder
+        :return:
+        """
+        if self.explorerLayout.currentIndex() == 0:
+            self.explorerLayout.setCurrentIndex(1)
+        else:
+            self.explorerLayout.setCurrentIndex(0)
 
     def __makeTabCurrent(self, tabItem: TabItemModel):
         """
@@ -66,8 +77,7 @@ class PreviewExplorerController(PreviewExplorerView):
         :param tabItem:
         :return:
         """
-        w = self.tabManager.tabs(tabItem.id())
-        i = self.previewTabs.indexOf(w)
+        i = self.tabManager.getTabIndex(tabItem.id())
         self.previewTabs.setCurrentIndex(i)
 
     # endregion

@@ -48,4 +48,12 @@ class TabManagerModel:
                 return item
         return None
 
+    def getTabIndex(self, tabID: str):
+        """
+        gets the index of the tab with id. assumes dictionary index is correct sequential
+        :param tabID:
+        :return:
+        """
+        keys = list(self.__tabs.keys())
+        return keys.index(tabID)
     # endregion

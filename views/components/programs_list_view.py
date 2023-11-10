@@ -32,6 +32,7 @@ class ProgramsListContextMenu(QMenu):
 class ProgramsListView(QListView, QObject):
     onContextMenuAction = Signal(ProgramExplorerActionModel)
     onItemClicked = Signal(ProgramExplorerActionModel)
+    onItemDoubleClicked = Signal(ProgramExplorerActionModel)
 
     def __init__(self):
         super().__init__()
@@ -48,12 +49,19 @@ class ProgramsListView(QListView, QObject):
 
     # region - override
 
+    def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
+        super().mouseDoubleClickEvent(event)
+        if event.button() == Qt.MouseButton.LeftButton:
+            item = self.model().getDataAtIndex(self.selectedIndexes()[0])
+            data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Open)
+            self.onItemDoubleClicked.emit(data)
+
     def mousePressEvent(self, event: QMouseEvent) -> None:
         super().mousePressEvent(event)
-        indexes = self.selectedIndexes()[0]
-        item = self.model().getDataAtIndex(indexes)
-        data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Select)
-        self.onItemClicked.emit(data)
+        if event.button() == Qt.MouseButton.LeftButton:
+            item = self.model().getDataAtIndex(self.selectedIndexes()[0])
+            data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Select)
+            self.onItemClicked.emit(data)
 
     def contextMenuEvent(self, arg__1: QContextMenuEvent) -> None:
         self.contextMenu.exec(arg__1.globalPos())

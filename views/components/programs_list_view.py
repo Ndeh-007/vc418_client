@@ -5,6 +5,7 @@ from PySide6.QtWidgets import QListView, QMenu
 from interfaces.structs import ProgramsExplorerActionType
 from models.explorer.program_item_model import ProgramItemModel
 from models.signal_data_models import ProgramExplorerActionModel
+from utils.styling import q_read_style
 
 
 class ProgramsListContextMenu(QMenu):
@@ -12,21 +13,25 @@ class ProgramsListContextMenu(QMenu):
         super().__init__()
 
         # define the actions
-        newAction = QAction("New Program", self)
+        newAction = QAction("New ...", self)
         deleteAction = QAction("Delete", self)
         runAction = QAction("Run", self)
+        renameAction = QAction("Rename", self)
 
         # attach action data
         newAction.setData(ProgramsExplorerActionType.New)
         deleteAction.setData(ProgramsExplorerActionType.Delete)
         runAction.setData(ProgramsExplorerActionType.Run)
+        renameAction.setData(ProgramsExplorerActionType.Rename)
 
         # add actions to menu
         self.addAction(newAction)
         self.addSeparator()
-        self.addAction(runAction)
+        self.addAction(renameAction)
         self.addSeparator()
         self.addAction(deleteAction)
+
+        self.setStyleSheet(q_read_style("context-menu"))
 
 
 class ProgramsListView(QListView, QObject):
@@ -52,13 +57,18 @@ class ProgramsListView(QListView, QObject):
     def mouseDoubleClickEvent(self, event: QMouseEvent) -> None:
         super().mouseDoubleClickEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
-            item = self.model().getDataAtIndex(self.selectedIndexes()[0])
+            indexes = self.selectedIndexes()
+            if len(indexes) == 0:
+                return
+            item = self.model().getDataAtIndex(indexes[0])
             data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Open)
             self.onItemDoubleClicked.emit(data)
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         super().mousePressEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
+            if len(self.selectedIndexes()) == 0:
+                return
             item = self.model().getDataAtIndex(self.selectedIndexes()[0])
             data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Select)
             self.onItemClicked.emit(data)
@@ -79,7 +89,7 @@ class ProgramsListView(QListView, QObject):
         actionType = action.data()
         items = []
         for index in self.selectedIndexes():
-            items.append(self.model().itemData(index))
+            items.append(self.model().getDataAtIndex(index))
 
         data = ProgramExplorerActionModel(items, actionType)
         self.onContextMenuAction.emit(data)

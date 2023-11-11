@@ -10,5 +10,9 @@
         <file>resources/images/close-dark.png</file>
         <file>resources/images/file.png</file>
         <file>resources/images/file.ico</file>
+
+        <file>resources/qss/app.qss</file>
+        <file>resources/qss/dialog.qss</file>
+        <file>resources/qss/context-menu.qss</file>
     </qresource>
 </RCC>

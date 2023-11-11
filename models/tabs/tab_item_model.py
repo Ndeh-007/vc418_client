@@ -2,10 +2,10 @@ from PySide6.QtWidgets import QWidget
 
 
 class TabItemModel:
-    def __init__(self, title: str, content: QWidget, tabId: str):
-        self.__title = title
-        self.__content = content
-        self.__id = tabId
+    def __init__(self, title: str | None, content: QWidget | None, tabId: str):
+        self.__title: str = title
+        self.__content: QWidget = content
+        self.__id: str = tabId
 
     def title(self):
         return self.__title

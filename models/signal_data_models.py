@@ -1,4 +1,6 @@
-from interfaces.structs import ProgramsExplorerActionType, AlertType
+from typing import Any
+
+from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType
 from models.explorer.program_item_model import ProgramItemModel
 
 
@@ -36,3 +38,22 @@ class SystemAlert:
 
     def setAlertType(self, alertType: AlertType):
         self.__alertType = alertType
+
+
+class TabUpdateData:
+    def __init__(self, updateType: TabUpdateType, data: Any):
+        self.__type = updateType
+        self.__data = data
+
+    def updateType(self):
+        return self.__type
+
+    def data(self):
+        return self.__data
+
+    def setUpdateType(self, updateType: TabUpdateType):
+        self.__type = updateType
+
+    def setData(self, data: Any):
+        self.__data = data
+

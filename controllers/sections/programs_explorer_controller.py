@@ -3,12 +3,14 @@ import uuid
 from PySide6.QtGui import QImage
 
 from controllers.sections.items.program_preview_item_controller import ProgramPreviewItemController
-from interfaces.structs import ProgramsExplorerActionType, AlertType
+from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType
 from models.explorer.program_item_model import ProgramItemModel
 from models.explorer.programs_list_model import ProgramListModel
-from models.signal_data_models import ProgramExplorerActionModel, SystemAlert
+from models.signal_data_models import ProgramExplorerActionModel, SystemAlert, TabUpdateData
 from models.tabs.tab_item_model import TabItemModel
 from utils.signal_bus import signalBus
+from views.components.dialog.cases.create_new_program import CreateNewProgram
+from views.components.dialog.cases.rename_program import CustomRenameProgramDialog
 from views.sections.programs_explorer import ProgramsExplorerView
 
 
@@ -24,15 +26,7 @@ class ProgramsExplorerController(ProgramsExplorerView):
     # region - Initialize
 
     def initialize(self):
-        file = QImage(':resources/images/file.png')
-        data = [
-            ProgramItemModel("File 1", file, str(uuid.uuid4())),
-            ProgramItemModel("File 2", file, str(uuid.uuid4())),
-            ProgramItemModel("File 3", file, str(uuid.uuid4())),
-            ProgramItemModel("File 4", file, str(uuid.uuid4())),
-            ProgramItemModel("File 4", file, str(uuid.uuid4())),
-        ]
-        self.model.addItems(data)
+        pass
 
     # endregion
 
@@ -70,24 +64,72 @@ class ProgramsExplorerController(ProgramsExplorerView):
         :param options:
         :return:
         """
-        # try:
-        #     if options.action() == ProgramsExplorerActionType.Select:
-        #         item = options.data()[0]
-        #         signalBus.onSystemAlert.emit(SystemAlert(item.text(), AlertType.Event))
-        #     else:
-        #         signalBus.onSystemAlert.emit(SystemAlert("Invalid Selection Option, see console"))
-        #         signalBus.onLogToOutput.emit(f"Expected `Select` option, got {options.action()} instead.")
-        # except Exception as e:
-        #     signalBus.onSystemAlert.emit(SystemAlert("Invalid Selection Option, see console"))
-        #     signalBus.onLogToOutput.emit(f"[Error] {str(e)}")
         pass
 
     def __handleContextMenuActions(self, options: ProgramExplorerActionModel):
-        pass
+        action = options.action()
+        if action == ProgramsExplorerActionType.New:
+            self.__newItem()
+
+        # these cases are only valid when there is a selected item
+        # check if there is such an item or return
+        if len(options.data()) < 1:
+            return
+        data = options.data()[0]
+        if action == ProgramsExplorerActionType.Rename:
+            self.__renameItem(data)
+        if action == ProgramsExplorerActionType.Delete:
+            self.__deleteItem(data)
+
+    def __handleRenameItemConfirm(self, item: ProgramItemModel | None):
+        """
+        updates the data inplace in the list view model
+        :param item:
+        :return:
+        """
+        if item is None:
+            return
+        self.model.updateItem(item)
+        signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Title, TabItemModel(item.text(), None, item.id())))
+
+    def __handleCreateItemConfirm(self, item: ProgramItemModel | None):
+        if item is None:
+            return
+        # # update the view
+        self.model.addItems([item])
+
+        # trigger open of the tab
+        data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Open)
+        self.__handleListItemDoubleClicked(data)
 
     # endregion
 
     # region - workers
+
+    def __newItem(self):
+        """
+        creates a new item and opens it in the preview explorer
+        :return:
+        """
+        CreateNewProgram(self, self.__handleCreateItemConfirm)
+
+    def __deleteItem(self, item: ProgramItemModel):
+        """
+        deletes item from ListView and also signals to delete from the tab if open
+        :param item:
+        :return:
+        """
+        self.model.removeItem(item)
+        signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Delete, TabItemModel(None, None, item.id())))
+
+    def __renameItem(self, item: ProgramItemModel):
+        """
+        Renames item.
+        Opens a modal collects the response and updates the item's name
+        :param item:
+        :return:
+        """
+        CustomRenameProgramDialog(self, item, self.__handleRenameItemConfirm, "Rename", "cancel")
 
     @staticmethod
     def __openTab(tabItem: TabItemModel):

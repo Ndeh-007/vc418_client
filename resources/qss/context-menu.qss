@@ -1,0 +1,40 @@
+QMenu{
+    background-color: light_rbg;
+    padding: 3px;
+    border: 1px solid light_shade_rbg;
+}
+
+QMenu::item {
+    background-color: transparent;
+    color: dark_rbg;
+    margin-top: 2px;
+    margin-bottom: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 35px;
+}
+
+QMenu::item:hover {
+    background-color: primary_tint_rbg;
+    border-color: primary_shade_rbg;
+    color: white;
+}
+
+QMenu::item:selected {
+    background-color: primary_rbg;
+    color: white;
+}
+
+QMenu::item:disabled {
+    background-color: transparent;
+    color: light_shade_rbg;
+}
+
+QMenu::separator {
+    background: light_shade_rbg;
+    margin: 0;
+    height: 1px;
+}

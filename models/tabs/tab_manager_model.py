@@ -30,8 +30,18 @@ class TabManagerModel:
     def deleteTab(self, target: str):
         return self.__tabs.pop(target)
 
-    def tabExists(self, tabItem: TabItemModel):
-        if tabItem.id() in self.__tabs.keys():
+    def tabExists(self, tabItem: TabItemModel | str):
+        """
+
+        :param tabItem: Either the id or the whole item
+        :return:
+        """
+        if isinstance(tabItem, str):
+            target = tabItem
+        else:
+            target = tabItem.id()
+
+        if target in self.__tabs.keys():
             return True
         else:
             return False

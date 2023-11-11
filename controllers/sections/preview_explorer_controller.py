@@ -1,3 +1,5 @@
+from interfaces.structs import TabUpdateType
+from models.signal_data_models import TabUpdateData
 from models.tabs.tab_item_model import TabItemModel
 from models.tabs.tab_manager_model import TabManagerModel
 from utils.signal_bus import signalBus
@@ -57,9 +59,42 @@ class PreviewExplorerController(PreviewExplorerView):
             self.previewTabs.addTab(tabItem.content(), tabItem.title())
             self.previewTabs.setCurrentIndex(self.previewTabs.count() - 1)
 
+    def __handleUpdateTab(self, options: TabUpdateData):
+        """
+        updates tab based on the update type
+        :param options:
+        :return:
+        """
+        updateType = options.updateType()
+        data = options.data()
+        if updateType == TabUpdateType.Title:
+            self.__updateTabTitle(data)
+
+        if updateType == TabUpdateType.Delete:
+            self.__deleteTab(data)
+
     # endregion
 
     # region - workers
+    def __deleteTab(self, data: TabItemModel):
+
+        # first check if the tab has been created
+        if not self.tabManager.tabExists(data.id()):
+            return
+
+        i = self.tabManager.getTabIndex(data.id())
+        self.tabManager.deleteTab(data.id())
+        self.previewTabs.removeTab(i)
+
+    def __updateTabTitle(self, data: TabItemModel):
+
+        # first check if the tab has been created
+        if not self.tabManager.tabExists(data.id()):
+            return
+
+        i = self.tabManager.getTabIndex(data.id())
+        self.tabManager.tabs(data.id()).setTitle(data.title())
+        self.previewTabs.setTabText(i, data.title())
 
     def toggleLayout(self):
         """
@@ -84,3 +119,4 @@ class PreviewExplorerController(PreviewExplorerView):
 
     def __connectSignals(self):
         signalBus.onOpenTab.connect(self.__handleOpenTab)
+        signalBus.onUpdateTab.connect(self.__handleUpdateTab)

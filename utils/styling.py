@@ -1,7 +1,21 @@
+from PySide6.QtCore import QFile
 from PySide6.QtGui import QPalette, QColor
 from PySide6.QtWidgets import QWidget
 
 from styles.color import appColors
+
+
+def q_read_style(file: str):
+    """
+    takes the name of the target file and returns its style content
+    :param file:
+    :return:
+    """
+    f = QFile(f":resources/qss/{file}.qss")
+    f.open(QFile.OpenModeFlag.ReadOnly)
+    qss = parse_stylesheet_data(str(f.readAll(), encoding='utf-8'))
+    f.close()
+    return qss
 
 
 def read_style(path: str):

@@ -1,0 +1,274 @@
+
+QFrame#dialogLeftPanelFrame{
+    border-color: light_shade_rbg ;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+    padding: 0px 0px 0px 0px;
+    background-color: light_rbg;
+}
+
+QFrame#dialogRightPanelFrame{
+    border-color: light_shade_rbg ;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+    padding: 0px 0px 0px 0px;
+    background-color: white_rbg;
+}
+
+QSplitter#configurationMainSplitter {
+    background-color: white_rbg;
+}
+
+QTabWidget::pane{
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 1px 0px 0px 0px;
+    border-radius: 0px;
+}
+
+QTabBar::tab {
+    padding: 5px 7px;
+    min-width: 20ex;
+}
+
+QTabBar::tab:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                stop: 0 primary_tint_rbg, stop: 0.4 primary_tint_rbg,
+                                stop: 0.5 primary_tint_rbg, stop: 1.0 primary_tint_rbg);
+}
+
+QTabBar::tab:selected {
+    color: primary_rbg;
+    border-color: primary_rbg;
+    border-style: solid;
+    border-width: 0px 0px 2px 0px;
+}
+
+QTabBar::tab:!selected {
+    color: dark_tint_rbg;
+    border-style: solid;
+    border-width: 0px 0px 0px 0px;
+}
+
+QTabBar::close-button {
+    image: url(":/style/tab-close-medium.png");
+    subcontrol-position: left;
+}
+
+QTabBar::close-button:hover {
+    image: url(":/style/tab-close-dark.png");
+}
+
+
+QTableView {
+    background: white;
+    gridline-color: light_shade_rbg;
+    selection-background-color: primary_rbg;
+    border: 1px solid light_shade_rbg;
+}
+
+QLineEdit {
+    border: 1px solid light_shade_rbg;
+    padding: 3px;
+    border-radius: 2px;
+    background: white;
+}
+
+QLineEdit:focus {
+    border: 1px solid primary_rbg;
+}
+
+QComboBox {
+    border: 1px solid light_shade_rbg;
+    padding: 3px;
+    border-radius: 2px;
+    background: light_rbg;
+    min-width: 75px;
+}
+
+QComboBox:focus {
+    border: 1px solid primary_rbg;
+}
+
+QComboBox:editable {
+    background: white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+    background:white;
+}
+
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background: white;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: white;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(":/style/chevron-down.png");
+}
+
+QPushButton#dialogActionButton {
+    border-radius: 2px;
+    background: white;
+    padding: 3px 10px;
+    min-width: 25px;
+    border: 1px solid light_shade_rbg;
+    color: dark_rbg;
+}
+
+QPushButton#dialogActionButton:focus {
+    border: 1px solid primary_shade_rbg;
+    color: dark_rbg;
+    border-radius: 2px;
+}
+
+QPushButton#dialogActionButton:hover {
+    background: primary_tint_rbg;
+}
+
+QPushButton#dialogFlatActionButton:hover{
+    border: 1px solid light_shade_rbg;
+}
+
+QPushButton#dialogToolbarActionButton {
+    border-radius: 2px;
+    background: white;
+    padding: 5px;
+    color: dark_rbg;
+}
+
+QPushButton#dialogToolbarActionButton:focus {
+    border: 1px solid primary_shade_rbg;
+    color: dark_rbg;
+    border-radius: 3px;
+}
+
+QPushButton#dialogToolbarActionButton:hover {
+    color: dark_rbg;
+    border-radius: 3px;
+    background-color: light_rbg;
+}
+
+QWidget#dialogNewFluidInputSection{
+    border-top: 1px solid light_shade_rbg;
+    border-bottom: 1px solid light_shade_rbg;
+}
+
+QWidget#newConfigurationContentHolder{
+    background-color: white;
+}
+
+QTableView#selectedItemConfigPreviewTable{
+    background-color: white;
+    border: 1px solid light_shade_rbg;
+}
+
+QWidget#dialogPreviewFluidToolbar{
+    background-color: light_rbg;
+    border-top: 1px solid light_shade_rbg;
+}
+
+QWidget#dialogErrorToolbar{
+    background-color: warning_rbg;
+    border-top: 1px solid warning_shade_rbg;
+    border-bottom: 1px solid warning_shade_rbg;
+}
+
+QWidget#dialogUnitsToolbar{
+    background-color: light_rbg;
+    border-top: 1px solid light_shade_rbg;
+    border-bottom: 1px solid light_shade_rbg;
+    border-right: 1px solid light_shade_rbg;
+}
+
+QWidget#dialogUnitsPreview{
+    background-color: light_rbg;
+    border-top: 1px solid light_shade_rbg;
+    border-bottom: 1px solid light_shade_rbg;
+}
+
+QWidget#dialogUnitsPreviewHeader{
+    background-color: light_rbg;
+    border-bottom: 1px solid light_shade_rbg;
+    border-top: 1px solid light_shade_rbg;
+}
+
+QLabel#unitPreviewHeaderTitle{
+    color: medium_shade_rbg;
+    font-weight: bold;
+}
+
+QSplitter::handle:horizontal {
+    background-color: light_shade_rbg;
+    border-bottom: 1px solid light_shade_rbg;
+    border-top: 1px solid light_shade_rbg;
+}
+
+QSplitter::handle:vertical {
+    background-color: light_shade_rbg;
+    border-bottom: 1px solid light_shade_rbg;
+    border-top: 1px solid light_shade_rbg;
+}
+
+QSplitter {
+    background-color: white_rbg;
+}
+
+QTableView#pumpScheduleJobTable{
+    border: 1px solid light_shade_rbg;
+}
+
+QLabel#configurationTabContentTitle{
+    font-weight: 600;
+    color:dart_tint_rbg;
+    font-size: 15px;
+}
+
+QLabel#configurationTabContentSubTitle{
+    font-weight: 600;
+    color:dart_tint_rbg;
+    font-size: 13px;
+}
+
+QHeaderView::section{
+    background-color: light_rbg;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+}
+
+QWidget#pumpScheduleTableConfigurationHolder{
+    background-color: white;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 1px 0px 0px 0px;
+}
+
+QFrame#EventMessageBar{
+    background-color: primary_rbg;
+    border-color: primary_shade_rbg;
+    border-style: solid;
+    border-width: 1px 0px 1px 0px;
+}
+
+QLabel#MessageBarText{
+    color: light_rbg;
+}
+
+QFrame#ConfigRightPanelSection{
+    background-color: white;
+    border-color: light_rbg;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+}

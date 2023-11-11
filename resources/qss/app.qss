@@ -25,6 +25,59 @@ QMenuBar::item:pressed {
     background: secondary_shade_rbg;
 }
 
+QLineEdit {
+    border: 1px solid light_shade_rbg;
+    padding: 3px;
+    border-radius: 2px;
+    background: light_rbg;
+}
+
+QLineEdit:focus {
+    border: 1px solid tertiary_rbg;
+}
+
+
+
+QComboBox {
+    border: 1px solid light_shade_rbg;
+    padding: 3px;
+    border-radius: 2px;
+    background: light_rbg;
+}
+
+QComboBox:focus {
+    border: 1px solid tertiary_rbg;
+}
+
+QComboBox:editable {
+    background: white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+    background:white;
+}
+
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background: white;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: white;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+    image: url(":resources/images/chevron-down.png");
+}
+
+
 QFrame#AppIconHolder{
     padding: 5px 10px 5px 10px;
 }

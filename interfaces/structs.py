@@ -17,3 +17,15 @@ class ProgramsExplorerActionType(Enum):
     Run = 2
     Select = 3
     Open = 4
+    Rename = 6
+
+
+class TabUpdateType(Enum):
+    Title = 0
+    Delete = 1
+
+
+class ProgramType(Enum):
+    UNDEFINED = 0
+    REDUCE_ERLANG = 1
+    SCAN_ERLANG = 2

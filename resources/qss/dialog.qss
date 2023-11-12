@@ -51,12 +51,12 @@ QTabBar::tab:!selected {
 }
 
 QTabBar::close-button {
-    image: url(":/style/tab-close-medium.png");
+    image: url(":resources/images/close-medium.png");
     subcontrol-position: left;
 }
 
 QTabBar::close-button:hover {
-    image: url(":/style/tab-close-dark.png");
+    image: url(":resources/images/close-dark.png");
 }
 
 
@@ -115,7 +115,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-    image: url(":/style/chevron-down.png");
+    image: url(":resources/images/chevron-down.png");
 }
 
 QPushButton#dialogActionButton {

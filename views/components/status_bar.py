@@ -1,16 +1,28 @@
 import qtawesome
-from PySide6.QtCore import QSize, QSize
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget, QPushButton, QLabel, QStatusBar, QGridLayout
+from PySide6.QtCore import QSize, QObject, Signal
+from PySide6.QtGui import QMouseEvent, Qt
+from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QStatusBar, QGridLayout
+
+from styles.color import appColors
 
 
-class StatusBarViewButton(QPushButton):
-    def __init__(self, content: QWidget):
+class StatusBarViewButton(QFrame, QObject):
+    clicked = Signal()
+
+    def __init__(self, content: QWidget, cMargin: int | list[int] = 0):
         super().__init__()
         layout = QVBoxLayout()
-        layout.setContentsMargins(0, 0, 0, 0)
+
+        if isinstance(cMargin, int):
+            cMargin = [cMargin, cMargin, cMargin, cMargin]
+
+        layout.setContentsMargins(cMargin[0], cMargin[1], cMargin[2], cMargin[3])
         layout.addWidget(content)
         self.setLayout(layout)
-        self.setFlat(True)
+
+    def mousePressEvent(self, event: QMouseEvent) -> None:
+        if event.button() == Qt.MouseButton.LeftButton:
+            self.clicked.emit()
 
 
 class StatusBarView(QStatusBar):
@@ -36,30 +48,14 @@ class StatusBarView(QStatusBar):
         btn1Content.setLayout(btn1ContentLayout)
 
         self.erlangServerBtn = StatusBarViewButton(btn1Content)
-        layout.addWidget(self.erlangServerBtn)
 
-        btn2Content = QFrame()
-        btn2ContentLayout = QGridLayout()
-        btn2ContentLayout.setContentsMargins(2, 2, 2, 2)
-        btn2ContentLayout.setVerticalSpacing(0)
-        btn2ContentLayout.setHorizontalSpacing(5)
-        cppServerLabel = QLabel("C++")
-        self.cppServerIndicator = qtawesome.IconWidget()
-        self.cppServerIndicator.setIconSize(QSize(10, 10))
-        self.cppServerStatus = QLabel()
-        self.cppServerStatus.setObjectName("ServerStatusLabel")
-        btn2ContentLayout.addWidget(self.cppServerIndicator, 0, 0)
-        btn2ContentLayout.addWidget(cppServerLabel, 0, 1)
-        btn2ContentLayout.addWidget(self.cppServerStatus, 1, 1, 1, 2)
-        btn2Content.setLayout(btn2ContentLayout)
+        self.addWidget(self.erlangServerBtn, 0)
+        self.addWidget(QWidget(), 1)
 
-        self.cppServerBtn = StatusBarViewButton(btn2Content)
-        layout.addWidget(self.cppServerBtn)
+        self.outputBtn = StatusBarViewButton(QLabel("Output"), 2)
+        self.notificationBtn = StatusBarViewButton(qtawesome.IconWidget("msc.bell", color=appColors.medium_rbg), 2)
 
-        w = QWidget()
-        w.setLayout(layout)
-
-        self.addWidget(btn1Content)
-        self.addWidget(btn2Content)
+        self.addWidget(self.outputBtn, 0)
+        self.addWidget(self.notificationBtn, 0)
 
         self.setSizeGripEnabled(False)

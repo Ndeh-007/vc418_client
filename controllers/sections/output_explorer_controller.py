@@ -10,9 +10,24 @@ class OutputExplorerController(OutputExplorerView):
     def __init__(self):
         super().__init__()
 
+        self.configure()
+
         self.__connectSignals()
 
+    # region configure
+
+    def configure(self):
+        self.clearBtn.clicked.connect(self.__handleClear)
+        self.minimizeBtn.clicked.connect(self.__handleMinimize)
+
+    # endregion
+
     # region - event handlers
+    def __handleClear(self):
+        self.logger.clear()
+
+    def __handleMinimize(self):
+        self.hide()
 
     def __handleLogToOutput(self, message: str):
         self.logger.moveCursor(QTextCursor.MoveOperation.End)

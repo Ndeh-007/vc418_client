@@ -5,12 +5,14 @@ from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout
 from controllers.components.menu_bar_controller import MenuBarController
 from controllers.components.status_bar_controller import StatusBarController
 from controllers.pages.HomePageController import HomePageController
+from store.settings import init_settings_store
 
 
 class MainWindow(QMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        init_settings_store()
         self.__init_ui__(parent)
 
     def __init_ui__(self, parent):

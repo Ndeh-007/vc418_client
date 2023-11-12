@@ -29,3 +29,16 @@ class ProgramType(Enum):
     UNDEFINED = 0
     REDUCE_ERLANG = 1
     SCAN_ERLANG = 2
+
+
+class ServerType(Enum):
+    UNDEFINED = 0
+    ERLANG = 1
+    C_PLUS_PLUS = 2
+
+
+class ServerState(Enum):
+    ON = 0
+    OFF = 1
+    WORKING = 2
+    TRANSITION = 3

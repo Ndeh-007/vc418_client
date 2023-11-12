@@ -3,7 +3,6 @@ from PySide6.QtGui import QMouseEvent, Qt, QContextMenuEvent, QAction
 from PySide6.QtWidgets import QListView, QMenu
 
 from interfaces.structs import ProgramsExplorerActionType
-from models.explorer.program_item_model import ProgramItemModel
 from models.signal_data_models import ProgramExplorerActionModel
 from utils.styling import q_read_style
 

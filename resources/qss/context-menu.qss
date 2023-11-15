@@ -18,14 +18,14 @@ QMenu::item {
 }
 
 QMenu::item:hover {
-    background-color: primary_tint_rbg;
-    border-color: primary_shade_rbg;
-    color: white;
+    background-color: secondary_shade_rbg;
+    border-color: secondary_shade_rbg;
+    color: dark_rbg;
 }
 
 QMenu::item:selected {
-    background-color: primary_rbg;
-    color: white;
+    background-color: secondary_shade_rbg;
+    color: dark_rbg;
 }
 
 QMenu::item:disabled {

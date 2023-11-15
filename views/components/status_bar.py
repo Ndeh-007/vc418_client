@@ -1,7 +1,7 @@
 import qtawesome
 from PySide6.QtCore import QSize, QObject, Signal
 from PySide6.QtGui import QMouseEvent, Qt
-from PySide6.QtWidgets import QFrame, QHBoxLayout, QVBoxLayout, QWidget, QLabel, QStatusBar, QGridLayout
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QWidget, QLabel, QStatusBar, QGridLayout
 
 from styles.color import appColors
 
@@ -19,6 +19,7 @@ class StatusBarViewButton(QFrame, QObject):
         layout.setContentsMargins(cMargin[0], cMargin[1], cMargin[2], cMargin[3])
         layout.addWidget(content)
         self.setLayout(layout)
+        self.setObjectName("StatusBarViewButton")
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         if event.button() == Qt.MouseButton.LeftButton:
@@ -28,9 +29,6 @@ class StatusBarViewButton(QFrame, QObject):
 class StatusBarView(QStatusBar):
     def __init__(self):
         super().__init__()
-
-        layout = QHBoxLayout()
-        layout.setContentsMargins(0, 5, 0, 5)
 
         btn1Content = QFrame()
         btn1ContentLayout = QGridLayout()

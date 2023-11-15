@@ -25,6 +25,48 @@ QMenuBar::item:pressed {
     background: secondary_shade_rbg;
 }
 
+QMenu{
+    background-color: light_rbg;
+    padding: 3px;
+    border: 1px solid light_shade_rbg;
+}
+
+QMenu::item {
+    background-color: transparent;
+    color: dark_rbg;
+    margin-top: 2px;
+    margin-bottom: 3px;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+    padding-right: 35px;
+}
+
+QMenu::item:hover {
+    background-color: secondary_tint_rbg;
+    border-color: secondary_shade_rbg;
+    color: dark_rbg;
+}
+
+QMenu::item:selected {
+    background-color: secondary_shade_rbg;
+    color: dark_rbg;
+}
+
+QMenu::item:disabled {
+    background-color: transparent;
+    color: light_shade_rbg;
+}
+
+QMenu::separator {
+    background: light_shade_rbg;
+    margin: 0;
+    height: 1px;
+}
+
+
 QLineEdit {
     border: 1px solid light_shade_rbg;
     padding: 3px;
@@ -202,4 +244,9 @@ QLabel#PreviewExplorerPlaceholderLabelValue{
 QLabel#ServerStatusLabel{
     font-size: 10px;
     color: medium_rbg
+}
+
+QFrame#StatusBarViewButton:hover{
+    border: 0px solid secondary_shade_rbg;
+    background: secondary_shade_rbg;
 }

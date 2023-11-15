@@ -1,6 +1,6 @@
 from typing import Any
 
-from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType
+from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType, SystemRequestScope
 from models.explorer.program_item_model import ProgramItemModel
 
 
@@ -57,3 +57,26 @@ class TabUpdateData:
     def setData(self, data: Any):
         self.__data = data
 
+
+class SystemRequestData:
+    def __init__(self, action: Any, content: Any):
+        self.action = action
+        self.content = content
+
+
+class SystemRequest:
+    def __init__(self, data: SystemRequestData, scope: SystemRequestScope = SystemRequestScope.GLOBAL):
+        self.__scope: SystemRequestScope = scope
+        self.__data: SystemRequestData = data
+
+    def scope(self):
+        return self.__scope
+
+    def data(self):
+        return self.__data
+
+    def setScope(self, scope: SystemRequestScope):
+        self.__scope = scope
+
+    def setData(self, data: SystemRequestData):
+        self.__data = data

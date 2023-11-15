@@ -42,3 +42,24 @@ class ServerState(Enum):
     OFF = 1
     WORKING = 2
     TRANSITION = 3
+
+
+class SystemRequestScope(Enum):
+    GLOBAL = 0
+    LOCAL = 1
+
+
+class MenuBarActionType(Enum):
+    # file action
+    ABOUT = 0
+    EXIT = 2
+    SETTINGS = 3
+
+    # Server Actions
+    START_SERVER = 4
+    STOP_SERVER = 5
+
+    # View actions
+    TOGGLE_OUTPUT_EXPLORER = 6
+    TOGGLE_PROGRAMS_EXPLORER = 7
+    TOGGLE_PROPERTIES_EXPLORER = 8

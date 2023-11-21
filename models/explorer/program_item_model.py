@@ -3,10 +3,13 @@ import uuid
 from PySide6.QtGui import QImage
 
 from interfaces.structs import ProgramType
+from models.explorer.program_properties_model import ProgramPropertiesModel
 
 
 class ProgramItemModel:
-    def __init__(self, text: str = None, icon: QImage = None, itemID: str = None, programType: ProgramType = ProgramType.UNDEFINED):
+    def __init__(self, text: str = None, icon: QImage = None, itemID: str = None,
+                 programType: ProgramType = ProgramType.UNDEFINED,
+                 properties: ProgramPropertiesModel = None):
         self.__text: str = text
 
         self.__icon: QImage = icon
@@ -19,7 +22,14 @@ class ProgramItemModel:
         if itemID is None:
             self.__id: str = text.lower().replace(" ", "_")
 
+        self.__props: ProgramPropertiesModel = properties
+        if properties is None:
+            self.__props: ProgramPropertiesModel = ProgramPropertiesModel()
+
     # region getters
+    def properties(self):
+        return self.__props
+
     def id(self):
         return self.__id
 
@@ -35,6 +45,9 @@ class ProgramItemModel:
     # endregion
 
     # region setters
+    def setProperties(self, props: ProgramPropertiesModel):
+        self.__props = props
+
     def setID(self, itemID: str):
         self.__id = itemID
 

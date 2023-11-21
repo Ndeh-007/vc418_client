@@ -23,7 +23,7 @@ class ProgramsExplorerView(QFrame):
         self.minimizeBtn.setIcon(ic)
         self.minimizeBtn.setFlat(True)
 
-        controlButtons.append(self.minimizeBtn)
+        # controlButtons.append(self.minimizeBtn)
 
         # endregion
 

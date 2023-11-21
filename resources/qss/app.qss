@@ -250,3 +250,10 @@ QFrame#StatusBarViewButton:hover{
     border: 0px solid secondary_shade_rbg;
     background: secondary_shade_rbg;
 }
+
+QFrame#TabControlToolbar{
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 0px 0px 1px 0px;
+    border-radius: 0px;
+}

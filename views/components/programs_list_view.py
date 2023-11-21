@@ -37,6 +37,7 @@ class ProgramsListView(QListView, QObject):
     onContextMenuAction = Signal(ProgramExplorerActionModel)
     onItemClicked = Signal(ProgramExplorerActionModel)
     onItemDoubleClicked = Signal(ProgramExplorerActionModel)
+    onError = Signal(str)
 
     def __init__(self):
         super().__init__()
@@ -60,20 +61,30 @@ class ProgramsListView(QListView, QObject):
             if len(indexes) == 0:
                 return
             item = self.model().getDataAtIndex(indexes[0])
+            if item is None:
+                return
             data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Open)
             self.onItemDoubleClicked.emit(data)
 
     def mousePressEvent(self, event: QMouseEvent) -> None:
         super().mousePressEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
+            print(len(self.selectedIndexes()))
             if len(self.selectedIndexes()) == 0:
                 return
+
+            if self.model().rowCount() == 0:
+                print("no items")
+                return
+
             item = self.model().getDataAtIndex(self.selectedIndexes()[0])
+            if item is None:
+                return
             data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Select)
             self.onItemClicked.emit(data)
 
-    def contextMenuEvent(self, arg__1: QContextMenuEvent) -> None:
-        self.contextMenu.exec(arg__1.globalPos())
+    def contextMenuEvent(self, event: QContextMenuEvent) -> None:
+        self.contextMenu.exec(event.globalPos())
 
     # endregion
 
@@ -88,7 +99,10 @@ class ProgramsListView(QListView, QObject):
         actionType = action.data()
         items = []
         for index in self.selectedIndexes():
-            items.append(self.model().getDataAtIndex(index))
+            item = self.model().getDataAtIndex(index)
+            if item is None:
+                continue
+            items.append(item)
 
         data = ProgramExplorerActionModel(items, actionType)
         self.onContextMenuAction.emit(data)

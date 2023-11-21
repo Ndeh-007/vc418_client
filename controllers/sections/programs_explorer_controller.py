@@ -40,6 +40,7 @@ class ProgramsExplorerController(ProgramsExplorerView):
         self.programsListView.onItemClicked.connect(self.__handleListItemClicked)
         self.programsListView.onItemDoubleClicked.connect(self.__handleListItemDoubleClicked)
         self.programsListView.onContextMenuAction.connect(self.__handleContextMenuActions)
+        self.programsListView.onError.connect(self.__handleModelError)
 
     # end region
 
@@ -64,17 +65,15 @@ class ProgramsExplorerController(ProgramsExplorerView):
         :param options:
         :return:
         """
-        pass
+        signalBus.onShowProgramProperties.emit(options.data()[0])
 
     def __handleContextMenuActions(self, options: ProgramExplorerActionModel):
         action = options.action()
         if action == ProgramsExplorerActionType.New:
             self.__newItem()
-
-        # these cases are only valid when there is a selected item
-        # check if there is such an item or return
-        if len(options.data()) < 1:
             return
+
+        # get the data we want to rename or delete
         data = options.data()[0]
         if action == ProgramsExplorerActionType.Rename:
             self.__renameItem(data)
@@ -96,11 +95,15 @@ class ProgramsExplorerController(ProgramsExplorerView):
         if item is None:
             return
         # # update the view
-        self.model.addItems([item])
+        self.model.addItems(item)
 
         # trigger open of the tab
         data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Open)
         self.__handleListItemDoubleClicked(data)
+
+    @staticmethod
+    def __handleModelError(message: str):
+        signalBus.onLogToOutput.emit(message)
 
     # endregion
 

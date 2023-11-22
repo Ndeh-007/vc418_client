@@ -1,6 +1,6 @@
 from typing import Any
 
-from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType, SystemRequestScope
+from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType, SystemRequestScope, PreviewToolbarActionType
 from models.explorer.program_item_model import ProgramItemModel
 
 
@@ -80,3 +80,21 @@ class SystemRequest:
 
     def setData(self, data: SystemRequestData):
         self.__data = data
+
+
+class PreviewProgramData:
+    def __init__(self, procedure: PreviewToolbarActionType, data: ProgramItemModel):
+        self.__data: ProgramItemModel = data
+        self.__procedure: PreviewToolbarActionType = procedure
+
+    def data(self):
+        return self.__data
+
+    def procedure(self):
+        return self.__procedure
+
+    def setData(self, data: ProgramItemModel):
+        self.__data = data
+
+    def setProcedure(self, procedure: PreviewToolbarActionType):
+        self.__procedure = procedure

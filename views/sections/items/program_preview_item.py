@@ -4,6 +4,7 @@ from PySide6 import QtGui
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QLabel
 
 from controllers.components.tab_control_toolbar_controller import TabControlToolbarController
+from controllers.components.tab_preview_canvas_controller import TabPreviewCanvasController
 
 
 class ProgramPreviewItemView(QFrame):
@@ -13,9 +14,11 @@ class ProgramPreviewItemView(QFrame):
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
 
-        controlBar = TabControlToolbarController()
-        layout.addWidget(controlBar)
+        self.controlBar = TabControlToolbarController()
+        layout.addWidget(self.controlBar)
 
-        layout.addStretch()
+        self.canvas = TabPreviewCanvasController()
+
+        layout.addWidget(self.canvas)
 
         self.setLayout(layout)

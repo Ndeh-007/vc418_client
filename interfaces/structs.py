@@ -58,8 +58,14 @@ class MenuBarActionType(Enum):
     # Server Actions
     START_SERVER = 4
     STOP_SERVER = 5
+    LAUNCH_SERVER = 9
 
     # View actions
     TOGGLE_OUTPUT_EXPLORER = 6
     TOGGLE_PROGRAMS_EXPLORER = 7
     TOGGLE_PROPERTIES_EXPLORER = 8
+
+
+class PreviewToolbarActionType(Enum):
+    FETCH = 0
+    EXECUTE = 1

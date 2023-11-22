@@ -1,69 +1,69 @@
-# coding:utf-8
 import sys
-
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication, QLabel, QMenuBar, QMenu, QStatusBar, QTextEdit, QHBoxLayout
-
-from qframelesswindow import FramelessMainWindow, FramelessDialog
+from PySide6.QtWidgets import QApplication, QMainWindow, QPushButton, QTextEdit, QVBoxLayout, QWidget, QMessageBox
+from PySide6.QtCore import QProcess, Slot
 
 
-class MainWindow(FramelessMainWindow):
-
+class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Frameless Main Window")
 
-        # add menu bar
-        menuBar = QMenuBar(self.titleBar)
-        menu = QMenu('File(&F)', self)
-        menu.addAction('open')
-        menu.addAction('save')
-        menuBar.addMenu(menu)
-        menuBar.addAction('Edit(&E)')
-        menuBar.addAction('Select(&S)')
-        menuBar.addAction('Help(&H)', self.showHelpDialog)
-        self.titleBar.layout().insertWidget(0, menuBar, 0, Qt.AlignLeft)
-        self.titleBar.layout().insertStretch(1, 1)
-        self.setMenuWidget(self.titleBar)
+        self.setWindowTitle("QProcess Example")
+        self.setGeometry(100, 100, 500, 400)
 
-        # add status bar
-        statusBar = QStatusBar(self)
-        statusBar.addWidget(QLabel('row 1'))
-        statusBar.addWidget(QLabel('column 1'))
-        self.setStatusBar(statusBar)
+        self.central_widget = QWidget()
+        self.setCentralWidget(self.central_widget)
 
-        # set central widget
-        self.textEdit = QTextEdit()
-        self.setCentralWidget(self.textEdit)
+        self.layout = QVBoxLayout()
+        self.central_widget.setLayout(self.layout)
 
-        self.setStyleSheet("""
-            QMenuBar{background: #F0F0F0; padding: 5px 0}
-            QTextEdit{border: none; font-size: 15px}
-            QDialog > QLabel{font-size: 15px}
-        """)
+        self.output_text_edit = QTextEdit()
+        self.layout.addWidget(self.output_text_edit)
 
-    def showHelpDialog(self):
-        w = FramelessDialog(self)
+        self.process = QProcess()
 
-        # add a label to dialog
-        w.setLayout(QHBoxLayout())
-        w.layout().addWidget(QLabel('Frameless Dialog'), 0, Qt.AlignCenter)
+        self.start_process_button = QPushButton("Run Command")
+        self.start_process_button.clicked.connect(self.start_process)
+        self.layout.addWidget(self.start_process_button)
 
-        # raise title bar
-        w.titleBar.raise_()
-        w.resize(300, 300)
+    @Slot()
+    def start_process(self):
+        # Set the command to run here
 
-        # disable resizing dialog
-        w.setResizeEnabled(False)
-        w.exec()
+        # Connect process signals
+        self.process.readyReadStandardOutput.connect(self.read_output)
+        self.process.readyReadStandardError.connect(self.read_error)
+        self.process.errorOccurred.connect(self.handle_error)
+
+        # Start the process
+        self.process.start('rebar3',['plugins'])
+
+        if not self.process.waitForStarted():
+            QMessageBox.critical(self, "Error", "Failed to start process.")
+            return
+
+        self.process.waitForFinished()
+
+    @Slot()
+    def handle_error(self, data):
+        self.output_text_edit.append(str(data))
+
+    @Slot()
+    def read_output(self):
+        data = self.process.readAllStandardOutput().data().decode()
+        self.output_text_edit.append(data)
+
+    @Slot()
+    def read_error(self):
+        data = self.process.readAllStandardError().data().decode()
+        self.output_text_edit.append(f"Error: {data}")
 
 
-if __name__ == '__main__':
+def main():
     app = QApplication(sys.argv)
-
-    # fix issue #50
-    app.setAttribute(Qt.AA_DontCreateNativeWidgetSiblings)
-
     window = MainWindow()
     window.show()
-    app.exec()
+    sys.exit(app.exec())
+
+
+if __name__ == "__main__":
+    main()

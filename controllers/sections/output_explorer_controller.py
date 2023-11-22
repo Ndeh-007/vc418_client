@@ -1,8 +1,9 @@
-from PySide6.QtGui import QTextCursor
+from PySide6.QtGui import QTextCursor, QFont
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton
 
 from interfaces.structs import MenuBarActionType, SystemRequestScope
 from models.signal_data_models import SystemRequestData, SystemRequest
+from styles.color import appColors
 from utils.signal_bus import signalBus
 from views.components.section_header import SectionHeader
 from views.sections.output_explorer import OutputExplorerView
@@ -33,9 +34,28 @@ class OutputExplorerController(OutputExplorerView):
         self.__fireSystemRequest(d)
 
     def __handleLogToOutput(self, message: str):
+        font = QFont()
+        font.setBold(False)
+        self.logger.setStyleSheet(f""" 
+                                    border: 0px solid {appColors.light_shade_rbg};
+                                    color: black;
+                                    """)
+        self.__updateLogger(message)
+
+    def __handleErrorLogToOutput(self, message: str):
+        font = QFont()
+        font.setBold(True)
+        self.logger.setFont(font)
+        self.logger.setStyleSheet(f""" 
+                                    border: 0px solid {appColors.light_shade_rbg};
+                                    color: {appColors.danger_rbg};
+                                    """)
+        self.__updateLogger(message)
+
+    def __updateLogger(self, msg: str):
         self.logger.moveCursor(QTextCursor.MoveOperation.End)
         self.logger.insertPlainText("\n")
-        self.logger.insertPlainText(message)
+        self.logger.insertPlainText(msg)
         sb = self.logger.verticalScrollBar()
         sb.setValue(sb.maximum())
 
@@ -58,6 +78,7 @@ class OutputExplorerController(OutputExplorerView):
     # region - Signals
     def __connectSignals(self):
         signalBus.onLogToOutput.connect(self.__handleLogToOutput)
+        signalBus.onLogErrorToOutput.connect(self.__handleErrorLogToOutput)
         signalBus.onToggleOutputExplorer.connect(self.__handleOutputToggle)
 
     # endregion

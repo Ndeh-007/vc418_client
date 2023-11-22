@@ -69,7 +69,6 @@ class ProgramsListView(QListView, QObject):
     def mousePressEvent(self, event: QMouseEvent) -> None:
         super().mousePressEvent(event)
         if event.button() == Qt.MouseButton.LeftButton:
-            print(len(self.selectedIndexes()))
             if len(self.selectedIndexes()) == 0:
                 return
 

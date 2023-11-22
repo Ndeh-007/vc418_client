@@ -19,7 +19,7 @@ class MenuBarView(QMenuBar):
         settingsAction = QAction("Settings", self)
         exitAction = QAction("Exit", self)
 
-        launchServerAction.setData(MenuBarActionType.START_SERVER)
+        launchServerAction.setData(MenuBarActionType.LAUNCH_SERVER)
         aboutAction.setData(MenuBarActionType.ABOUT)
         settingsAction.setData(MenuBarActionType.SETTINGS)
         exitAction.setData(MenuBarActionType.EXIT)

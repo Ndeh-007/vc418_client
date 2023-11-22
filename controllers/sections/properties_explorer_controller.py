@@ -45,7 +45,6 @@ class PropertyExplorerController(PropertyExplorerView):
     # region - event handlers
     def __handleShowProgramDetailsSignal(self, data: ProgramItemModel | None):
         # if we have no data to update, show the placeholder
-        print(data)
         if data is None:
             self.__showPlaceholder(True)
             return

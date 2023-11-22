@@ -54,7 +54,7 @@ class ProgramsExplorerController(ProgramsExplorerView):
         """
         if options.action() == ProgramsExplorerActionType.Open:
             # construct the widget
-            w = ProgramPreviewItemController()
+            w = ProgramPreviewItemController(options)
             t = options.data()[0].text()
             tabModel = TabItemModel(t, w, options.data()[0].id())
             self.__openTab(tabModel)

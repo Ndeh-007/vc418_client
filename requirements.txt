@@ -5,3 +5,4 @@ numpy
 pandas
 PyOpenGL
 PyOpenGL_accelerate
+requests

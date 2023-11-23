@@ -6,5 +6,6 @@ class TabPreviewCanvasView(QFrame):
         super().__init__()
 
         layout = QVBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
         layout.addWidget(QListView())
         self.setLayout(layout)

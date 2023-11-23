@@ -2,7 +2,7 @@ import uuid
 
 from PySide6.QtGui import QImage
 
-from interfaces.structs import ProgramType
+from interfaces.structs import ProgramType, ServerType
 from models.explorer.program_properties_model import ProgramPropertiesModel
 
 
@@ -26,7 +26,12 @@ class ProgramItemModel:
         if properties is None:
             self.__props: ProgramPropertiesModel = ProgramPropertiesModel()
 
+        self.__serverID = ServerType.ERLANG
+
     # region getters
+    def serverID(self):
+        return self.__serverID
+
     def properties(self):
         return self.__props
 

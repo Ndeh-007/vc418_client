@@ -5,6 +5,7 @@ from interfaces.structs import MenuBarActionType, SystemRequestScope
 from models.signal_data_models import SystemRequestData, SystemRequest
 from styles.color import appColors
 from utils.signal_bus import signalBus
+from utils.styling import parse_stylesheet_data
 from views.components.section_header import SectionHeader
 from views.sections.output_explorer import OutputExplorerView
 
@@ -36,20 +37,25 @@ class OutputExplorerController(OutputExplorerView):
     def __handleLogToOutput(self, message: str):
         font = QFont()
         font.setBold(False)
-        self.logger.setStyleSheet(f""" 
-                                    border: 0px solid {appColors.light_shade_rbg};
-                                    color: black;
-                                    """)
+        self.logger.setFont(font)
+        self.logger.setStyleSheet(parse_stylesheet_data("""
+                                    QTextEdit#outputTextArea{
+                                        border: 0px solid light_shade_rbg;
+                                        color: black;
+                                    }
+                                    """))
         self.__updateLogger(message)
 
     def __handleErrorLogToOutput(self, message: str):
         font = QFont()
         font.setBold(True)
         self.logger.setFont(font)
-        self.logger.setStyleSheet(f""" 
-                                    border: 0px solid {appColors.light_shade_rbg};
-                                    color: {appColors.danger_rbg};
-                                    """)
+        self.logger.setStyleSheet(parse_stylesheet_data(""" 
+                                    QTextEdit#outputTextArea{
+                                        border: 0px solid light_shade_rbg;
+                                        color: danger;
+                                    }
+                                    """))
         self.__updateLogger(message)
 
     def __updateLogger(self, msg: str):

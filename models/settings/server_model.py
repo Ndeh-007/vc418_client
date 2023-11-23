@@ -8,8 +8,10 @@ class ServerModel:
         self.__state: ServerState = ServerState.OFF
         self.__id: ServerType = serverType
 
-        self.__command = "rebar3"
-        self.__arguments = ["E:\\Work\\School\\VCS418\\vc418_server", "shell", "--apps", "vc418_server"]
+        # self.__command = "C:\\Tools\\rebar3.cmd"
+        self.__command = "C:\\Tools\\rebar3.cmd"
+        # self.__arguments = ["E:\\Work\\School\\VCS418\\vc418_server", "shell", "--apps", "vc418_server"]
+        self.__arguments = ["C:\\Work\\School\\CPSC418\\Project\\vc418_server", "shell", "--apps", "vc418_server"]
 
     # region - Getters
     def id(self):

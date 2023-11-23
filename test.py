@@ -34,8 +34,10 @@ class MainWindow(QMainWindow):
         self.process.readyReadStandardError.connect(self.read_error)
         self.process.errorOccurred.connect(self.handle_error)
 
+        self.process.setWorkingDirectory("C:\\Work\\School\\CPSC418\\Project\\vc418_server")
+
         # Start the process
-        self.process.start('rebar3',['plugins'])
+        self.process.start('C:\\Tools\\rebar3.cmd', ["shell", "--apps", "vc418_server"])
 
         if not self.process.waitForStarted():
             QMessageBox.critical(self, "Error", "Failed to start process.")

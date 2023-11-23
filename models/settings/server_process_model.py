@@ -44,6 +44,7 @@ class ServerProcessModel(QObject):
     def __handleProcessStarted(self):
         msg = f"[Action] Process Started {self.__server.name()}"
         signalBus.onLogToOutput.emit(msg)
+        self.onLaunchSuccessful.emit(self.__server)
 
     def __handleProcessFinished(self, exitCode: int, exitStatus: QProcess.ExitStatus):
         msg = f"[Action] Process Finished {self.__server.name()}: {str(exitStatus)}, with exit code: {exitCode}"
@@ -72,11 +73,10 @@ class ServerProcessModel(QObject):
 
     # region - Workers
     def kill(self):
-        self.__process.kill()
+        self.__process.terminate()
         self.onKill.emit(self.__server)
 
     def launch(self):
-        print(self.__process.workingDirectory(), self.__command, self.__arguments[1:])
         self.__process.start(self.__command, self.__arguments[1:])
 
     # endregion

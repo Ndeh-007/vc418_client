@@ -73,7 +73,6 @@ class ProgramsListView(QListView, QObject):
                 return
 
             if self.model().rowCount() == 0:
-                print("no items")
                 return
 
             item = self.model().getDataAtIndex(self.selectedIndexes()[0])

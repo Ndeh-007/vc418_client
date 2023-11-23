@@ -91,7 +91,6 @@ class MenuBarController(MenuBarView):
         :return:
         """
         try:
-            print(actionType)
             task = self.__workerTable.get(actionType)
             task(content)
         except Exception as e:
@@ -107,7 +106,6 @@ class MenuBarController(MenuBarView):
 
     def __startServer(self, serverID: ServerType):
         server = ss.APP_SETTINGS.SERVER.servers(serverID)
-        self.__signalAlert("Server transitioning")
 
         # set server state to transition
         server.setstate(ServerState.TRANSITION)

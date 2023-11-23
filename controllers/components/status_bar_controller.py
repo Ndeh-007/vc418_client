@@ -84,10 +84,10 @@ class StatusBarController(StatusBarView):
             self.erlangServerStatus.setStyleSheet(f"color:{appColors.primary_rbg};")
             return
         if state == ServerState.TRANSITION:
-            eIcon = qtawesome.icon("fa5s.spinner", color=appColors.warning_rbg, animation=qtawesome.Spin(self.erlangServerIndicator))
+            eIcon = qtawesome.icon("fa5s.spinner", color=appColors.medium_rbg, animation=qtawesome.Spin(self.erlangServerIndicator))
             self.erlangServerIndicator.setIcon(eIcon)
             self.erlangServerStatus.setText("transition")
-            self.erlangServerStatus.setStyleSheet(f"color:{appColors.warning_shade};")
+            self.erlangServerStatus.setStyleSheet(f"color:{appColors.medium_rbg};")
             return
 
     @staticmethod

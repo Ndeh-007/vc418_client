@@ -1,8 +1,11 @@
+import requests
 from PySide6.QtGui import QAction
 
-from interfaces.structs import PreviewToolbarActionType
+from interfaces.structs import PreviewToolbarActionType, ProgramType
 from models.explorer.program_item_model import ProgramItemModel
+from models.settings.http_request_item import HTTPRequestItem
 from models.signal_data_models import PreviewProgramData
+from utils.signal_bus import signalBus
 from views.components.tab_control_toolbar import TabControlToolbarView
 
 
@@ -40,6 +43,7 @@ class TabControlToolbarController(TabControlToolbarView):
 
         if actionData.procedure() == PreviewToolbarActionType.EXECUTE:
             self.executeProgram(actionData.data())
+
     # endregion
 
     # region - Workers
@@ -47,9 +51,33 @@ class TabControlToolbarController(TabControlToolbarView):
         pass
 
     def executeProgram(self, data: ProgramItemModel):
-        # create and send http request.
+        """
+        handles execution of program.
+        creates and configures a request. the request is sent to the manager and executed there
+        the response is handled by the configured success function.
+        :param data:
+        :return:
+        """
+        url = 'http://localhost:8080/'
+        if data.programType() == ProgramType.SCAN_ERLANG:
+            url = f'http://localhost:8080/scan?nprocs={data.properties().nProcs()}'
 
-        pass
+        if data.programType() == ProgramType.REDUCE_ERLANG:
+            url = f'http://localhost:8080/reduce?nprocs={data.properties().nProcs()}'
+
+        httpRequest = HTTPRequestItem(url, data.programType(), "get")
+        httpRequest.onError.connect(self.__handleError)
+        httpRequest.onComplete.connect(self.__executeSuccessful)
+        signalBus.onHTTPRequest.emit(httpRequest)
+
+    def __executeSuccessful(self, response):
+        signalBus.onLogToOutput.emit(str(type(response)))
+        print(response)
+
+    def __handleError(self, error):
+        signalBus.onLogToOutput.emit(str(type(error)))
+        print(error)
+
     # endregion
 
     # region - Connect Signals
@@ -68,4 +96,3 @@ class TabControlToolbarController(TabControlToolbarView):
         self.__itemModel = item
         self.__initialize()
     # endregion
-

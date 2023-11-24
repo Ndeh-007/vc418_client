@@ -75,7 +75,7 @@ QLineEdit {
 }
 
 QLineEdit:focus {
-    border: 1px solid tertiary_rbg;
+    border: 1px solid primary_rbg;
 }
 
 

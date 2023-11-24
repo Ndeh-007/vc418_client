@@ -1,12 +1,9 @@
 from PySide6.QtGui import QTextCursor, QFont
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton
 
 from interfaces.structs import MenuBarActionType, SystemRequestScope
 from models.signal_data_models import SystemRequestData, SystemRequest
-from styles.color import appColors
 from utils.signal_bus import signalBus
 from utils.styling import parse_stylesheet_data
-from views.components.section_header import SectionHeader
 from views.sections.output_explorer import OutputExplorerView
 
 
@@ -41,7 +38,7 @@ class OutputExplorerController(OutputExplorerView):
         self.logger.setStyleSheet(parse_stylesheet_data("""
                                     QTextEdit#outputTextArea{
                                         border: 0px solid light_shade_rbg;
-                                        color: black;
+                                        color: dark_rbg;
                                     }
                                     """))
         self.__updateLogger(message)
@@ -53,7 +50,7 @@ class OutputExplorerController(OutputExplorerView):
         self.logger.setStyleSheet(parse_stylesheet_data(""" 
                                     QTextEdit#outputTextArea{
                                         border: 0px solid light_shade_rbg;
-                                        color: danger;
+                                        color: danger_rbg;
                                     }
                                     """))
         self.__updateLogger(message)

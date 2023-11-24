@@ -1,5 +1,6 @@
 from PySide6.QtCore import QObject, Signal
 
+from models.explorer.program_item_model import ProgramItemModel
 from models.explorer.program_properties_model import ProgramPropertiesModel
 from models.notifications.notification import Notification
 from models.settings.http_request_item import HTTPRequestItem
@@ -30,6 +31,10 @@ class SignalBus(QObject):
     onExitApplication = Signal()
 
     onShowProgramProperties = Signal(ProgramPropertiesModel)
+    onCreateProgram = Signal(ProgramItemModel)
+    onUpdateProgram = Signal(ProgramItemModel)
+    onDeleteProgram = Signal(ProgramItemModel)
+
     onHTTPRequest = Signal(HTTPRequestItem)
 
 

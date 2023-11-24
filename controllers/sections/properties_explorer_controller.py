@@ -1,4 +1,3 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton
 from PySide6.QtGui import QIntValidator
 
 from interfaces.structs import MenuBarActionType
@@ -6,14 +5,15 @@ from models.explorer.program_item_model import ProgramItemModel
 from models.explorer.program_properties_model import ProgramPropertiesModel
 from models.signal_data_models import SystemRequestData, SystemRequest
 from utils.signal_bus import signalBus
-from views.components.section_header import SectionHeader
 from views.sections.properties_explorer import PropertyExplorerView
+
+import store.settings as ss
 
 
 class PropertyExplorerController(PropertyExplorerView):
     def __init__(self):
         super().__init__()
-        self.__propsData = ProgramPropertiesModel()
+        self.__program: ProgramItemModel | None = None
 
         self.__initialize()
         self.__configure()
@@ -27,7 +27,9 @@ class PropertyExplorerController(PropertyExplorerView):
         self.__showPlaceholder(True)
 
         #  update the contents of the various inputs
-        self.__initializeInputs(self.__propsData)
+        if self.__program is None:
+            return
+        self.__initializeInputs(self.__program.properties())
 
     # endregion
 
@@ -38,20 +40,42 @@ class PropertyExplorerController(PropertyExplorerView):
         intValidator = QIntValidator()
         self.nProcsInput.setValidator(intValidator)
 
+        # attach event handlers to inputs
+        self.nProcsInput.textChanged.connect(self.__handleNProcsInputChanged)
+
         self.minimizeBtn.clicked.connect(self.__handleMinimizeBtnClicked)
 
     # endregion
 
     # region - event handlers
-    def __handleShowProgramDetailsSignal(self, data: ProgramItemModel | None):
+    def __handleNProcsInputChanged(self):
+        self.__program.properties().setNProcs(int(self.nProcsInput.text()))
+
+    def __handlePropertiesChanged(self):
+        signalBus.onUpdateProgram.emit(self.__program)
+
+    def __handleShowProgramDetailsSignal(self, item: ProgramItemModel | None):
         # if we have no data to update, show the placeholder
-        if data is None:
+        if item is None:
             self.__showPlaceholder(True)
             return
 
-        self.__propsData = data
+        # read the data from store with the provided data.id()
+        data = ss.APP_SETTINGS.PROGRAMS.programs(item.id())
+
+        if data is None:
+            return
+
+        # update the local value
+        self.__program = data
+
+        # update the label of the properties
         self.programTitleLabel.setText(data.text())
+
+        # initialize the inputs in the properties section
         self.__initializeInputs(data.properties())
+
+        # toggle the placeholder
         self.__showPlaceholder(False)
 
     @staticmethod

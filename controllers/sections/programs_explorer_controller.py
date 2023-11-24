@@ -91,6 +91,9 @@ class ProgramsExplorerController(ProgramsExplorerView):
         self.model.updateItem(item)
         signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Title, TabItemModel(item.text(), None, item.id())))
 
+        # update the program entry in the store.
+        signalBus.onUpdateProgram.emit(item)
+
     def __handleCreateItemConfirm(self, item: ProgramItemModel | None):
         if item is None:
             return
@@ -100,6 +103,9 @@ class ProgramsExplorerController(ProgramsExplorerView):
         # trigger open of the tab
         data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Open)
         self.__handleListItemDoubleClicked(data)
+
+        # update the store
+        signalBus.onCreateProgram.emit(item)
 
     @staticmethod
     def __handleModelError(message: str):
@@ -124,6 +130,9 @@ class ProgramsExplorerController(ProgramsExplorerView):
         """
         self.model.removeItem(item)
         signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Delete, TabItemModel(None, None, item.id())))
+
+        # remove item from store
+        signalBus.onDeleteProgram.emit(item)
 
     def __renameItem(self, item: ProgramItemModel):
         """

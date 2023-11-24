@@ -1,9 +1,11 @@
+from models.settings.programs_manager import ProgramManager
 from store.server_settings import ServerSettings
 
 
 class Settings:
     def __init__(self):
         self.SERVER = ServerSettings()
+        self.PROGRAMS = ProgramManager()
 
         self.__initialize_settings()
 

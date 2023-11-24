@@ -1,4 +1,3 @@
-import requests
 from PySide6.QtGui import QAction
 
 from interfaces.structs import PreviewToolbarActionType, ProgramType
@@ -7,6 +6,8 @@ from models.settings.http_request_item import HTTPRequestItem
 from models.signal_data_models import PreviewProgramData
 from utils.signal_bus import signalBus
 from views.components.tab_control_toolbar import TabControlToolbarView
+
+import store.settings as ss
 
 
 class TabControlToolbarController(TabControlToolbarView):
@@ -36,6 +37,11 @@ class TabControlToolbarController(TabControlToolbarView):
     # endregion
 
     # region - Event Handlers
+    def __handleProgramUpdate(self, item: ProgramItemModel):
+        if item.id() != self.__itemModel.id():
+            return
+        self.__itemModel = item
+
     def __handleToolbarActions(self, action: QAction):
         actionData: PreviewProgramData = action.data()
         if actionData.procedure() == PreviewToolbarActionType.FETCH:
@@ -58,12 +64,12 @@ class TabControlToolbarController(TabControlToolbarView):
         :param data:
         :return:
         """
-        url = 'http://localhost:8080/'
+        url = ss.APP_SETTINGS.SERVER.servers(data.serverID()).url()
         if data.programType() == ProgramType.SCAN_ERLANG:
-            url = f'http://localhost:8080/scan?nprocs={data.properties().nProcs()}'
+            url = f'{url}scan?nprocs={data.properties().nProcs()}'
 
         if data.programType() == ProgramType.REDUCE_ERLANG:
-            url = f'http://localhost:8080/reduce?nprocs={data.properties().nProcs()}'
+            url = f'{url}reduce?nprocs={data.properties().nProcs()}'
 
         httpRequest = HTTPRequestItem(url, data.programType(), "get")
         httpRequest.onError.connect(self.__handleError)
@@ -83,7 +89,7 @@ class TabControlToolbarController(TabControlToolbarView):
     # region - Connect Signals
 
     def __connectSignals(self):
-        pass
+        signalBus.onUpdateProgram.connect(self.__handleProgramUpdate)
 
     # endregion
 

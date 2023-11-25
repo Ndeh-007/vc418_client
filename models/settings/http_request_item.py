@@ -1,5 +1,5 @@
 import uuid
-from typing import Literal, Any
+from typing import Literal
 
 import requests
 from PySide6.QtCore import Signal, QObject
@@ -8,17 +8,17 @@ from interfaces.structs import ServerType
 
 
 class HTTPRequestItem(QObject):
-    onComplete = Signal(Any)
-    onError = Signal(Any)
+    onComplete = Signal(object)
+    onError = Signal(object)
 
-    def __init__(self, url: str, programID: str, requestType: Literal['get', 'post'] = 'get',
+    def __init__(self, requestID: str, url: str, programType: str, requestType: Literal['get', 'post'] = 'get',
                  serverID=ServerType.ERLANG):
         super().__init__()
 
         self.__url: str = url
         self.__requestType: str = requestType
-        self.__id = str(uuid.uuid4())
-        self.__pID = programID
+        self.__id = requestID
+        self.__pType = programType
         self.__httpResponse: requests.Response | None = None
         self.__serverID = serverID
 
@@ -79,7 +79,7 @@ class HTTPRequestItem(QObject):
         return self.__httpResponse
 
     def programID(self):
-        return self.__pID
+        return self.__pType
 
     def id(self):
         return self.__id

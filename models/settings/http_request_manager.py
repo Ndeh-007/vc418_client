@@ -57,8 +57,8 @@ class HTTPRequestManager(QObject):
 
     def launchRequest(self, target: str):
         """
-        launches a request with the provided key. first check if server is alive.
-        if server is alive, execute target, else raise warning.
+        launches a request with the provided key. first check if the server is alive.
+        if the server is alive, execute target, else raise warning.
         :param target:
         :return:
         """

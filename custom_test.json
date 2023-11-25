@@ -1,0 +1,155 @@
+{
+  "nprocs": 4,
+  "tree": [
+    {
+      "self": "<0.353.0>",
+      "parent": "<0.352.0>",
+      "children": [
+        "<0.354.0>",
+        "<0.355.0>",
+        "<0.356.0>",
+        "<0.357.0>",
+        "<0.358.0>"
+      ]
+    },
+    {
+      "self": "<0.354.0>",
+      "parent": "<0.353.0>",
+      "children": [
+        "<0.355.0>",
+        "<0.356.0>",
+        "<0.358.0>"
+      ]
+    },
+    {
+      "self": "<0.353.0>",
+      "parent": "<0.352.0>",
+      "children": [
+        "<0.354.0>",
+        "<0.355.0>",
+        "<0.356.0>",
+        "<0.357.0>",
+        "<0.358.0>"
+      ]
+    },
+    {
+      "self": "<0.353.0>",
+      "parent": "<0.352.0>",
+      "children": [
+        "<0.354.0>",
+        "<0.355.0>",
+        "<0.356.0>",
+        "<0.357.0>",
+        "<0.358.0>"
+      ]
+    }
+  ],
+  "data": [
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356674}",
+      "receive_time": "{1700,807622,356674}",
+      "from": "watcher",
+      "to": "watcher",
+      "msg": "Start. Before first call.",
+      "data": {
+        "action": "start",
+        "my_total": 1,
+        "acc": null
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356777}",
+      "receive_time": "{1700,807622,356777}",
+      "from": "watcher",
+      "to": "watcher",
+      "msg": "Start. Before first call.",
+      "data": {
+        "action": "start",
+        "my_total": 2,
+        "acc": null
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356778}",
+      "receive_time": "{1700,807622,356778}",
+      "from": "{<0.351.0>}",
+      "to": "<0.353.0>",
+      "msg": "Inside tree, going down",
+      "data": {
+        "action": null,
+        "value": 1
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356779}",
+      "receive_time": "{1700,807622,356779}",
+      "from": "<0.353.0>",
+      "to": "<0.354.0>",
+      "msg": "At the leaf",
+      "data": {
+        "action": null,
+        "value": 2
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356780}",
+      "receive_time": "{1700,807622,356780}",
+      "from": "<0.354.0>",
+      "to": "<0.353.0>",
+      "msg": "At node, receive right total from child",
+      "data": {
+        "action": null,
+        "value": 2
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356781}",
+      "receive_time": "{1700,807622,356781}",
+      "from": "head",
+      "to": "head",
+      "msg": "At top of tree, returning grand total",
+      "data": {
+        "action": null,
+        "value": 3
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356782}",
+      "receive_time": "{1700,807622,356782}",
+      "from": "<0.353.0>",
+      "to": "<0.354.0>",
+      "msg": "At the leaf, receive from parent, grand total",
+      "data": {
+        "action": "reduce_down",
+        "value": 3
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": "{1700,807622,356783}",
+      "receive_time": "{1700,807622,356783}",
+      "from": "watcher",
+      "to": "watcher",
+      "msg": "Event collection ended",
+      "data": {
+        "action": null,
+        "value": 3
+      }
+    }
+  ]
+}

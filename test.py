@@ -49,7 +49,8 @@ class MainWindow(QMainWindow):
         self.process.readyReadStandardError.connect(self.read_error)
         self.process.errorOccurred.connect(self.handle_error)
 
-        self.process.setWorkingDirectory("C:\\Work\\School\\CPSC418\\Project\\vc418_server")
+        # self.process.setWorkingDirectory("C:\\Work\\School\\CPSC418\\Project\\vc418_server")
+        self.process.setWorkingDirectory("E:\\Work\\School\\VCS418\\vc418_server")
 
         # Start the process
         self.process.start('C:\\Tools\\rebar3.cmd', ["shell", "--apps", "vc418_server"])
@@ -109,6 +110,14 @@ class MainWindow(QMainWindow):
             when collecting the data for the dictionary,
                 - use <from> as the key
                 - all items with values of <to> corresponding to <form>
+                    ** create a tree with dict, such that: {key:TreeProcessModel(myPid, parentPid, childrenPids)}
+                        - to get the processes, collect all <from>'s and create a set from them
+                        - iterate over the json data again and attach to the dict of <from>'s <to>'s that sent to the <from>
+                    ** create playback instances. 
+                        - a list of classes PlaybackInstance(from, to, action, data) => instances of the class is data from the json file
+                        - order the playback instances list by send_time in increasing order.
+                        -
+                    
                 ===== or =====
                 - we attach the tree process structure to the tree incoming server data. this way we can just read the 
                     data off and not worry about re constructing the tree based on the data.

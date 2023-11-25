@@ -71,7 +71,7 @@ class TabControlToolbarController(TabControlToolbarView):
         if data.programType() == ProgramType.REDUCE_ERLANG:
             url = f'{url}reduce?nprocs={data.properties().nProcs()}'
 
-        httpRequest = HTTPRequestItem(url, data.programType(), "get")
+        httpRequest = HTTPRequestItem(data.id(), url, data.programType(), "get")
         httpRequest.onError.connect(self.__handleError)
         httpRequest.onComplete.connect(self.__executeSuccessful)
         signalBus.onHTTPRequest.emit(httpRequest)

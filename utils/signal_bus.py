@@ -17,6 +17,7 @@ class SignalBus(QObject):
     onSystemAlert = Signal(SystemAlert)
     onSystemNotification = Signal(Notification)
     onSystemProcess = Signal(object)
+    onTerminateSystemProcess = Signal(str)
 
     onOpenTab = Signal(TabItemModel)
     onUpdateTab = Signal(TabUpdateData)

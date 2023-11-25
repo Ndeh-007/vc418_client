@@ -173,6 +173,7 @@ class ProcessManager(QObject):
         if error.action is None:
             alert = SystemAlert(error.message)
             signalBus.onSystemAlert.emit(alert)
+            return
 
         error.action()
 
@@ -198,6 +199,7 @@ class ProcessManager(QObject):
 
     def __connectSignals(self):
         signalBus.onSystemProcess.connect(self.__handleNewSubProcess)
+        signalBus.onTerminateSystemProcess.connect(self.terminateThread)
 
     # endregion
 

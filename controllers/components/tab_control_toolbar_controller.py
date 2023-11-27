@@ -1,13 +1,12 @@
 from PySide6.QtGui import QAction
 
+import store.settings as ss
 from interfaces.structs import PreviewToolbarActionType, ProgramType
 from models.explorer.program_item_model import ProgramItemModel
 from models.settings.http_request_item import HTTPRequestItem
 from models.signal_data_models import PreviewProgramData
 from utils.signal_bus import signalBus
 from views.components.tab_control_toolbar import TabControlToolbarView
-
-import store.settings as ss
 
 
 class TabControlToolbarController(TabControlToolbarView):
@@ -16,6 +15,8 @@ class TabControlToolbarController(TabControlToolbarView):
 
         self.__itemModel = itemModel
 
+        # reset the values of the playback to be initialized by the controller
+
         self.__initialize()
         self.__configure()
 
@@ -23,6 +24,9 @@ class TabControlToolbarController(TabControlToolbarView):
 
     # region - Initialize
     def __initialize(self):
+        self.playbackWidget.setFrameValue(0)
+        self.playbackWidget.setFramesTotalValue(0)
+
         if self.__itemModel is None:
             return
         self.executeAction.setData(PreviewProgramData(PreviewToolbarActionType.EXECUTE, self.__itemModel))
@@ -34,9 +38,22 @@ class TabControlToolbarController(TabControlToolbarView):
     def __configure(self):
         self.toolbar.actionTriggered.connect(self.__handleToolbarActions)
 
+        self.playbackWidget.nextBtn.clicked.connect(self.__handleNextFrame)
+        self.playbackWidget.previousBtn.clicked.connect(self.__handlePreviousFrame)
+        self.playbackWidget.playPauseBtn.clicked.connect(self.__handlePausePlayFrame)
+
     # endregion
 
     # region - Event Handlers
+    def __handleNextFrame(self):
+        signalBus.onLogToOutput.emit("next frame")
+
+    def __handlePreviousFrame(self):
+        signalBus.onLogToOutput.emit("previewous frame")
+
+    def __handlePausePlayFrame(self):
+        signalBus.onLogToOutput.emit("current frame")
+
     def __handleProgramUpdate(self, item: ProgramItemModel):
         if item.id() != self.__itemModel.id():
             return

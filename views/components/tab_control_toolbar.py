@@ -1,6 +1,7 @@
-from PySide6.QtCore import QObject, Signal
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QFrame, QVBoxLayout, QToolBar
+
+from controllers.components.playback_widget_controller import PlayBackWidgetController
 
 
 class TabControlToolbarView(QFrame):
@@ -17,14 +18,16 @@ class TabControlToolbarView(QFrame):
         self.fetchAction = QAction("Fetch", self.toolbar)
         self.executeAction = QAction("Run", self.toolbar)
 
+        self.playbackWidget = PlayBackWidgetController()
+
         # attach the actions to the toolbar
         # self.toolbar.addAction(self.fetchAction)
         # self.toolbar.addSeparator()
         self.toolbar.addAction(self.executeAction)
         self.toolbar.addSeparator()
+        self.toolbar.addWidget(self.playbackWidget)
 
         layout.addWidget(self.toolbar)
         self.setLayout(layout)
 
         self.setObjectName("TabControlToolbar")
-

@@ -257,3 +257,7 @@ QFrame#TabControlToolbar{
     border-width: 0px 0px 1px 0px;
     border-radius: 0px;
 }
+
+QLineEdit#framesInput{
+    background: white;
+}

@@ -59,10 +59,25 @@ class TreeGraphicsItemController:
         self.__processes = pcs
 
     def __connectProcessNodes(self):
-        pass
+        for p in self.__processes:
+            p.connectNodes()
 
     def __connectProcesses(self):
-        pass
+        """
+        connect children to their various parents
+        :return:
+        """
+        structure = self.__model.treeStructure()
+        root = structure.root()
+        struct = structure.structure()
+
+        for key in struct.keys():
+            item = struct.get(key)
+            if item.parentId() is None:
+                continue
+            else:
+                # find the proces with the id and set that as the currents parent. we set it to the first available node of the child
+
 
     # endregion
 

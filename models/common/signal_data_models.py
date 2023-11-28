@@ -104,7 +104,7 @@ class PreviewProgramData:
 class TreeStructureItemModel:
     def __init__(self, pid: str, parentPid: str, children: list[str]):
         self.__pid: str = pid
-        self.__parentPid: str = parentPid
+        self.__parentPid: str | None = parentPid
         self.__children: list[str] = children
 
     def id(self):

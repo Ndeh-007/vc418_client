@@ -1,5 +1,8 @@
-from PySide6.QtCore import QRect, QPoint, QSize
-from PySide6.QtWidgets import QGraphicsItem
+from typing import Optional
+
+from PySide6.QtCore import QRect, QPoint, QSize, QRectF, QSizeF, QPointF
+from PySide6.QtGui import QPainter
+from PySide6.QtWidgets import QGraphicsItem, QStyleOptionGraphicsItem, QWidget
 
 from controllers.components.graphics.tree_node_controller import TreeNodeItemController
 from models.graphics.tree_process_model import TreeProcessModel
@@ -18,6 +21,7 @@ class TreeProcessItemController(QGraphicsItem):
         self.__nodes: list[TreeNodeItemController] = []
 
         self.__baseRect = QRect(QPoint(0, 0), QSize(10, 10))
+        self.__padding = QSize(5, 5)
 
         self.__initialize()
         self.__configure()
@@ -25,7 +29,6 @@ class TreeProcessItemController(QGraphicsItem):
 
     # region - Initialize
     def __initialize(self):
-
         pass
 
     # endregion
@@ -108,10 +111,34 @@ class TreeProcessItemController(QGraphicsItem):
     # region - Setters
     def setProcessModel(self, processModel: TreeProcessModel):
         self.__processModel = processModel
+
     # endregion
 
     # region - Override
 
-    
+    # region - Override Helpers
+
+    def __computeBoundingRect(self) -> QRectF:
+        """
+        sum the node heights and the distance between nodes plus the foot height. for the width, the maximum vvalue of the node and foot.
+        the anchor point of the bounding rect should have take top left position of the 1st node of that process and then adds a padding
+        :return:
+        """
+        h = sum([item.rect().size().height() for item in self.__nodes] + [(self.__nodes[0].node().hOffsetFactor() * (len(self.__nodes) - 1))])
+        w = max([item.rect().size().width() for item in self.__nodes])
+
+        return QRectF(
+            QPointF(
+                float(self.__nodes[0].rect().left() - self.__padding.width()),
+                float(self.__nodes[0].rect().top() - self.__padding.height()),
+            ),
+            QSizeF(float(w), float(h))
+        )
+    # endregion
+
+    def boundingRect(self) -> QRectF:
+        return self.__computeBoundingRect()
+
+    # def paint(self, painter: QPainter, option: QStyleOptionGraphicsItem, widget: Optional[QWidget] = ...) -> None:
 
     # endregion

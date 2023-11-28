@@ -1,5 +1,5 @@
 from models.explorer.program_item_model import ProgramItemModel
-from models.signal_data_models import ProgramExplorerActionModel
+from models.common.signal_data_models import ProgramExplorerActionModel
 from views.sections.items.program_preview_item import ProgramPreviewItemView
 
 

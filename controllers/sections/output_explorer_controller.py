@@ -1,7 +1,7 @@
 from PySide6.QtGui import QTextCursor, QFont
 
 from interfaces.structs import MenuBarActionType, SystemRequestScope
-from models.signal_data_models import SystemRequestData, SystemRequest
+from models.common.signal_data_models import SystemRequestData, SystemRequest
 from utils.signal_bus import signalBus
 from utils.styling import parse_stylesheet_data
 from views.sections.output_explorer import OutputExplorerView

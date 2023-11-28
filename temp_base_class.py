@@ -38,3 +38,7 @@ class BaseCustomClass:
     # region - Setters
 
     # endregion
+
+    # region - Override
+
+    # endregion

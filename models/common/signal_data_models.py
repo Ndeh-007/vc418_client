@@ -1,6 +1,7 @@
 from typing import Any
 
-from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType, SystemRequestScope, PreviewToolbarActionType
+from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType, SystemRequestScope, \
+    PreviewToolbarActionType
 from models.explorer.program_item_model import ProgramItemModel
 
 
@@ -98,3 +99,46 @@ class PreviewProgramData:
 
     def setProcedure(self, procedure: PreviewToolbarActionType):
         self.__procedure = procedure
+
+
+class TreeStructureItemModel:
+    def __init__(self, pid: str, parentPid: str, children: list[str]):
+        self.__pid: str = pid
+        self.__parentPid: str = parentPid
+        self.__children: list[str] = children
+
+    def id(self):
+        return self.__pid
+
+    def parentId(self):
+        return self.__parentPid
+
+    def children(self):
+        return self.__children
+
+    def setID(self, pid: str):
+        self.__pid = pid
+
+    def setParentPid(self, pid: str):
+        self.__parentPid = pid
+
+    def setChildren(self, pids: list[str]):
+        self.__children = pids
+
+
+class TreeStructureModel:
+    def __init__(self, rootPID: str, structure: dict[str, TreeStructureItemModel]):
+        self.__rootPid = rootPID
+        self.__structure = structure
+
+    def root(self):
+        return self.__rootPid
+
+    def structure(self):
+        return self.__structure
+
+    def setRootPid(self, root: str):
+        self.__rootPid = root
+
+    def setStructure(self, structure: dict[str, TreeStructureItemModel]):
+        self.__structure = structure

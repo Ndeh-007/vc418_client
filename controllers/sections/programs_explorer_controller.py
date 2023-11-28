@@ -1,12 +1,8 @@
-import uuid
-
-from PySide6.QtGui import QImage
-
 from controllers.sections.items.program_preview_item_controller import ProgramPreviewItemController
-from interfaces.structs import ProgramsExplorerActionType, AlertType, TabUpdateType
+from interfaces.structs import ProgramsExplorerActionType, TabUpdateType
 from models.explorer.program_item_model import ProgramItemModel
 from models.explorer.programs_list_model import ProgramListModel
-from models.signal_data_models import ProgramExplorerActionModel, SystemAlert, TabUpdateData
+from models.common.signal_data_models import ProgramExplorerActionModel, TabUpdateData
 from models.tabs.tab_item_model import TabItemModel
 from utils.signal_bus import signalBus
 from views.components.dialog.cases.create_new_program import CreateNewProgram

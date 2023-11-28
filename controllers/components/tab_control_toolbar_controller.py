@@ -4,7 +4,7 @@ import store.settings as ss
 from interfaces.structs import PreviewToolbarActionType, ProgramType
 from models.explorer.program_item_model import ProgramItemModel
 from models.settings.http_request_item import HTTPRequestItem
-from models.signal_data_models import PreviewProgramData
+from models.common.signal_data_models import PreviewProgramData
 from utils.signal_bus import signalBus
 from views.components.tab_control_toolbar import TabControlToolbarView
 

@@ -3,7 +3,7 @@ from typing import Any
 
 from PySide6.QtCore import QThread, QObject, Signal
 
-from models.signal_data_models import SystemAlert
+from models.common.signal_data_models import SystemAlert
 from utils.signal_bus import signalBus
 
 

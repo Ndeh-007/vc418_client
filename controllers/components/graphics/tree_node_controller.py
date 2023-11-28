@@ -1,20 +1,27 @@
 from PySide6.QtCore import QPointF, QRect
 from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsItem
 
+from models.graphics.tree_node_model import TreeNodeModel
+
 
 class TreeNodeItemController(QGraphicsRectItem):
     """
-    this item holds a node of the tree.
+    this item holds a node of the tree. configurations for click and user interactions happens here.
     """
 
-    def __init__(self, parentNode=None, rect: QRect = None, parent: QGraphicsItem = None):
+    def __init__(self, processID: str, parentNode: TreeNodeModel = None, rect: QRect = None,
+                 parent: QGraphicsItem = None):
+        """
+
+        :param processID: the process the node belongs to
+        :param parentNode: the parent of this node if any exist
+        :param rect: rectangle to be drawn on the canvas
+        :param parent: the graphics item that holds this item
+        """
         super().__init__(rect=rect, parent=parent)
 
-        self.__parentNode: TreeNodeItemController = parentNode
-        self.__left: QPointF = QPointF(0, 0)
-        self.__right: QPointF = QPointF(0, 0)
-        self.__bottom: QPointF = QPointF(0, 0)
-        self.__top: QPointF = QPointF(0, 0)
+        self.__parentNode: TreeNodeModel = parentNode
+        self.__node: TreeNodeModel = TreeNodeModel(processID)
 
         self.__initAnchorsFromRect()
 
@@ -37,58 +44,26 @@ class TreeNodeItemController(QGraphicsRectItem):
     # region workers
 
     def __initAnchorsFromRect(self):
-        midY = (self.rect().top() + self.rect().bottom()) / 2
-        midX = (self.rect().left() + self.rect().right()) / 2
-
-        self.__left: QPointF = QPointF(self.rect().left(), midY)
-        self.__right: QPointF = QPointF(self.rect().right(), midY)
-        self.__bottom: QPointF = QPointF(midX, self.rect().bottom())
-        self.__top: QPointF = QPointF(midX, self.rect().top())
+        self.__node.resetAnchors(self.rect())
 
     # endregion
 
     # region getters
 
-    def top(self):
-        return self.__top
+    def node(self):
+        return self.__node
 
-    def bottom(self):
-        return self.__bottom
-
-    def left(self):
-        return self.__left
-
-    def right(self):
-        return self.__right
-
-    def anchors(self):
-        return [
-            self.__left,
-            self.__right,
-            self.__bottom,
-            self.__top
-        ]
+    def parentNode(self):
+        return self.__parentNode
 
     # endregion
 
     # region setters
 
-    def setTop(self, point: QPointF):
-        self.__top = point
+    def setNode(self, node: TreeNodeModel):
+        self.__node = node
 
-    def setBottom(self, point: QPointF):
-        self.__bottom = point
-
-    def setRight(self, point: QPointF):
-        self.__right = point
-
-    def setLeft(self, point: QPointF):
-        self.__left = point
-
-    def setAnchors(self, points: list[QPointF]):
-        self.__top: QPointF = points[0]
-        self.__right: QPointF = points[1]
-        self.__bottom: QPointF = points[2]
-        self.__left: QPointF = points[3]
+    def setParentNode(self, node: TreeNodeModel | None):
+        self.__parentNode = node
 
     # endregion

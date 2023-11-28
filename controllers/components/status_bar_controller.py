@@ -2,7 +2,7 @@ import qtawesome
 
 from interfaces.structs import MenuBarActionType, SystemRequestScope, ServerType, ServerState
 from models.settings.server_model import ServerModel
-from models.signal_data_models import SystemRequest, SystemRequestData, SystemAlert
+from models.common.signal_data_models import SystemRequest, SystemRequestData, SystemAlert
 from styles.color import appColors
 from utils.signal_bus import signalBus
 from views.components.status_bar import StatusBarView

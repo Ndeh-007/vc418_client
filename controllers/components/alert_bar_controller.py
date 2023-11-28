@@ -1,7 +1,7 @@
 import qtawesome
 
 from interfaces.structs import AlertType
-from models.signal_data_models import SystemAlert
+from models.common.signal_data_models import SystemAlert
 from styles.color import appColors
 from utils.signal_bus import signalBus
 from views.components.alert_bar import AlertBarView

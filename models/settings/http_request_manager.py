@@ -3,7 +3,7 @@ from PySide6.QtCore import QObject, Signal
 from interfaces.structs import AlertType, ServerState, ServerType
 from models.settings.http_request_item import HTTPRequestItem
 from models.settings.process_manager import ProcessItem
-from models.signal_data_models import SystemAlert
+from models.common.signal_data_models import SystemAlert
 from utils.helpers import changeServerState
 from utils.signal_bus import signalBus
 

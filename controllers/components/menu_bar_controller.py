@@ -1,4 +1,3 @@
-import time
 from typing import Callable, Any
 
 from PySide6.QtGui import QAction
@@ -6,7 +5,7 @@ from PySide6.QtGui import QAction
 from interfaces.structs import MenuBarActionType, AlertType, ServerType, ServerState
 from models.settings.server_model import ServerModel
 from models.settings.server_process_model import ServerProcessModel
-from models.signal_data_models import SystemRequest, SystemAlert
+from models.common.signal_data_models import SystemRequest, SystemAlert
 from utils.signal_bus import signalBus
 from views.components.menu_bar import MenuBarView
 

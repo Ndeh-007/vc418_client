@@ -1,7 +1,7 @@
 from PySide6.QtCore import QObject, Signal, QProcess
 
 from models.settings.server_model import ServerModel
-from models.signal_data_models import SystemAlert
+from models.common.signal_data_models import SystemAlert
 from utils.signal_bus import signalBus
 
 

@@ -1,5 +1,5 @@
 from interfaces.structs import TabUpdateType
-from models.signal_data_models import TabUpdateData
+from models.common.signal_data_models import TabUpdateData
 from models.tabs.tab_item_model import TabItemModel
 from models.tabs.tab_manager_model import TabManagerModel
 from utils.signal_bus import signalBus

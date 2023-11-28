@@ -5,7 +5,7 @@ from models.explorer.program_properties_model import ProgramPropertiesModel
 from models.notifications.notification import Notification
 from models.settings.http_request_item import HTTPRequestItem
 from models.settings.server_model import ServerModel
-from models.signal_data_models import SystemAlert, TabUpdateData, SystemRequest
+from models.common.signal_data_models import SystemAlert, TabUpdateData, SystemRequest
 from models.tabs.tab_item_model import TabItemModel
 
 

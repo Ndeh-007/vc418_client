@@ -3,7 +3,7 @@ from PySide6.QtGui import QIntValidator
 from interfaces.structs import MenuBarActionType
 from models.explorer.program_item_model import ProgramItemModel
 from models.explorer.program_properties_model import ProgramPropertiesModel
-from models.signal_data_models import SystemRequestData, SystemRequest
+from models.common.signal_data_models import SystemRequestData, SystemRequest
 from utils.signal_bus import signalBus
 from views.sections.properties_explorer import PropertyExplorerView
 

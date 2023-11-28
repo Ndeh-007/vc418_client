@@ -7,9 +7,10 @@ class TreeNodeItemController(QGraphicsRectItem):
     this item holds a node of the tree.
     """
 
-    def __init__(self, rect: QRect = None, parent: QGraphicsItem = None):
+    def __init__(self, parentNode=None, rect: QRect = None, parent: QGraphicsItem = None):
         super().__init__(rect=rect, parent=parent)
 
+        self.__parentNode: TreeNodeItemController = parentNode
         self.__left: QPointF = QPointF(0, 0)
         self.__right: QPointF = QPointF(0, 0)
         self.__bottom: QPointF = QPointF(0, 0)
@@ -19,9 +20,16 @@ class TreeNodeItemController(QGraphicsRectItem):
 
     # region override
 
+    def setPos(self, pos) -> None:
+        super().setPos(pos)
+        self.__initAnchorsFromRect()
+
+    def moveBy(self, dx: float, dy: float) -> None:
+        super().moveBy(dx, dy)
+        self.__initAnchorsFromRect()
+
     def setRect(self, rect):
         super().setRect(rect)
-
         self.__initAnchorsFromRect()
 
     # endregion

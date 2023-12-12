@@ -2,6 +2,7 @@ from PySide6.QtCore import QObject, Signal
 
 from models.explorer.program_item_model import ProgramItemModel
 from models.explorer.program_properties_model import ProgramPropertiesModel
+from models.graphics.tree_model import BinaryTreeModel
 from models.notifications.notification import Notification
 from models.settings.http_request_item import HTTPRequestItem
 from models.settings.server_model import ServerModel
@@ -37,6 +38,11 @@ class SignalBus(QObject):
     onDeleteProgram = Signal(ProgramItemModel)
 
     onHTTPRequest = Signal(HTTPRequestItem)
+
+    onLoadTreeModel = Signal(BinaryTreeModel)
+    onUpdateTree = Signal(object)
+    onReloadPlayer = Signal()
+    onLoadPlayer = Signal(list)
 
 
 signalBus = SignalBus()

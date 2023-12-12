@@ -10,7 +10,7 @@ class TreeNodeItemController(QGraphicsRectItem):
     """
 
     def __init__(self, processID: str, parentNode: TreeNodeModel = None, rect: QRect = None,
-                 parent: QGraphicsItem = None):
+                 parent: QGraphicsItem = None, model: TreeNodeModel = None):
         """
 
         :param processID: the process the node belongs to
@@ -18,10 +18,17 @@ class TreeNodeItemController(QGraphicsRectItem):
         :param rect: rectangle to be drawn on the canvas
         :param parent: the graphics item that holds this item
         """
-        super().__init__(rect=rect, parent=parent)
+        super().__init__()
 
         self.__parentNode: TreeNodeModel = parentNode
-        self.__node: TreeNodeModel = TreeNodeModel(processID)
+
+        if model is None:
+            self.__node: TreeNodeModel = TreeNodeModel(processID)
+        else:
+            self.__node: TreeNodeModel = model
+
+        if rect is not None:
+            self.setRect(rect)
 
         self.__initAnchorsFromRect()
 

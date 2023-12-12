@@ -69,3 +69,4 @@ class MenuBarActionType(Enum):
 class PreviewToolbarActionType(Enum):
     FETCH = 0
     EXECUTE = 1
+    RELOAD = 2

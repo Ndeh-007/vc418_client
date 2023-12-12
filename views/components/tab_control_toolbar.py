@@ -15,14 +15,14 @@ class TabControlToolbarView(QFrame):
 
         # define the actions
         # has a playback, fetch, build tree, clear canvas,
-        self.fetchAction = QAction("Fetch", self.toolbar)
+        self.reloadAction = QAction("Reload", self.toolbar)
         self.executeAction = QAction("Run", self.toolbar)
 
         self.playbackWidget = PlayBackWidgetController()
 
         # attach the actions to the toolbar
-        # self.toolbar.addAction(self.fetchAction)
-        # self.toolbar.addSeparator()
+        self.toolbar.addAction(self.reloadAction)
+        self.toolbar.addSeparator()
         self.toolbar.addAction(self.executeAction)
         self.toolbar.addSeparator()
         self.toolbar.addWidget(self.playbackWidget)

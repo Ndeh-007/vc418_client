@@ -1,10 +1,14 @@
+import json
+
 from PySide6.QtGui import QAction
 
 import store.settings as ss
-from interfaces.structs import PreviewToolbarActionType, ProgramType
+from interfaces.structs import PreviewToolbarActionType, ProgramType, AlertType
+from models.common.execution_step_model import ExecutionStepModel
 from models.explorer.program_item_model import ProgramItemModel
 from models.settings.http_request_item import HTTPRequestItem
-from models.common.signal_data_models import PreviewProgramData
+from models.common.signal_data_models import PreviewProgramData, SystemAlert
+from utils.helpers import parseJSONData
 from utils.signal_bus import signalBus
 from views.components.tab_control_toolbar import TabControlToolbarView
 
@@ -14,6 +18,7 @@ class TabControlToolbarController(TabControlToolbarView):
         super().__init__()
 
         self.__itemModel = itemModel
+        self.__executionFrames = []
 
         # reset the values of the playback to be initialized by the controller
 
@@ -30,7 +35,7 @@ class TabControlToolbarController(TabControlToolbarView):
         if self.__itemModel is None:
             return
         self.executeAction.setData(PreviewProgramData(PreviewToolbarActionType.EXECUTE, self.__itemModel))
-        self.fetchAction.setData(PreviewProgramData(PreviewToolbarActionType.FETCH, self.__itemModel))
+        self.reloadAction.setData(PreviewProgramData(PreviewToolbarActionType.RELOAD, self.__itemModel))
 
     # endregion
 
@@ -45,11 +50,41 @@ class TabControlToolbarController(TabControlToolbarView):
     # endregion
 
     # region - Event Handlers
+
+    def __handleLoadPlayer(self, frames: list[ExecutionStepModel]):
+        """
+        updates the execution frames and resets the values of the player
+        :param frames:
+        :return:
+        """
+        # update the execution frames
+        self.__executionFrames = frames
+
+        # update the player values
+        self.playbackWidget.setFramesTotalValue(len(frames))
+        self.playbackWidget.setFrameValue(0)
+
     def __handleNextFrame(self):
-        signalBus.onLogToOutput.emit("next frame")
+        """
+        actions performed when the next button is clicked
+        :return:
+        """
+        idx = int(self.playbackWidget.frameValue()) + 1
+        if idx == len(self.__executionFrames):
+            return
+        self.playbackWidget.setFrameValue(idx)
+        signalBus.onUpdateTree.emit(self.__executionFrames[idx])
 
     def __handlePreviousFrame(self):
-        signalBus.onLogToOutput.emit("previewous frame")
+        """
+        actions performed wehn back button is pressed
+        :return:
+        """
+        idx = int(self.playbackWidget.frameValue()) - 1
+        if idx < 0:
+            return
+        self.playbackWidget.setFrameValue(idx)
+        signalBus.onUpdateTree.emit(self.__executionFrames[idx])
 
     def __handlePausePlayFrame(self):
         signalBus.onLogToOutput.emit("current frame")
@@ -61,8 +96,8 @@ class TabControlToolbarController(TabControlToolbarView):
 
     def __handleToolbarActions(self, action: QAction):
         actionData: PreviewProgramData = action.data()
-        if actionData.procedure() == PreviewToolbarActionType.FETCH:
-            self.fetchProgram(actionData.data())
+        if actionData.procedure() == PreviewToolbarActionType.RELOAD:
+            self.reloadProgram(actionData.data())
 
         if actionData.procedure() == PreviewToolbarActionType.EXECUTE:
             self.executeProgram(actionData.data())
@@ -70,8 +105,14 @@ class TabControlToolbarController(TabControlToolbarView):
     # endregion
 
     # region - Workers
-    def fetchProgram(self, data: ProgramItemModel):
-        pass
+    def reloadProgram(self, data: ProgramItemModel):
+        """
+        loads the previous saved data from the temporal storage location
+        :param data:
+        :return:
+        """
+        filePath = ss.APP_SETTINGS.CONFIGURATION.httpResponseJSONFile()
+        self.__parseResponse(filePath)
 
     def executeProgram(self, data: ProgramItemModel):
         """
@@ -93,9 +134,36 @@ class TabControlToolbarController(TabControlToolbarView):
         httpRequest.onComplete.connect(self.__executeSuccessful)
         signalBus.onHTTPRequest.emit(httpRequest)
 
+    def __parseResponse(self, filePath: str):
+        """
+        parses the stored http response data and dispatches the data to the playback controller and to the canvas
+        :param filePath:
+        :return:
+        """
+        parsedData = parseJSONData(filePath)
+
+        # dispatch data
+        # send to the player
+        signalBus.onLoadPlayer.emit(parsedData.get("executionFrames"))
+        # send to canvas
+        signalBus.onLoadTreeModel.emit(parsedData.get("binaryTree"))
+        # signalBus.onUpdateTree.emit(parsedData.get("executionFrames")[0])
+
     def __executeSuccessful(self, response):
-        signalBus.onLogToOutput.emit(str(type(response)))
-        print(response)
+        """
+        When the execution is successful, dump the response to the designated json file.
+        After writing has been complete. initiate the rendering sequence
+        :param response: the http response gotten from the request made
+        :return:
+        """
+        # collect file path
+        filePath = ss.APP_SETTINGS.CONFIGURATION.httpResponseJSONFile()
+        # save to temporal location (required)
+        with open(filePath, "w") as file:
+            json.dump(response, file, indent=4)
+
+        # parse the data
+        self.__parseResponse(filePath)
 
     def __handleError(self, error):
         signalBus.onLogToOutput.emit(str(type(error)))
@@ -107,6 +175,7 @@ class TabControlToolbarController(TabControlToolbarView):
 
     def __connectSignals(self):
         signalBus.onUpdateProgram.connect(self.__handleProgramUpdate)
+        signalBus.onLoadPlayer.connect(self.__handleLoadPlayer)
 
     # endregion
 

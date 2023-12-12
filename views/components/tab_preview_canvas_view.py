@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QListView
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QListView, QGraphicsView, QGraphicsScene
 
 
 class TabPreviewCanvasView(QFrame):
@@ -7,5 +7,10 @@ class TabPreviewCanvasView(QFrame):
 
         layout = QVBoxLayout()
         layout.setContentsMargins(0, 0, 0, 0)
-        layout.addWidget(QListView())
+
+        self.graphicsView = QGraphicsView()
+        self.graphicsView.setFrameStyle(QFrame.Shape.NoFrame)
+        self.scene = QGraphicsScene()
+
+        layout.addWidget(self.graphicsView)
         self.setLayout(layout)

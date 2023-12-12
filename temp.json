@@ -1,0 +1,150 @@
+{
+  "nprocs": 4,
+  "program":"reduce",
+  "tree": [
+    {
+      "self": "<0.316.0>",
+      "parent": null,
+      "children": [
+        "<0.317.0>",
+        "<0.318.0>"
+      ]
+    },
+    {
+      "self": "<0.317.0>",
+      "parent": "<0.316.0>",
+      "children": []
+    },
+    {
+      "self": "<0.318.0>",
+      "parent": "<0.316.0>",
+      "children": [
+        "<0.319.0>"
+      ]
+    },
+    {
+      "self": "<0.319.0>",
+      "parent": "<0.318.0>",
+      "children": []
+    }
+  ],
+  "data": [
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079959,
+      "receive_time": 1702168079959,
+      "from": "<0.316.0>",
+      "to": "<0.317.0>",
+      "msg": "Inside tree, going down",
+      "data": {
+        "action": null,
+        "value": 3
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079960,
+      "receive_time": 1702168079960,
+      "from": "<0.316.0>",
+      "to": "<0.318.0>",
+      "msg": "At the leaf",
+      "data": {
+        "action": null,
+        "value": 2
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079961,
+      "receive_time": 1702168079961,
+      "from": "<0.317.0>",
+      "to": "<0.319.0>",
+      "msg": "At the leaf",
+      "data": {
+        "action": null,
+        "value": 4
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079962,
+      "receive_time": 1702168079962,
+      "from": "<0.318.0>",
+      "to": "<0.316.0>",
+      "msg": "At node, receive right total from child",
+      "data": {
+        "action": null,
+        "value": 2
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079963,
+      "receive_time": 1702168079963,
+      "from": "<0.319.0>",
+      "to": "<0.317.0>",
+      "msg": "At node, receive right total from child",
+      "data": {
+        "action": null,
+        "value": 4
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079965,
+      "receive_time": 1702168079965,
+      "from": "<0.316.0>",
+      "to": "<0.317.0>",
+      "msg": "At the leaf",
+      "data": {
+        "action": null,
+        "value": 7
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079966,
+      "receive_time": 1702168079966,
+      "from": "<0.317.0>",
+      "to": "<0.316.0>",
+      "msg": "At node, receive right total from child",
+      "data": {
+        "action": null,
+        "value": 7
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079968,
+      "receive_time": 1702168079968,
+      "from": "<0.316.0>",
+      "to": "<0.317.0>",
+      "msg": "At the leaf, receive from parent, grand total",
+      "data": {
+        "action": "reduce_down",
+        "value": 10
+      }
+    },
+    {
+      "type": "event",
+      "priority": 80,
+      "send_time": 1702168079969,
+      "receive_time": 1702168079969,
+      "from": "<0.316.0>",
+      "to": "<0.318.0>",
+      "msg": "At the leaf, receive from parent, grand total",
+      "data": {
+        "action": "reduce_down",
+        "value": 10
+      }
+    }
+  ]
+}

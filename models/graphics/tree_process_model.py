@@ -3,8 +3,9 @@ from models.graphics.tree_node_model import TreeNodeModel
 
 
 class TreeProcessModel:
-    def __init__(self, pid: str, nodes: list[TreeNodeModel], treeStructure: TreeStructureModel):
+    def __init__(self, pid: str, nodes: list[TreeNodeModel], treeStructure: TreeStructureModel, processIndex: int = 0):
         self.__processID: str = pid
+        self.__processIndex: int = processIndex
         self.__nodes: list[TreeNodeModel] = nodes
         self.__tree: TreeStructureModel = treeStructure
 
@@ -38,6 +39,7 @@ class TreeProcessModel:
             nodes.append(n)
 
         self.__nodes = nodes
+
     # endregion
 
     # region - Workers
@@ -52,6 +54,9 @@ class TreeProcessModel:
     # endregion
 
     # region - Getters
+    def processIndex(self):
+        return self.__processIndex
+
     def tree(self):
         return self.__tree
 
@@ -76,13 +81,16 @@ class TreeProcessModel:
 
     # region - Setters
 
+    def setProcessIndex(self, index: int):
+        self.__processIndex = index
+
     def setNodes(self, node: list[TreeNodeModel]):
         self.__nodes = node
 
     def addNode(self, node: TreeNodeModel):
         self.__nodes.append(node)
 
-    def updateNodeAtIndex(self, node: TreeNodeModel, index: int):
+    def updateNodeAtIndex(self, index: int, node: TreeNodeModel):
         self.__nodes[index] = node
 
     def updateNodeWithID(self, node: TreeNodeModel, nodeID: str):
@@ -92,6 +100,6 @@ class TreeProcessModel:
                 index = i
                 break
 
-        self.updateNodeAtIndex(node, index)
+        self.updateNodeAtIndex(index, node)
 
     # endregion

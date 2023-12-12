@@ -127,9 +127,9 @@ class TreeStructureItemModel:
 
 
 class TreeStructureModel:
-    def __init__(self, rootPID: str, structure: dict[str, TreeStructureItemModel]):
-        self.__rootPid = rootPID
-        self.__structure = structure
+    def __init__(self, rootPID: str | None, structure: dict[str, TreeStructureItemModel]):
+        self.__rootPid: str | None = rootPID
+        self.__structure: dict[str, TreeStructureItemModel] = structure
 
     def root(self):
         return self.__rootPid

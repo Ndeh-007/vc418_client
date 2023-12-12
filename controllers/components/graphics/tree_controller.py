@@ -1,5 +1,12 @@
+import time
+
+from PySide6.QtWidgets import QGraphicsScene
+
 from controllers.components.graphics.tree_process_controller import TreeProcessItemController
+from models.common.execution_step_model import ExecutionStepModel
+from models.common.signal_data_models import SystemAlert
 from models.graphics.tree_model import BinaryTreeModel
+from utils.signal_bus import signalBus
 
 
 class TreeGraphicsItemController:
@@ -19,6 +26,8 @@ class TreeGraphicsItemController:
 
     # region - Initialize
     def __initialize(self):
+        if self.__model is None:
+            return
         self.__initializeProcesses()
 
     # endregion
@@ -39,19 +48,49 @@ class TreeGraphicsItemController:
 
     def constructTree(self):
         self.__connectProcessNodes()
+        # self.__model.adjustNodeLevels()
         self.__connectProcesses()
+
+    def update(self, scene: QGraphicsScene, executionFrame: ExecutionStepModel):
+        """
+        we get selected processes and then we update them. the processes to be updated are those whose pids are in the
+        current frame
+        :param scene:
+        :param executionFrame:
+        :return:
+        """
+        # pids = [executionFrame.source(), executionFrame.target()]
+        # for pid in pids:
+        #     process = self.getProcessWithID(pid)
+        #     process.updateDrawing(scene, executionFrame)
+        for process in self.__processes:
+            process.updateDrawing(scene, executionFrame)
+
+    def draw(self, scene: QGraphicsScene):
+        """
+        draws the tree on the provided graphics scene. iteratively draws each process.
+        at each iteration, it draws the individual process and connects it to its parent.
+        :param scene:
+        :return:
+        """
+
+        for process in self.__processes:
+            process.draw(scene)
 
     # endregion
 
     # region _local workers
 
-    def __initializeProcesses(self):
+    def __initializeProcesses(self, isUpdate: bool = False):
         """
-        creates processes using data from the provided model
+        creates processes using data from the provided model.
+        if we are updating, we update the controller processes with new data, else we create new process controllers
         :return:
         """
-        pcs = []
+        # if we want to update the values of the processes
 
+        # or we create new controller processes
+        pcs = []
         for _pcs in self.__model.processes():
             p = TreeProcessItemController(_pcs)
             pcs.append(p)
@@ -64,20 +103,45 @@ class TreeGraphicsItemController:
 
     def __connectProcesses(self):
         """
-        connect children to their various parents
+        creates relationships between processes and their parents
         :return:
         """
         structure = self.__model.treeStructure()
-        root = structure.root()
         struct = structure.structure()
 
         for key in struct.keys():
             item = struct.get(key)
-            if item.parentId() is None:
-                continue
-            else:
-                # find the proces with the id and set that as the currents parent. we set it to the first available node of the child
+            # find the proces with the id and set that as the currents parent.
+            # we set it to the first available node of the child
+            children = item.children()
+            for i, child in enumerate(children):
+                # define the processes
+                childProcess = self.getProcessWithID(child)
+                # current = self.getProcessWithID(item.id())
 
+                # get the first node of the child
+                childProcessFirstNode = childProcess.nodeAtIndex(0)
+                childProcessFirstNodeLevel = childProcessFirstNode.node().level()
+
+                # define the parent process for the child we are working in
+                parentProcess = self.getProcessWithID(item.id())
+                targetLevel = childProcessFirstNodeLevel - 1
+                parentNode = parentProcess.nodeWithAvailableSocket(targetLevel, 1)
+
+                # todo: check how the line below affects the program
+                if parentNode is None:
+                    continue
+
+                # set the parent of the child node
+                childProcessFirstNode.setParentNode(parentNode.node())
+
+                # get the index of the parent node and use it to update is value in the parent process after adjusting
+                # its socket value
+                parentNode.node().incrementSocket()
+                parentProcess.updateNodeWithID(parentNode.node().nodeID(), parentNode)
+
+                # update the entry of the child process
+                childProcess.updateNodeAtIndex(0, childProcessFirstNode)
 
     # endregion
 
@@ -89,16 +153,58 @@ class TreeGraphicsItemController:
         pass
 
     # endregion
+
+    # region - Getters
     def model(self):
         return self.__model
 
-    # region - Getters
+    def getProcessWithID(self, target: str):
+        item = None
+        for p in self.__processes:
+            if p.processModel().processID() == target:
+                item = p
+                break
+        return item
+
+    def getProcessIndex(self, process: TreeProcessItemController):
+        """
+        gets the index of a process.
+        :param process:
+        :return: index of process, -1 otherwise
+        """
+        index = -1
+        pid = process.processModel().processID()
+        for i, p in enumerate(self.__processes):
+            if p.processModel().processID() == pid:
+                index = i
+                break
+
+        return index
 
     # endregion
 
     # region - Setters
 
+    def updateProcessWithID(self, pid: str, process: TreeProcessItemController):
+        """
+        updates process with the provided id
+        :param pid:
+        :param process:
+        :return:
+        """
+        index = self.getProcessIndex(process)
+        if index == -1:
+            raise Exception(f"Error updating process in tree_controller. process with id: {pid}, not found")
+        self.__processes[index] = process
+
+    def updateProcess(self, process: TreeProcessItemController):
+        index = self.getProcessIndex(process)
+        if index == -1:
+            raise Exception(
+                f"Error updating process in tree_controller. process with id: {process.processModel().processID()}, not found")
+        self.__processes[index] = process
+
     def setModel(self, model: BinaryTreeModel):
         self.__model = model
-
+        self.__initializeProcesses(isUpdate=True)
     # endregion

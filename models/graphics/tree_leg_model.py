@@ -1,6 +1,6 @@
 class TreeLegModel:
     def __init__(self, processID: str, data: str = None, legWidth: int = 10, legHeight: int = 10):
-        self.__processID = processID
+        self.__processID: str = processID
         self.__data: str = data
         self.__width: int = legWidth
         self.__height: int = legHeight

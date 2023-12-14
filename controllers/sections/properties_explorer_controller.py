@@ -64,6 +64,7 @@ class PropertyExplorerController(PropertyExplorerView):
         data = ss.APP_SETTINGS.PROGRAMS.programs(item.id())
 
         if data is None:
+            print("Data is None. [Location] (properties_explorer_controller)")
             return
 
         # update the local value

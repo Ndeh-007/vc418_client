@@ -1,13 +1,12 @@
-from PySide6.QtCore import QRect, QPoint, QSize, QRectF, QSizeF, QPointF, QLine
-from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QGraphicsItem, QGraphicsScene, QGraphicsLineItem
+from PySide6.QtCore import QRect, QPoint, QSize, QRectF, QSizeF, QPointF
+from PySide6.QtGui import QPixmap, QFont
+from PySide6.QtWidgets import QGraphicsItem, QGraphicsScene, QGraphicsTextItem
 
 from controllers.components.graphics.tree_highway_controller import TreeHighwayController
 from controllers.components.graphics.tree_node_controller import TreeNodeItemController
 from models.common.execution_step_model import ExecutionStepModel
 from models.graphics.tree_highway_model import TreeHighwayModel
 from models.graphics.tree_process_model import TreeProcessModel
-from utils.helpers import getPidNumber
 
 
 class TreeProcessItemController(QGraphicsItem):
@@ -21,7 +20,7 @@ class TreeProcessItemController(QGraphicsItem):
 
         self.__processModel: TreeProcessModel = processModel
         self.__nodes: list[TreeNodeItemController] = []
-        self.__highways: list[TreeHighwayController] = []  # we keep only the connections between two processes
+        self.__highway: TreeHighwayController | None = None  # we keep only the connections between two processes
 
         self.__baseRect = QRect(QPoint(0, 0), QSize(10, 10))
         self.__padding = QSize(5, 5)
@@ -53,47 +52,43 @@ class TreeProcessItemController(QGraphicsItem):
 
     # region - Workers
 
-    def updateDrawing(self, scene: QGraphicsScene, executionFrame: ExecutionStepModel):
+    def resetDrawing(self):
+        """
+        called when there is nothing to be drawn. we remove the unwanted highway arrows from the canvas
+        :return:
+        """
+        if self.__highway is None:
+            return
+        self.__highway.prepareGeometryChange()
+        self.__highway.reset()
+        # self.__highway.update()
+
+    def updateDrawing(self, executionFrame: ExecutionStepModel):
         """
         updates the process drawing on the canvas
-        :param scene:
         :param executionFrame:
         :return:
         """
-        for highway in self.__highways:
-            case1 = highway.model().fromPid() == executionFrame.source() and highway.model().toPid() == executionFrame.target()
-            case2 = highway.model().fromPid() == executionFrame.target() and highway.model().toPid() == executionFrame.source()
+        if self.__highway is None:
+            return
 
-            # indicate that we want to update
-            highway.prepareGeometryChange()
+        # indicate that we want to update
+        self.__highway.prepareGeometryChange()
 
-            # perform the required update modifications
-            if case1 or case2:
-                # update
-                # we leverage the fact that the pids are in the order <0.1.0>, <0.2.0>, <0.3.0> ..., <0.n.0>
-                # check if we are moving left or right
-                source = getPidNumber(executionFrame.source())
-                target = getPidNumber(executionFrame.target())
+        # update
+        # we leverage the fact that on our canvas, the parent will always be on the left side of the child
+        isParent = self.__processModel.tree().checkParent(executionFrame.source(), executionFrame.target())
 
-                if source is None or target is None:
-                    continue
+        direction = "left"
+        if not isParent:
+            direction = "right"
 
-                if source > target:
-                    # we are moving left
-                    direction = "left"
-                else:
-                    # we are moving right
-                    direction = "right"
+        # update the desired properties
+        self.__highway.model().setArrowDirection(direction)
+        self.__highway.model().setData(executionFrame.data())
 
-                # update the desired properties
-                highway.model().setArrowDirection(direction)
-                highway.model().setData(executionFrame.data())
-            else:
-                # reset highway data
-                highway.reset()
-
-            # trigger the redraw
-            highway.update()
+        # trigger the redraw
+        # self.__highway.update()
 
     def draw(self, scene: QGraphicsScene):
         """
@@ -142,7 +137,36 @@ class TreeProcessItemController(QGraphicsItem):
                     highwayController = TreeHighwayController(highwayModel)
                     highwayController.setTrafficDirection(None)
                     scene.addItem(highwayController)
-                    self.__highways.append(highwayController)
+                    self.__highway = highwayController
+
+        lastNode = self.__nodes[-1]
+        lastNodeBottomLeft = lastNode.rect().bottomLeft().toPoint()
+        font = QFont()
+        font.setPointSize(7)
+
+        # add the initial process value under the processes
+        valueAnchor = QPoint(
+            lastNodeBottomLeft.x() - int(lastNode.rect().size().width()),
+            lastNodeBottomLeft.y() + int(lastNode.node().vOffsetFactor() / 8)
+        )
+        valueTextItem = QGraphicsTextItem()
+        valueTextItem.setFont(font)
+        value = self.__processModel.tree().structure().get(self.__processModel.processID()).value()
+        valueTextItem.setPlainText(str(value))
+        valueTextItem.setPos(valueAnchor)
+        scene.addItem(valueTextItem)
+
+        # add the process name to the bottom of process on the screen
+
+        textAnchor = QPoint(
+            lastNodeBottomLeft.x() - int(lastNode.rect().size().width()),
+            lastNodeBottomLeft.y() + int(lastNode.node().vOffsetFactor() / 2)
+        )
+        textItem = QGraphicsTextItem()
+        textItem.setFont(font)
+        textItem.setPlainText(str(self.__processModel.processID()))
+        textItem.setPos(textAnchor)
+        scene.addItem(textItem)
 
     def __createNodes(self):
         """

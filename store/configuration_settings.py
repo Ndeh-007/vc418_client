@@ -4,6 +4,7 @@ from typing import Any
 class ConfigurationSettings:
     def __init__(self):
         self.__httpResponseJSONFile = None
+        self.__animationFrequency = 1
         self.__configure()
 
     # region - Initialize
@@ -34,9 +35,16 @@ class ConfigurationSettings:
     # region - Getters
     def httpResponseJSONFile(self):
         return self.__httpResponseJSONFile
+
+    def animationFrequency(self):
+        return self.__animationFrequency
+
     # endregion
 
     # region - Setters
+    def setAnimationFrequency(self, value: int):
+        self.__animationFrequency = value
+
     def setHttpResponseJSONFile(self, path: str):
         self.__httpResponseJSONFile = path
     # endregion
@@ -44,4 +52,3 @@ class ConfigurationSettings:
     # region - Override
 
     # endregion
-

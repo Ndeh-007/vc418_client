@@ -1,15 +1,19 @@
-from interfaces.structs import ProgramType
+from interfaces.structs import ProgramType, BinaryTreeUpdateMode
 from models.common.signal_data_models import TreeStructureModel
+from models.explorer.program_item_model import ProgramItemModel
 from models.graphics.tree_process_model import TreeProcessModel
 
 
 class BinaryTreeModel:
 
-    def __init__(self, nProcs: int, structure: TreeStructureModel, program: ProgramType = ProgramType.REDUCE_ERLANG):
+    def __init__(self, nProcs: int, structure: TreeStructureModel, program: ProgramType = ProgramType.REDUCE_ERLANG,
+                 programItem: ProgramItemModel = None, updateMode: BinaryTreeUpdateMode = BinaryTreeUpdateMode.RUN):
         self.__nProcs: int = nProcs
         self.__treeStructure: TreeStructureModel = structure
         self.__processes: list[TreeProcessModel] = []
         self.__programType: ProgramType = program
+        self.__programItem: ProgramItemModel | None = programItem
+        self.__updateMode: BinaryTreeUpdateMode = updateMode
 
         self.__initialize()
         self.__configure()
@@ -107,6 +111,12 @@ class BinaryTreeModel:
     def programType(self):
         return self.__programType
 
+    def programItem(self):
+        return self.__programItem
+
+    def updateMode(self):
+        return self.__updateMode
+
     # region - Getters
 
     # endregion
@@ -117,5 +127,11 @@ class BinaryTreeModel:
 
     def setProcesses(self, processes: list[TreeProcessModel]):
         self.__processes = processes
+
+    def setProgramItem(self, value: ProgramItemModel | None):
+        self.__programItem = value
+
+    def setUpdateMode(self, value: BinaryTreeUpdateMode):
+        self.__updateMode = value
 
     # endregion

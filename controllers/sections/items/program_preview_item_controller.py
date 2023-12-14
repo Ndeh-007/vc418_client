@@ -10,10 +10,10 @@ class ProgramPreviewItemController(ProgramPreviewItemView):
         self.itemModel = model
 
         if isinstance(model, ProgramItemModel):
-            self.itemModel = model
+            self.itemModel: ProgramItemModel = model
 
         if isinstance(model, ProgramExplorerActionModel):
-            self.itemModel = model.data()[0]
+            self.itemModel: ProgramItemModel = model.data()[0]
 
         self.__initialize()
         self.__configure()
@@ -22,7 +22,6 @@ class ProgramPreviewItemController(ProgramPreviewItemView):
     # region - Initialize
     def __initialize(self):
         self.controlBar.setItemModel(item=self.itemModel)
-        # todo: initialize the canvas for drawing the processes
 
     # endregion
 

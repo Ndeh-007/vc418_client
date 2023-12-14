@@ -1,39 +1,35 @@
-{
-  "nprocs": 4,
-  "program":"reduce",
-  "tree": [
-    {
-      "self": "<0.316.0>",
-      "parent": null,
-      "children": [
-        "<0.317.0>",
-        "<0.318.0>"
-      ]
-    },
-    {
-      "self": "<0.317.0>",
-      "parent": "<0.316.0>",
-      "children": []
-    },
-    {
-      "self": "<0.318.0>",
-      "parent": "<0.316.0>",
-      "children": [
-        "<0.319.0>"
-      ]
-    },
-    {
-      "self": "<0.319.0>",
-      "parent": "<0.318.0>",
-      "children": []
-    }
-  ],
-  "data": [
+[
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998414,
-        "receive_time": 1702418998414,
+        "send_time": 1702415497531,
+        "receive_time": 1702415497531,
+        "from": "{<0.314.0>}",
+        "to": "<0.316.0>",
+        "msg": "Inside tree, going down",
+        "data": {
+            "action": null,
+            "value": 1
+        }
+    },
+    {
+        "type": "event",
+        "priority": 80,
+        "send_time": 1702415497532,
+        "receive_time": 1702415497532,
+        "from": "<0.316.0>",
+        "to": "<0.317.0>",
+        "msg": "Inside tree, going down",
+        "data": {
+            "action": null,
+            "value": 3
+        }
+    },
+    {
+        "type": "event",
+        "priority": 80,
+        "send_time": 1702415497533,
+        "receive_time": 1702415497533,
         "from": "<0.316.0>",
         "to": "<0.318.0>",
         "msg": "At the leaf",
@@ -45,8 +41,8 @@
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998415,
-        "receive_time": 1702418998415,
+        "send_time": 1702415497534,
+        "receive_time": 1702415497534,
         "from": "<0.317.0>",
         "to": "<0.319.0>",
         "msg": "At the leaf",
@@ -58,8 +54,8 @@
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998516,
-        "receive_time": 1702418998516,
+        "send_time": 1702415497634,
+        "receive_time": 1702415497634,
         "from": "<0.318.0>",
         "to": "<0.316.0>",
         "msg": "At node, receive right total from child",
@@ -71,8 +67,8 @@
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998517,
-        "receive_time": 1702418998517,
+        "send_time": 1702415497635,
+        "receive_time": 1702415497635,
         "from": "<0.319.0>",
         "to": "<0.317.0>",
         "msg": "At node, receive right total from child",
@@ -84,8 +80,21 @@
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998518,
-        "receive_time": 1702418998518,
+        "send_time": 1702415497636,
+        "receive_time": 1702415497636,
+        "from": "{<0.314.0>}",
+        "to": "<0.316.0>",
+        "msg": "Inside tree, going down",
+        "data": {
+            "action": null,
+            "value": 3
+        }
+    },
+    {
+        "type": "event",
+        "priority": 80,
+        "send_time": 1702415497637,
+        "receive_time": 1702415497637,
         "from": "<0.316.0>",
         "to": "<0.317.0>",
         "msg": "At the leaf",
@@ -97,8 +106,8 @@
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998519,
-        "receive_time": 1702418998519,
+        "send_time": 1702415497638,
+        "receive_time": 1702415497638,
         "from": "<0.317.0>",
         "to": "<0.316.0>",
         "msg": "At node, receive right total from child",
@@ -110,8 +119,21 @@
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998520,
-        "receive_time": 1702418998520,
+        "send_time": 1702415497639,
+        "receive_time": 1702415497639,
+        "from": "head",
+        "to": "head",
+        "msg": "At top of tree, returning grand total",
+        "data": {
+            "action": null,
+            "value": 10
+        }
+    },
+    {
+        "type": "event",
+        "priority": 80,
+        "send_time": 1702415497640,
+        "receive_time": 1702415497640,
         "from": "<0.316.0>",
         "to": "<0.317.0>",
         "msg": "At the leaf, receive from parent, grand total",
@@ -123,8 +145,8 @@
     {
         "type": "event",
         "priority": 80,
-        "send_time": 1702418998521,
-        "receive_time": 1702418998521,
+        "send_time": 1702415497641,
+        "receive_time": 1702415497641,
         "from": "<0.316.0>",
         "to": "<0.318.0>",
         "msg": "At the leaf, receive from parent, grand total",
@@ -134,4 +156,3 @@
         }
     }
 ]
-}

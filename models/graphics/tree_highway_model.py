@@ -85,7 +85,7 @@ class TreeHighwayModel:
     def setToPid(self, value: str):
         self.__toPid = value
 
-    def setData(self, value: str):
+    def setData(self, value: str | None):
         self.__data = value
 
     def setRightArrow(self, arrow: QPixmap):
@@ -109,7 +109,6 @@ class TreeHighwayModel:
             return
 
         if direction is None:
-            self.__arrow = None
             self.__direction = direction
             return
 

@@ -102,10 +102,18 @@ class PreviewProgramData:
 
 
 class TreeStructureItemModel:
-    def __init__(self, pid: str, parentPid: str, children: list[str]):
+    def __init__(self, pid: str, parentPid: str, children: list[str], value: str | int, index: int):
         self.__pid: str = pid
         self.__parentPid: str | None = parentPid
         self.__children: list[str] = children
+        self.__value = value
+        self.__index = index
+
+    def index(self):
+        return self.__index
+
+    def value(self):
+        return self.__value
 
     def id(self):
         return self.__pid
@@ -125,6 +133,9 @@ class TreeStructureItemModel:
     def setChildren(self, pids: list[str]):
         self.__children = pids
 
+    def setValue(self, value: int | str):
+        self.__value = value
+
 
 class TreeStructureModel:
     def __init__(self, rootPID: str | None, structure: dict[str, TreeStructureItemModel]):
@@ -142,3 +153,16 @@ class TreeStructureModel:
 
     def setStructure(self, structure: dict[str, TreeStructureItemModel]):
         self.__structure = structure
+
+    def checkParent(self, childPid: str, parentPid):
+        """
+        checks if the provided child has the provided parent as its parent.
+        returns true if check is true or false otherwise
+        :param childPid:
+        :param parentPid:
+        :return:
+        """
+        if self.__structure.get(childPid).parentId() == parentPid:
+            return True
+        else:
+            return False

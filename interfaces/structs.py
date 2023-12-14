@@ -70,3 +70,13 @@ class PreviewToolbarActionType(Enum):
     FETCH = 0
     EXECUTE = 1
     RELOAD = 2
+
+
+class BinaryTreeUpdateMode(Enum):
+    RELOAD = 0
+    RUN = 1
+
+
+class AnimationPlayerState(Enum):
+    OFF = 0
+    ON = 1

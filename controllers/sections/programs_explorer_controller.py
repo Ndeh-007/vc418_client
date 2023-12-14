@@ -61,7 +61,9 @@ class ProgramsExplorerController(ProgramsExplorerView):
         :param options:
         :return:
         """
-        signalBus.onShowProgramProperties.emit(options.data()[0])
+        program = options.data()[0]
+        signalBus.onMakeProgramActive.emit(program)
+        signalBus.onShowProgramProperties.emit(program)
 
     def __handleContextMenuActions(self, options: ProgramExplorerActionModel):
         action = options.action()
@@ -96,12 +98,15 @@ class ProgramsExplorerController(ProgramsExplorerView):
         # # update the view
         self.model.addItems(item)
 
+        # update the store
+        signalBus.onCreateProgram.emit(item)
+
         # trigger open of the tab
         data = ProgramExplorerActionModel([item], ProgramsExplorerActionType.Open)
         self.__handleListItemDoubleClicked(data)
 
-        # update the store
-        signalBus.onCreateProgram.emit(item)
+        # trigger open of the properties tab
+        signalBus.onShowProgramProperties.emit(item)
 
     @staticmethod
     def __handleModelError(message: str):

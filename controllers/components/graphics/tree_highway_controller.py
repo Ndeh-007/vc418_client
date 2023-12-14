@@ -49,7 +49,7 @@ class TreeHighwayController(QGraphicsLineItem):
         if self.__highwayModel.direction() == "left":
             topLeft = QPointF(
                 self.__highwayModel.toAnchor().x() - self.__computeOffsetDistance("horizontal"),
-                self.__highwayModel.toAnchor().y() + self.__computeOffsetDistance('vertical')
+                self.__highwayModel.toAnchor().y() - self.__computeOffsetDistance('vertical')
             ).toPoint()
             bottomRight = QPointF(
                 self.__highwayModel.fromAnchor().x() + self.__computeOffsetDistance("horizontal"),
@@ -100,7 +100,7 @@ class TreeHighwayController(QGraphicsLineItem):
         we preserve the anchor points and all other information
         :return:
         """
-        self.__highwayModel.setData("")
+        self.__highwayModel.setData(None)
         self.__highwayModel.setArrowDirection(None)
     # endregion
 
@@ -183,28 +183,26 @@ class TreeHighwayController(QGraphicsLineItem):
                 self.__highwayModel.toAnchor().toPoint()
             )
         )
-        if direction == "left":
+        if direction is not None:
             # paint the left arrow
             # compute the offset of the point from the center
             topLeft = QPointF(
-                center.x() - self.__highwayModel.leftArrow().width(),
-                center.y() - self.__highwayModel.leftArrow().height(),
+                center.x() - self.__highwayModel.arrow().width(),
+                center.y() - self.__highwayModel.arrow().height(),
             ).toPoint()
-            painter.drawPixmap(topLeft, self.__highwayModel.leftArrow())
+            painter.drawPixmap(topLeft, self.__highwayModel.arrow())
             # write the text
             painter.drawText(center, self.__highwayModel.data())
-        elif direction == 'right':
-            # paint the right arrow
-            # compute the offset of the point from the center
-            topLeft = QPointF(
-                center.x() - self.__highwayModel.rightArrow().width(),
-                center.y() - self.__highwayModel.rightArrow().height(),
-            ).toPoint()
-            painter.drawPixmap(topLeft, self.__highwayModel.rightArrow())
-            # write the text
-            painter.drawText(center.toPoint(), self.__highwayModel.data())
-        else:
-            # do nothing. print no text or image
-            pass
+
+        # if direction == 'right':
+        #     # paint the right arrow
+        #     # compute the offset of the point from the center
+        #     topLeft = QPointF(
+        #         center.x() - self.__highwayModel.rightArrow().width(),
+        #         center.y() - self.__highwayModel.rightArrow().height(),
+        #     ).toPoint()
+        #     painter.drawPixmap(topLeft, self.__highwayModel.rightArrow())
+        #     # write the text
+        #     painter.drawText(center.toPoint(), self.__highwayModel.data())
 
     # endregion

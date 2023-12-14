@@ -1,12 +1,8 @@
-import time
-
 from PySide6.QtWidgets import QGraphicsScene
 
 from controllers.components.graphics.tree_process_controller import TreeProcessItemController
 from models.common.execution_step_model import ExecutionStepModel
-from models.common.signal_data_models import SystemAlert
 from models.graphics.tree_model import BinaryTreeModel
-from utils.signal_bus import signalBus
 
 
 class TreeGraphicsItemController:
@@ -59,12 +55,20 @@ class TreeGraphicsItemController:
         :param executionFrame:
         :return:
         """
-        # pids = [executionFrame.source(), executionFrame.target()]
-        # for pid in pids:
-        #     process = self.getProcessWithID(pid)
-        #     process.updateDrawing(scene, executionFrame)
+        # data can either move from parent to child or child to parent
+        # and oly the child carries the highway. so we target the child to be updated and we reset the reset
+        isParent = self.model().treeStructure().checkParent(executionFrame.source(), executionFrame.target())
+        if isParent:
+            targetPid = executionFrame.source()
+        else:
+            targetPid = executionFrame.target()
+
         for process in self.__processes:
-            process.updateDrawing(scene, executionFrame)
+            if process.processModel().processID() == targetPid:
+                process.updateDrawing(executionFrame)
+            else:
+                process.resetDrawing()
+        scene.update()
 
     def draw(self, scene: QGraphicsScene):
         """
@@ -73,7 +77,6 @@ class TreeGraphicsItemController:
         :param scene:
         :return:
         """
-
         for process in self.__processes:
             process.draw(scene)
 

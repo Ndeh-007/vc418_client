@@ -46,10 +46,14 @@ class TabControlToolbarController(TabControlToolbarView):
         self.playbackWidget.nextBtn.clicked.connect(self.__handleNextFrame)
         self.playbackWidget.previousBtn.clicked.connect(self.__handlePreviousFrame)
         self.playbackWidget.playPauseBtn.clicked.connect(self.__handlePausePlayFrame)
+        self.playbackWidget.onPlayerTimeout.connect(self.__handlePlayerTimerTimeout)
 
     # endregion
 
     # region - Event Handlers
+    def __handleError(self, error):
+        signalBus.onLogToOutput.emit(str(type(error)))
+        print(error)
 
     def __handleLoadPlayer(self, frames: list[ExecutionStepModel]):
         """
@@ -61,33 +65,42 @@ class TabControlToolbarController(TabControlToolbarView):
         self.__executionFrames = frames
 
         # update the player values
-        self.playbackWidget.setFramesTotalValue(len(frames))
+        self.playbackWidget.setFramesTotalValue(len(frames) - 1)
         self.playbackWidget.setFrameValue(0)
 
     def __handleNextFrame(self):
         """
         actions performed when the next button is clicked
+        first it stops the playback thereby switching to manual mode and then executes from the currently defined frame
+        index.
         :return:
         """
-        idx = int(self.playbackWidget.frameValue()) + 1
-        if idx == len(self.__executionFrames):
-            return
-        self.playbackWidget.setFrameValue(idx)
-        signalBus.onUpdateTree.emit(self.__executionFrames[idx])
+        self.playbackWidget.stopPlayback()
+        self.__dispatchFrame(1)
 
     def __handlePreviousFrame(self):
         """
-        actions performed wehn back button is pressed
+        actions performed when back button is pressed
+        first it stops the playback thereby switching to manual mode and then executes from the currently defined frame
+        index.
         :return:
         """
-        idx = int(self.playbackWidget.frameValue()) - 1
-        if idx < 0:
-            return
-        self.playbackWidget.setFrameValue(idx)
-        signalBus.onUpdateTree.emit(self.__executionFrames[idx])
+        self.playbackWidget.stopPlayback()
+        self.__dispatchFrame(-1)
+
+    def __handlePlayerTimerTimeout(self):
+        """
+        send the next frame on every count
+        :return:
+        """
+        self.__dispatchFrame(1)
 
     def __handlePausePlayFrame(self):
-        signalBus.onLogToOutput.emit("current frame")
+        print(self.playbackWidget.playerState())
+        if self.playbackWidget.isPaused():
+            self.playbackWidget.startPlayback()
+        else:
+            self.playbackWidget.stopPlayback()
 
     def __handleProgramUpdate(self, item: ProgramItemModel):
         if item.id() != self.__itemModel.id():
@@ -105,6 +118,59 @@ class TabControlToolbarController(TabControlToolbarView):
     # endregion
 
     # region - Workers
+
+    # region - Private Workers
+
+    def __dispatchFrame(self, offsetValue: int):
+        """
+        offset and dispatch the frame
+        :param offsetValue:
+        :return:
+        """
+        idx = int(self.playbackWidget.frameValue()) + offsetValue
+        if idx not in range(0, len(self.__executionFrames)):
+            self.playbackWidget.stopPlayback()
+            return
+        self.playbackWidget.setFrameValue(idx)
+        signalBus.onUpdateTree.emit(self.__executionFrames[idx])
+
+    def __parseResponse(self, filePath: str):
+        """
+        parses the stored http response data and dispatches the data to the playback controller and to the canvas
+        :param filePath:
+        :return:
+        """
+        parsedData = parseJSONData(filePath)
+
+        # dispatch data
+        # send to the player
+        signalBus.onLoadPlayer.emit(parsedData.get("executionFrames"))
+        # send to canvas
+        signalBus.onLoadTreeModel.emit(parsedData.get("binaryTree"))
+
+    def __executeSuccessful(self, response):
+        """
+        When the execution is successful, dump the response to the designated json file.
+        After writing has been complete. initiate the rendering sequence
+        :param response: the http response gotten from the request made
+        :return:
+        """
+        # collect file path
+        filePath = ss.APP_SETTINGS.CONFIGURATION.httpResponseJSONFile()
+        # save to temporal location (required)
+        with open(filePath, "w") as file:
+            json.dump(response, file, indent=4)
+
+        try:
+            # parse the data
+            self.__parseResponse(filePath)
+        except Exception as e:
+            signalBus.onLogErrorToOutput.emit(f"Failed to load data from json file with error => {str(e)}")
+
+    # endregion
+
+    # region - Public Workers
+
     def reloadProgram(self, data: ProgramItemModel):
         """
         loads the previous saved data from the temporal storage location
@@ -112,6 +178,7 @@ class TabControlToolbarController(TabControlToolbarView):
         :return:
         """
         filePath = ss.APP_SETTINGS.CONFIGURATION.httpResponseJSONFile()
+        signalBus.onMakeProgramActive.emit(data)
         self.__parseResponse(filePath)
 
     def executeProgram(self, data: ProgramItemModel):
@@ -134,40 +201,7 @@ class TabControlToolbarController(TabControlToolbarView):
         httpRequest.onComplete.connect(self.__executeSuccessful)
         signalBus.onHTTPRequest.emit(httpRequest)
 
-    def __parseResponse(self, filePath: str):
-        """
-        parses the stored http response data and dispatches the data to the playback controller and to the canvas
-        :param filePath:
-        :return:
-        """
-        parsedData = parseJSONData(filePath)
-
-        # dispatch data
-        # send to the player
-        signalBus.onLoadPlayer.emit(parsedData.get("executionFrames"))
-        # send to canvas
-        signalBus.onLoadTreeModel.emit(parsedData.get("binaryTree"))
-        # signalBus.onUpdateTree.emit(parsedData.get("executionFrames")[0])
-
-    def __executeSuccessful(self, response):
-        """
-        When the execution is successful, dump the response to the designated json file.
-        After writing has been complete. initiate the rendering sequence
-        :param response: the http response gotten from the request made
-        :return:
-        """
-        # collect file path
-        filePath = ss.APP_SETTINGS.CONFIGURATION.httpResponseJSONFile()
-        # save to temporal location (required)
-        with open(filePath, "w") as file:
-            json.dump(response, file, indent=4)
-
-        # parse the data
-        self.__parseResponse(filePath)
-
-    def __handleError(self, error):
-        signalBus.onLogToOutput.emit(str(type(error)))
-        print(error)
+    # endregion
 
     # endregion
 

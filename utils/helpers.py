@@ -1,5 +1,6 @@
 import json
 import re
+import time
 
 from interfaces.structs import ServerType, ServerState, ProgramType, AlertType
 import store.settings as ss
@@ -29,6 +30,15 @@ def getPidNumber(pid: str):
         return None
 
 
+def isFalsePid(pid: str):
+    pattern = r"{<0\.(\d+)\.\d+>}"
+    match = re.search(pattern, pid)
+    if match:
+        return True
+    else:
+        return False
+
+
 def parseJSONData(filePath: str):
     """
     parses data from the provided json file
@@ -42,28 +52,46 @@ def parseJSONData(filePath: str):
 
     # build the tree
     struct = {}
+    items = []
     rootPid = None
 
     tree = jsonData['tree']
     for item in tree:
-        if item['parent'] is None:
+
+        if isFalsePid(item['parent']):
+            parent = None
+        else:
+            parent = item['parent']
+
+        if parent is None:
             rootPid = item['self']
         tsi = TreeStructureItemModel(
             item['self'],
-            item['parent'],
-            item['children']
+            parent,
+            item['children'],
+            item['value'],
+            item['index']
         )
-        struct.update({item['self']: tsi})
+        items.append(tsi)
+    # sort them according to their index
+    items.sort(key=lambda x: x.index())
+    for item in items:
+        struct.update({item.id(): item})
     ts = TreeStructureModel(rootPid, struct)
 
     #  CHECK_ME: check the program type (this maybe irrelevant, still unsure)
-    program = ProgramType.REDUCE_ERLANG
+    programType = ProgramType.REDUCE_ERLANG
     if jsonData["program"] == "scan":
-        program = ProgramType.SCAN_ERLANG
+        programType = ProgramType.SCAN_ERLANG
     else:
-        alert = SystemAlert(f"Invalid Program type, got {jsonData['program']}. Auto adjusted to 'REDUCE_ERLANG'", AlertType.Warning)
+        alert = SystemAlert(f"Invalid Program type, got {jsonData['program']}. Auto adjusted to 'REDUCE_ERLANG'",
+                            AlertType.Warning)
         signalBus.onSystemAlert.emit(alert)
-    binaryTree = BinaryTreeModel(jsonData['nprocs'], ts, program)
+    activeProgramFile = ss.APP_SETTINGS.PROGRAMS.activeProgram()
+    # print("active program in json parser", activeProgramFile)
+    # time.sleep(0.5)
+    binaryTree = BinaryTreeModel(jsonData['nprocs'], ts, programType, activeProgramFile)
+    # binaryTree.setProgramItem(activeProgramFile)
 
     # build the frames
     framesArray = []

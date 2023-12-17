@@ -97,7 +97,7 @@ class ProgramsExplorerController(ProgramsExplorerView):
         if item is None:
             return
         self.model.updateItem(item)
-        signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Title, TabItemModel(item.text(), None, item.id())))
+        signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Title, TabItemModel(item.text(), None, item.id(), item)))
 
         # update the program entry in the store.
         signalBus.onUpdateProgram.emit(item)
@@ -156,7 +156,7 @@ class ProgramsExplorerController(ProgramsExplorerView):
         self.model = ProgramListModel(items)
         self.programsListView.setModel(self.model)
 
-        signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Delete, TabItemModel(None, None, item.id())))
+        signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Delete, TabItemModel(None, None, item.id(), item)))
 
         # remove item from store
         signalBus.onDeleteProgram.emit(item)

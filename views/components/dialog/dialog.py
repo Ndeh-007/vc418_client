@@ -1,15 +1,14 @@
-import os
 from typing import Callable, Literal, Any
+
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon, Qt
-from PySide6.QtWidgets import QWidget, QDialogButtonBox, QFrame, QGridLayout, QPushButton, QLabel, QHBoxLayout, QDialog
+from PySide6.QtWidgets import QWidget, QDialogButtonBox, QFrame, QGridLayout, QPushButton, QLabel, QHBoxLayout
 from qframelesswindow import FramelessDialog
-
-from utils.styling import setPaletteColor, read_style, q_read_style
-from views.components.dialog.dialog_options import DialogControls, dialogControls
 
 from styles.color import AppColors
 from utils.signal_bus import signalBus
+from utils.styling import setPaletteColor, q_read_style
+from views.components.dialog.dialog_options import DialogControls, dialogControls
 
 
 class CustomDialog(FramelessDialog):

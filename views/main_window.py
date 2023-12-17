@@ -1,6 +1,5 @@
-from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QMainWindow, QWidget, QVBoxLayout
+from PySide6.QtWidgets import QMainWindow
 
 from controllers.components.menu_bar_controller import MenuBarController
 from controllers.components.status_bar_controller import StatusBarController

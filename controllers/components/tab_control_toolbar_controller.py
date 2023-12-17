@@ -3,11 +3,11 @@ import json
 from PySide6.QtGui import QAction
 
 import store.settings as ss
-from interfaces.structs import PreviewToolbarActionType, ProgramType, AlertType
+from interfaces.structs import PreviewToolbarActionType, ProgramType
 from models.common.execution_step_model import ExecutionStepModel
+from models.common.signal_data_models import PreviewProgramData
 from models.explorer.program_item_model import ProgramItemModel
 from models.settings.http_request_item import HTTPRequestItem
-from models.common.signal_data_models import PreviewProgramData, SystemAlert
 from utils.helpers import parseJSONData
 from utils.signal_bus import signalBus
 from views.components.tab_control_toolbar import TabControlToolbarView

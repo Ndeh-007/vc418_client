@@ -1,5 +1,5 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QSplitter, QPushButton, QGridLayout, QLabel, QWidget
+from PySide6.QtWidgets import QFrame, QSplitter, QGridLayout, QWidget
 
 from controllers.components.alert_bar_controller import AlertBarController
 from controllers.components.loading_bar_controller import LoadingBarController

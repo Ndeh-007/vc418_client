@@ -1,4 +1,4 @@
-from PySide6.QtCore import QPointF, QRect
+from PySide6.QtCore import QRect
 from PySide6.QtWidgets import QGraphicsRectItem, QGraphicsItem
 
 from models.graphics.tree_node_model import TreeNodeModel

@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QListView, QGraphicsView, QGraphicsScene
+from PySide6.QtWidgets import QFrame, QGraphicsView, QGraphicsScene
 
 
 class TabPreviewCanvasView(QGraphicsView):

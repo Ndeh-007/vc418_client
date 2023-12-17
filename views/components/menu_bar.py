@@ -1,5 +1,5 @@
 from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QMenuBar, QFrame, QHBoxLayout
+from PySide6.QtWidgets import QMenuBar
 
 from interfaces.structs import MenuBarActionType
 

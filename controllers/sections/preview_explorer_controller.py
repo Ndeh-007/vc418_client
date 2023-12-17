@@ -6,6 +6,7 @@ from utils.signal_bus import signalBus
 from views.sections.preview_explorer import PreviewExplorerView
 import store.settings as ss
 
+
 class PreviewExplorerController(PreviewExplorerView):
     def __init__(self, parent=None):
         super().__init__(parent)

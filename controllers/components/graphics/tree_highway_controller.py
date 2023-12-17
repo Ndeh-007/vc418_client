@@ -1,7 +1,7 @@
 from typing import Literal
 
 from PySide6.QtCore import QRect, QPointF, QLine
-from PySide6.QtGui import QPainter, QImage
+from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QGraphicsLineItem
 
 from models.graphics.tree_highway_model import TreeHighwayModel
@@ -81,7 +81,6 @@ class TreeHighwayController(QGraphicsLineItem):
             )
 
     def __computeOffsetDistance(self, plane: Literal['horizontal', 'vertical']):
-        # todo: account for the width of the text
         if plane == 'horizontal':
             offset = self.__rectPadding + self.__highwayModel.thickness() + self.__highwayModel.rightArrow().width()
             return offset

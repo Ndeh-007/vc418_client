@@ -84,7 +84,7 @@ class TreeGraphicsItemController:
 
     # region _local workers
 
-    def __initializeProcesses(self, isUpdate: bool = False):
+    def __initializeProcesses(self):
         """
         creates processes using data from the provided model.
         if we are updating, we update the controller processes with new data, else we create new process controllers
@@ -131,7 +131,6 @@ class TreeGraphicsItemController:
                 targetLevel = childProcessFirstNodeLevel - 1
                 parentNode = parentProcess.nodeWithAvailableSocket(targetLevel, 1)
 
-                # todo: check how the line below affects the program
                 if parentNode is None:
                     continue
 
@@ -209,5 +208,5 @@ class TreeGraphicsItemController:
 
     def setModel(self, model: BinaryTreeModel):
         self.__model = model
-        self.__initializeProcesses(isUpdate=True)
+        self.__initializeProcesses()
     # endregion

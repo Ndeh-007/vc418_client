@@ -46,22 +46,3 @@ class ProgramListModel(QAbstractListModel, QObject):
             if item.id() == data.id():
                 item.setText(data.text())
                 break
-
-    # def removeItem(self, data: ProgramItemModel):
-    #     """
-    #     matches by id and deletes
-    #     :param data:
-    #     :return:
-    #     """
-    #     index = 0
-    #     for i, item in enumerate(self.items):
-    #         if item.id() == data.id():
-    #             index = i
-    #
-    #     self.items.pop(index)
-    #     idx = self.createIndex(index, 0)
-    #     self.beginRemoveRows(idx, 0, 1)
-    #     self.removeRow(index, idx)
-    #     self.endRemoveRows()
-
-

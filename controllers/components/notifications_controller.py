@@ -4,7 +4,6 @@ from PySide6.QtCore import QTimer, QObject, Signal
 
 from models.notifications.notification import Notification
 from models.notifications.notification_manager import NotificationsManager
-from utils.signal_bus import signalBus
 from views.components.notification_panel import NotificationCardView, NotificationPanelView
 
 
@@ -118,10 +117,8 @@ class NotificationPanelController(NotificationPanelView):
         :return:
         """
         self.clearNotificationItems()
-        # todo: REMOVE ALL NOTIFICATIONS FROM THE MANAGER and widggets
 
     def __handleRemoveItemSignal(self, item: Notification):
-        # todo: remove data from the managr and the corresponding widgets
         pass
         # endregion
 

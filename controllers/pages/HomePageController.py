@@ -1,4 +1,3 @@
-from controllers.components.dialog.settings_explorer_controller import SettingsExplorerController
 from controllers.components.dialog.settings_explorer_dialog_controller import SettingsExplorerDialogController
 from models.settings.http_request_manager import HTTPRequestManager
 from models.settings.process_manager import ProcessManager

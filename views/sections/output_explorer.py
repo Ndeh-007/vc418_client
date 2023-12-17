@@ -1,5 +1,5 @@
 import qtawesome
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QLabel, QTextEdit
+from PySide6.QtWidgets import QFrame, QPushButton, QGridLayout, QTextEdit
 
 from styles.color import appColors
 from views.components.section_header import SectionHeader

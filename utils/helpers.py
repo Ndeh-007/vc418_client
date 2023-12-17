@@ -1,14 +1,53 @@
 import json
 import re
-import time
 
-from interfaces.structs import ServerType, ServerState, ProgramType, AlertType
+from PySide6.QtWidgets import QFileDialog
+
 import store.settings as ss
+from interfaces.structs import ServerType, ServerState, ProgramType, AlertType
 from models.common.execution_step_model import ExecutionStepModel
 from models.common.execution_timeline_model import ExecutionTimelineModel, ExecutionTimelineItemModel
 from models.common.signal_data_models import TreeStructureModel, TreeStructureItemModel, SystemAlert
 from models.graphics.tree_model import BinaryTreeModel
 from utils.signal_bus import signalBus
+
+
+def createSystemErrorAlert(message: str):
+    alert = SystemAlert(message, AlertType.Error)
+    signalBus.onSystemAlert.emit(alert)
+
+
+def createSystemEventAlert(message: str):
+    alert = SystemAlert(message, AlertType.Event)
+    signalBus.onSystemAlert.emit(alert)
+
+
+def createSystemWarningAlert(message: str):
+    alert = SystemAlert(message, AlertType.Warning)
+    signalBus.onSystemAlert.emit(alert)
+
+
+def selectFile(parent):
+    """
+    Opens a dialog for the user to select a file
+    :param parent: the parent widget that calls this function
+    :return: the properties of the selected file
+    """
+    file = QFileDialog.getOpenFileName(parent)[0]
+    if len(file) == 0:
+        return None
+    return file
+
+
+def selectDirectory():
+    """
+    Opens a dialog for selecting a folder (directory)
+    :return: the properties of the selected directory
+    """
+    folder = QFileDialog.getExistingDirectory()
+    if len(folder) == 0:
+        return None
+    return folder
 
 
 def changeServerState(serverID: str | ServerType, state: ServerState):
@@ -86,8 +125,9 @@ def parseJSONData(filePath: str):
         programType = ProgramType.SCAN_ERLANG
 
     if jsonData["program"] not in ["scan", "reduce"]:
-        alert = SystemAlert(f"Invalid Program type, got '{jsonData['program']}'. Auto adjusted to 'REDUCE_ERLANG'. Errors may occur.",
-                            AlertType.Warning)
+        alert = SystemAlert(
+            f"Invalid Program type, got '{jsonData['program']}'. Auto adjusted to 'REDUCE_ERLANG'. Errors may occur.",
+            AlertType.Warning)
         signalBus.onSystemAlert.emit(alert)
 
     # construct frame timelines
@@ -135,7 +175,8 @@ def constructTimelines(tree: TreeStructureModel, jsonData):
         frameIndex = 0
         for frame in frames:
             if frame["to"] == key:
-                item = ExecutionTimelineItemModel(index, frame['send_time'], f"Frame {frameIndex}", str(frame["data"]["step_value"]))
+                item = ExecutionTimelineItemModel(index, frame['send_time'], f"Frame {frameIndex}",
+                                                  str(frame["data"]["step_value"]))
                 arr.append(item)
                 index += 1
             frameIndex += 1

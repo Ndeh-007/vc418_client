@@ -1,7 +1,4 @@
-import uuid
-
-from PySide6 import QtGui
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QLabel
+from PySide6.QtWidgets import QFrame, QVBoxLayout
 
 from controllers.components.tab_control_toolbar_controller import TabControlToolbarController
 from controllers.components.tab_preview_canvas_controller import TabPreviewCanvasController

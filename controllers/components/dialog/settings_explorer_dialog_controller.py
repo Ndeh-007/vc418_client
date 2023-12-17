@@ -14,6 +14,7 @@ class SettingsExplorerDialogController:
         self.connectSignals()
 
     def launchDialog(self):
+        self.__settingsDialog.updateFrameless()
         self.__settingsDialog.exec()
 
     def connectSignals(self):

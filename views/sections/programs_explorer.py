@@ -1,5 +1,5 @@
 import qtawesome
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QListView
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout
 
 from styles.color import appColors
 from views.components.programs_list_view import ProgramsListView

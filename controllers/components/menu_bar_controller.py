@@ -100,9 +100,7 @@ class MenuBarController(MenuBarView):
 
     # region - Workers
     def __launchServer(self, _):
-        # todo: Define a dialog that will present the options to create a particular server of your choice and then connect the
-        #       actions chosen to 'self.__startServer()' with  the chosen server type.
-        pass
+        self.__startServer(ServerType.ERLANG)
 
     def __startServer(self, serverID: ServerType):
         server = ss.APP_SETTINGS.SERVER.servers(serverID)

@@ -1,5 +1,4 @@
 from interfaces.structs import ServerType
-from models.explorer.program_item_model import ProgramItemModel
 from models.settings.server_model import ServerModel
 from models.settings.server_process_model import ServerProcessModel
 from utils.signal_bus import signalBus

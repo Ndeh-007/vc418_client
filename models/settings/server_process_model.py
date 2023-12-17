@@ -76,10 +76,6 @@ class ServerProcessModel(QObject):
 
         # terminate the process
         self.__process.kill()
-        # FIXME: look for the corresponding thread and kill the thread
-        #       so that we don't get the error that the process crashed.
-        #       maybe as a solution we can define standard threads for each server process.
-        #       this will make killing easier.
 
         # emit signal that the server has been killed
         self.onKill.emit(self.__server)

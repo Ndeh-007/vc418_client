@@ -39,6 +39,22 @@ class SettingsGeneralTabContentView(QFrame):
         w2.setLayout(w2Layout)
         layout.addWidget(w2)
 
+        # def option 2
+        w3 = QFrame()
+        w3Layout = QHBoxLayout()
+        w3Layout.setContentsMargins(0, 0, 0, 0)
+
+        l3 = QLabel('Server Path')
+        self.serverPathInput = QLineEdit()
+        self.selectServerPathButton = QPushButton("Browse ...")
+        w3Layout.addWidget(l3)
+        w3Layout.addWidget(self.serverPathInput)
+        w3Layout.addWidget(self.selectServerPathButton)
+        w3Layout.addStretch()
+
+        w3.setLayout(w3Layout)
+        layout.addWidget(w3)
+
         layout.addStretch()
 
         self.setLayout(layout)

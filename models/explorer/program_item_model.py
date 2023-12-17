@@ -1,10 +1,7 @@
-import uuid
-
+from PySide6.QtCore import QSize
 from PySide6.QtGui import QImage
 
 from interfaces.structs import ProgramType, ServerType
-from models.common.execution_step_model import ExecutionStepModel
-from models.common.execution_timeline_model import ExecutionTimelineModel
 from models.explorer.program_properties_model import ProgramPropertiesModel
 
 
@@ -16,7 +13,7 @@ class ProgramItemModel:
 
         self.__icon: QImage = icon
         if icon is None:
-            self.__icon = QImage(':resources/images/file.png')
+            self.__icon = QImage(':resources/images/file.ico').scaled(QSize(22, 28))
 
         self.__programType: ProgramType = programType
 

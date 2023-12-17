@@ -1,6 +1,6 @@
 import qtawesome
 from PySide6.QtGui import Qt
-from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QListView, QScrollArea, QLabel, QLineEdit, \
+from PySide6.QtWidgets import QFrame, QVBoxLayout, QPushButton, QGridLayout, QLabel, QLineEdit, \
     QStackedLayout, QHBoxLayout, QTableView, QComboBox
 
 from styles.color import appColors

@@ -3,6 +3,8 @@ import uuid
 from PySide6.QtGui import QImage
 
 from interfaces.structs import ProgramType, ServerType
+from models.common.execution_step_model import ExecutionStepModel
+from models.common.execution_timeline_model import ExecutionTimelineModel
 from models.explorer.program_properties_model import ProgramPropertiesModel
 
 
@@ -29,6 +31,7 @@ class ProgramItemModel:
         self.__serverID = ServerType.ERLANG
 
     # region getters
+
     def serverID(self):
         return self.__serverID
 
@@ -50,6 +53,7 @@ class ProgramItemModel:
     # endregion
 
     # region setters
+
     def setProperties(self, props: ProgramPropertiesModel):
         self.__props = props
 

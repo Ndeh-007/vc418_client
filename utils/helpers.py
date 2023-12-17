@@ -5,6 +5,7 @@ import time
 from interfaces.structs import ServerType, ServerState, ProgramType, AlertType
 import store.settings as ss
 from models.common.execution_step_model import ExecutionStepModel
+from models.common.execution_timeline_model import ExecutionTimelineModel, ExecutionTimelineItemModel
 from models.common.signal_data_models import TreeStructureModel, TreeStructureItemModel, SystemAlert
 from models.graphics.tree_model import BinaryTreeModel
 from utils.signal_bus import signalBus
@@ -81,22 +82,25 @@ def parseJSONData(filePath: str):
 
     #  CHECK_ME: check the program type (this maybe irrelevant, still unsure)
     programType = ProgramType.REDUCE_ERLANG
-    if jsonData["program"] == "scan":
+    if jsonData["program"] == "scam":
         programType = ProgramType.SCAN_ERLANG
-    else:
-        alert = SystemAlert(f"Invalid Program type, got {jsonData['program']}. Auto adjusted to 'REDUCE_ERLANG'",
+
+    if jsonData["program"] not in ["scan", "reduce"]:
+        alert = SystemAlert(f"Invalid Program type, got '{jsonData['program']}'. Auto adjusted to 'REDUCE_ERLANG'. Errors may occur.",
                             AlertType.Warning)
         signalBus.onSystemAlert.emit(alert)
+
+    # construct frame timelines
+    timelines = constructTimelines(ts, jsonData)
+
     activeProgramFile = ss.APP_SETTINGS.PROGRAMS.activeProgram()
-    # print("active program in json parser", activeProgramFile)
-    # time.sleep(0.5)
     binaryTree = BinaryTreeModel(jsonData['nprocs'], ts, programType, activeProgramFile)
-    # binaryTree.setProgramItem(activeProgramFile)
 
     # build the frames
     framesArray = []
 
     frames = jsonData['data']
+    i = 0
     for frame in frames:
         step = ExecutionStepModel(
             stepType=frame['type'],
@@ -107,11 +111,37 @@ def parseJSONData(filePath: str):
             targetPid=frame['to'],
             message=frame['msg'],
             action=frame['data']['action'],
-            data=frame['data']['value']
+            data=frame['data']['value'],
+            index=i
         )
+        step.constructPropTableData()
         framesArray.append(step)
+        i += 1
 
     return {
         'executionFrames': framesArray,
-        'binaryTree': binaryTree
+        'binaryTree': binaryTree,
+        'executionTimelines': timelines
     }
+
+
+def constructTimelines(tree: TreeStructureModel, jsonData):
+    timelines = {}
+    frames = jsonData["data"]
+
+    for key in tree.structure().keys():
+        arr = []
+        index = 0
+        frameIndex = 0
+        for frame in frames:
+            if frame["to"] == key:
+                item = ExecutionTimelineItemModel(index, frame['send_time'], f"Frame {frameIndex}", str(frame["data"]["step_value"]))
+                arr.append(item)
+                index += 1
+            frameIndex += 1
+
+        timeline = ExecutionTimelineModel(key, arr)
+        timeline.constructTablePropsModel(['Frame', "Value"])
+        timelines.update({key: timeline})
+
+    return timelines

@@ -37,6 +37,8 @@ class SignalBus(QObject):
     onUpdateProgram = Signal(ProgramItemModel)
     onDeleteProgram = Signal(ProgramItemModel)
     onMakeProgramActive = Signal(ProgramItemModel)
+    onActiveProgramChanged = Signal(ProgramItemModel)
+    onProgramUpdated = Signal(ProgramItemModel)
 
     onHTTPRequest = Signal(HTTPRequestItem)
 

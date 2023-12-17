@@ -1,11 +1,8 @@
-import store.settings as ss
-
 from typing import Literal
 
 from PySide6.QtGui import QWheelEvent, QTransform
 
 from controllers.components.graphics.tree_controller import TreeGraphicsItemController
-from interfaces.structs import BinaryTreeUpdateMode
 from models.common.execution_step_model import ExecutionStepModel
 from models.graphics.tree_model import BinaryTreeModel
 from utils.signal_bus import signalBus
@@ -50,13 +47,11 @@ class TabPreviewCanvasController(TabPreviewCanvasView):
             self.binaryTree.setModel(model)
 
         #  if the incoming model is not a reload, and we are running on the same file
-        check1 = (model.updateMode() == BinaryTreeUpdateMode.RUN) and (
-                    model.programItem().id() == self.binaryTree.model().programItem().id())
+        check1 = model.programItem().id() == self.binaryTree.model().programItem().id()
 
-        # if the incoming model is a reload and this window is in focus
-        check2 = (model.updateMode() == BinaryTreeUpdateMode.RELOAD) and (self.hasFocus())
+        print(f"check1 => {check1} \n")
 
-        if check1 or check2:
+        if check1:
             # update the scene with his data
             # clear the scene before the drawing the new tree
             self.scene.clear()
@@ -73,7 +68,8 @@ class TabPreviewCanvasController(TabPreviewCanvasView):
 
     def __handleTreeUpdate(self, playbackFrame: ExecutionStepModel):
         self.binaryTree.update(self.scene, playbackFrame)
-        signalBus.onLogToOutput.emit( f"frame received: {playbackFrame.data()} [FROM] {playbackFrame.source()}, [TO] {playbackFrame.target()}")
+        signalBus.onLogToOutput.emit(
+            f"frame received: {playbackFrame.data()} [FROM] {playbackFrame.source()}, [TO] {playbackFrame.target()}")
 
     # endregion
 

@@ -62,7 +62,8 @@ class MenuBarController(MenuBarView):
         """
 
         # we handle the case if we are getting from the menu bar for only view toggling.
-        if action.data() in [MenuBarActionType.TOGGLE_OUTPUT_EXPLORER, MenuBarActionType.TOGGLE_PROGRAMS_EXPLORER, MenuBarActionType.TOGGLE_PROPERTIES_EXPLORER]:
+        if action.data() in [MenuBarActionType.TOGGLE_OUTPUT_EXPLORER, MenuBarActionType.TOGGLE_PROGRAMS_EXPLORER,
+                             MenuBarActionType.TOGGLE_PROPERTIES_EXPLORER]:
             self.__fireToggleSection(action.data())
             return
 
@@ -122,7 +123,6 @@ class MenuBarController(MenuBarView):
         # launch the server process
         process.launch()
 
-
     def __stopServer(self, serverID: ServerType):
         """
         changes server state to transition and tries to kill the server.
@@ -137,7 +137,7 @@ class MenuBarController(MenuBarView):
         ss.APP_SETTINGS.SERVER.serverProcesses(serverID).kill()
 
     def __openSettings(self, _):
-        self.__signalAlert("Settings Opened")
+        signalBus.onOpenSettings.emit()
 
     def __killApplication(self, _):
         self.__signalAlert("Application killed")
@@ -216,6 +216,7 @@ class MenuBarController(MenuBarView):
         """
         server.setstate(ServerState.OFF)
         ss.APP_SETTINGS.SERVER.updateServer(server.id, server)
+
     # endregion
 
     # region - Signaling

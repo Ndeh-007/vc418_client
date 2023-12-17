@@ -18,6 +18,7 @@ class ProgramsExplorerController(ProgramsExplorerView):
 
         self.initialize()
         self.configure()
+        self.connectSignals()
 
     # region - Initialize
 
@@ -42,6 +43,15 @@ class ProgramsExplorerController(ProgramsExplorerView):
 
     # region - Event Handlers
 
+    def __handleActiveProgramChanged(self, program: ProgramItemModel):
+        pass
+
+    def __handleProgramUpdated(self, program: ProgramItemModel):
+
+        if program is None:
+            return
+        self.model.updateItem(program)
+
     def __handleListItemDoubleClicked(self, options: ProgramExplorerActionModel):
         """
 
@@ -52,7 +62,7 @@ class ProgramsExplorerController(ProgramsExplorerView):
             # construct the widget
             w = ProgramPreviewItemController(options)
             t = options.data()[0].text()
-            tabModel = TabItemModel(t, w, options.data()[0].id())
+            tabModel = TabItemModel(t, w, options.data()[0].id(), options.data()[0])
             self.__openTab(tabModel)
 
     def __handleListItemClicked(self, options: ProgramExplorerActionModel):
@@ -96,7 +106,10 @@ class ProgramsExplorerController(ProgramsExplorerView):
         if item is None:
             return
         # # update the view
-        self.model.addItems(item)
+        items = self.model.items
+        items.append(item)
+        self.model = ProgramListModel(items)
+        self.programsListView.setModel(self.model)
 
         # update the store
         signalBus.onCreateProgram.emit(item)
@@ -129,7 +142,20 @@ class ProgramsExplorerController(ProgramsExplorerView):
         :param item:
         :return:
         """
-        self.model.removeItem(item)
+
+        items = self.model.items
+        index = -1
+        for i, itm in enumerate(items):
+            if itm.id() == item.id():
+                index = i
+
+        if index == -1:
+            return
+
+        items.pop(index)
+        self.model = ProgramListModel(items)
+        self.programsListView.setModel(self.model)
+
         signalBus.onUpdateTab.emit(TabUpdateData(TabUpdateType.Delete, TabItemModel(None, None, item.id())))
 
         # remove item from store
@@ -148,4 +174,11 @@ class ProgramsExplorerController(ProgramsExplorerView):
     def __openTab(tabItem: TabItemModel):
         signalBus.onOpenTab.emit(tabItem)
 
+    # endregion
+
+    # region signals
+
+    def connectSignals(self):
+        signalBus.onProgramUpdated.connect(self.__handleProgramUpdated)
+        signalBus.onActiveProgramChanged.connect(self.__handleProgramUpdated)
     # endregion

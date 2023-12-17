@@ -109,11 +109,19 @@ class TabControlToolbarController(TabControlToolbarView):
 
     def __handleToolbarActions(self, action: QAction):
         actionData: PreviewProgramData = action.data()
+
+        data = ss.APP_SETTINGS.PROGRAMS.programs(actionData.data().id())
+        if data is None:
+            signalBus.onLogErrorToOutput.emit("data not found for store. ")
+            return
+
+        self.__itemModel = data
+
         if actionData.procedure() == PreviewToolbarActionType.RELOAD:
-            self.reloadProgram(actionData.data())
+            self.reloadProgram(data)
 
         if actionData.procedure() == PreviewToolbarActionType.EXECUTE:
-            self.executeProgram(actionData.data())
+            self.executeProgram(data)
 
     # endregion
 
@@ -141,12 +149,26 @@ class TabControlToolbarController(TabControlToolbarView):
         :return:
         """
         parsedData = parseJSONData(filePath)
+        tree = parsedData.get("binaryTree")
+        frames = parsedData.get("executionFrames")
+        timelines = parsedData.get("executionTimelines")
+
+        # update the local item model properties
+        self.__itemModel.properties().setExecutionFrames(frames)
+        self.__itemModel.properties().setExecutionTimelines(timelines)
+        self.__itemModel.properties().setNProcs(tree.nProcs())
+
+        # update the binary-tree's fileItemModel
+        tree.setProgramItem(self.__itemModel)
 
         # dispatch data
+        # update the active program in the store.
+        ss.APP_SETTINGS.PROGRAMS.updateProgram(self.__itemModel.id(), self.__itemModel)
+
         # send to the player
-        signalBus.onLoadPlayer.emit(parsedData.get("executionFrames"))
+        signalBus.onLoadPlayer.emit(frames)
         # send to canvas
-        signalBus.onLoadTreeModel.emit(parsedData.get("binaryTree"))
+        signalBus.onLoadTreeModel.emit(tree)
 
     def __executeSuccessful(self, response):
         """

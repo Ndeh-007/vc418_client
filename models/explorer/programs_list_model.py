@@ -28,12 +28,6 @@ class ProgramListModel(QAbstractListModel, QObject):
     def rowCount(self, parent: PySide6.QtCore.QModelIndex = ...) -> int:
         return len(self.items)
 
-    def addItems(self, item: ProgramItemModel):
-        self.beginInsertRows(QModelIndex(), 0, 1)
-        self.insertRow(len(self.items))
-        self.items.append(item)
-        self.endInsertRows()
-
     def flags(self, index: PySide6.QtCore.QModelIndex) -> PySide6.QtCore.Qt.ItemFlag:
         return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsSelectable
 
@@ -53,20 +47,21 @@ class ProgramListModel(QAbstractListModel, QObject):
                 item.setText(data.text())
                 break
 
-    def removeItem(self, data: ProgramItemModel):
-        """
-        matches by id and deletes
-        :param data:
-        :return:
-        """
-        index = 0
-        for i, item in enumerate(self.items):
-            if item.id() == data.id():
-                index = i
-        idx = self.createIndex(index, 0)
-        self.beginRemoveRows(idx, 0, 1)
-        self.removeRow(index, idx)
-        self.endRemoveRows()
+    # def removeItem(self, data: ProgramItemModel):
+    #     """
+    #     matches by id and deletes
+    #     :param data:
+    #     :return:
+    #     """
+    #     index = 0
+    #     for i, item in enumerate(self.items):
+    #         if item.id() == data.id():
+    #             index = i
+    #
+    #     self.items.pop(index)
+    #     idx = self.createIndex(index, 0)
+    #     self.beginRemoveRows(idx, 0, 1)
+    #     self.removeRow(index, idx)
+    #     self.endRemoveRows()
 
-        self.items.pop(index)
 

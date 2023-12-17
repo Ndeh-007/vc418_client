@@ -4,7 +4,7 @@ from models.tabs.tab_item_model import TabItemModel
 from models.tabs.tab_manager_model import TabManagerModel
 from utils.signal_bus import signalBus
 from views.sections.preview_explorer import PreviewExplorerView
-
+import store.settings as ss
 
 class PreviewExplorerController(PreviewExplorerView):
     def __init__(self, parent=None):
@@ -21,8 +21,21 @@ class PreviewExplorerController(PreviewExplorerView):
 
     def configure(self):
         self.previewTabs.tabCloseRequested.connect(self.__handleTabCloseRequest)
+        self.previewTabs.tabBarClicked.connect(self.__handleTabClicked)
 
     # region - event handlers
+
+    def __handleTabClicked(self, index: int):
+        """
+        when user clicks, make the current tab the active tab
+        :param index:
+        :return:
+        """
+        title = self.previewTabs.tabText(index)
+        item = self.tabManager.getTabWithTitle(title)
+        ss.APP_SETTINGS.PROGRAMS.makeProgramWithIdActive(item.program().id())
+        program = ss.APP_SETTINGS.PROGRAMS.programs(item.program().id())
+        signalBus.onShowProgramProperties.emit(program)
 
     def __handleTabCloseRequest(self, index: int):
         """
@@ -85,6 +98,9 @@ class PreviewExplorerController(PreviewExplorerView):
         i = self.tabManager.getTabIndex(data.id())
         self.tabManager.deleteTab(data.id())
         self.previewTabs.removeTab(i)
+
+        if self.previewTabs.count() < 1:
+            self.toggleLayout()
 
     def __updateTabTitle(self, data: TabItemModel):
 

@@ -1,11 +1,11 @@
-from typing import Any
+from models.explorer.properties_table_data_model import PropertiesTableDataModel
 
 
 class ExecutionStepModel:
     def __init__(self,
                  stepType: str = None, priority: int = None, sendTime: int = None, receiveTime: int = None,
                  sourcePid: str = None, targetPid: str = None,
-                 message: str = None, action: str = None, data: str = None):
+                 message: str = None, action: str = None, data: str = None, index: int = 0):
         self.__stepType: str = stepType
         self.__data: str = str(data)
         self.__priority: int = priority
@@ -15,8 +15,15 @@ class ExecutionStepModel:
         self.__target: str = targetPid
         self.__message: str = message
         self.__action: str = action
+        self.__propsTableModel: PropertiesTableDataModel = PropertiesTableDataModel({})
+        self.__frameIndex: int = index
 
     # region getters
+    def frameIndex(self):
+        return self.__frameIndex
+
+    def propsTabelDataModel(self):
+        return self.__propsTableModel
 
     def stepType(self):
         return self.__stepType
@@ -76,4 +83,20 @@ class ExecutionStepModel:
     def setAction(self, value: str):
         self.__action = value
 
+    def setPropsTableModel(self, model: PropertiesTableDataModel):
+        self.__propsTableModel = model
+
+    # endregion
+
+    # region workers
+
+    def constructPropTableData(self):
+        data = {
+            "From": self.__source,
+            "To": self.__target,
+            "Action": self.__action,
+            "Data": str(self.__data),
+            "Message": self.__message,
+        }
+        self.__propsTableModel = PropertiesTableDataModel(data, ["Property", "Value"])
     # endregion

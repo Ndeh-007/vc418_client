@@ -1,8 +1,8 @@
 import os
-from typing import Callable, Literal
+from typing import Callable, Literal, Any
 from PySide6.QtCore import QSize
 from PySide6.QtGui import QIcon, Qt
-from PySide6.QtWidgets import QWidget, QDialogButtonBox, QFrame, QGridLayout, QPushButton, QLabel, QHBoxLayout
+from PySide6.QtWidgets import QWidget, QDialogButtonBox, QFrame, QGridLayout, QPushButton, QLabel, QHBoxLayout, QDialog
 from qframelesswindow import FramelessDialog
 
 from utils.styling import setPaletteColor, read_style, q_read_style
@@ -17,7 +17,7 @@ class CustomDialog(FramelessDialog):
     Creates a custom dialog.
     """
 
-    def __init__(self, dialog_title: str, on_accept: Callable, on_reject: Callable, content: QWidget = None,
+    def __init__(self, dialog_title: str, on_accept: Callable[..., Any] | None, on_reject: Callable[..., Any] | None, content: QWidget = None,
                  size: None | Literal['small', 'large', 'medium', 'h-large', 'hh-large'] = None, parent: QWidget = None, dialog_target: str = None,
                  dialog_controls: DialogControls = dialogControls):
         """
@@ -67,6 +67,7 @@ class CustomDialog(FramelessDialog):
         layout = QGridLayout()
 
         head = CustomDialogTitle(QIcon(":resources/images/logo"), dialog_title)
+        # head = QLabel("")
 
         body = QFrame()
         footer = QWidget()
@@ -113,10 +114,16 @@ class CustomDialog(FramelessDialog):
         self.titleBar.raise_()
 
     def accept(self) -> None:
+        if self.on_accept is None:
+            self.done(1)
+            return
         self.on_accept()
         self.done(1)
 
     def reject(self) -> None:
+        if self.on_reject is None:
+            self.done(0)
+            return
         self.on_reject()
         self.done(0)
 

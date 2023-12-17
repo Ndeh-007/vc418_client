@@ -28,8 +28,7 @@ class ProgramManager:
 
     # region - Event Handlers
     def __handleProgramUpdate(self, program: ProgramItemModel):
-        self.__programs.update({program.id(): program})
-        self.setActiveProgram(program)
+        self.updateProgram(program.id(), program)
 
     def __handleCreateProgram(self, program: ProgramItemModel):
         self.__programs.update({program.id(): program})
@@ -37,6 +36,10 @@ class ProgramManager:
 
     def __handleDeleteProgram(self, program: ProgramItemModel):
         self.__programs.pop(program.id())
+
+        if self.activeProgram() is None:
+            return
+
         if program.id() == self.activeProgram().id():
             self.__activeProgram = None
 
@@ -46,6 +49,12 @@ class ProgramManager:
     # endregion
 
     # region - Workers
+    def makeProgramWithIdActive(self, pid: str):
+        program = self.__programs.get(pid)
+        if program is None:
+            return
+        self.setActiveProgram(program)
+
     def programExists(self, program: ProgramItemModel):
         if program is None:
             return
@@ -56,6 +65,12 @@ class ProgramManager:
                 state = True
                 break
         return state
+
+    def isActive(self, program: ProgramItemModel):
+        if program.id() == self.__activeProgram.id():
+            return True
+        else:
+            return False
     # endregion
 
     # region - Connect Signals
@@ -82,10 +97,23 @@ class ProgramManager:
     # endregion
 
     # region - Setters
+
+    def updateProgram(self, target: str, item: ProgramItemModel):
+        if self.programExists(item):
+            self.__programs.update({target: item})
+
+        if self.isActive(item):
+            self.setActiveProgram(item)
+
+        signalBus.onProgramUpdated.emit(item)
+
     def setPrograms(self, data: dict[str, ProgramItemModel]):
         self.__programs = data
 
     def setActiveProgram(self, program: ProgramItemModel):
         if self.programExists(program):
             self.__activeProgram = program
+            signalBus.onActiveProgramChanged.emit(program)
+        else:
+            raise Exception(f"Cannot set active program, program with id {program.id()} does not exist")
     # endregion

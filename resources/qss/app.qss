@@ -1,3 +1,17 @@
+QTableView {
+    background: white;
+    gridline-color: light_shade_rbg;
+    selection-background-color: primary_rbg;
+    border: 1px solid light_shade_rbg;
+}
+
+QHeaderView::section{
+    background-color: light_rbg;
+    border-color: light_shade_rbg;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+}
+
 QMenuBar#MenuBar{
     border-color: light_shade_rbg;
     border-style: solid;
@@ -88,7 +102,7 @@ QComboBox {
 }
 
 QComboBox:focus {
-    border: 1px solid tertiary_rbg;
+    border: 1px solid primary_rbg;
 }
 
 QComboBox:editable {

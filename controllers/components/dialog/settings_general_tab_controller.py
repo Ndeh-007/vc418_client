@@ -3,6 +3,7 @@ from utils.helpers import selectFile, createSystemErrorAlert, selectDirectory
 from views.components.dialog.settings_general_tab_content import SettingsGeneralTabContentView
 import store.settings as ss
 import os
+from PySide6.QtGui import QIntValidator
 
 
 class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
@@ -27,19 +28,75 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
         server = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG)
         self.serverPathInput.setText(server.arguments()[0])
 
+        # protocol
+        self.protocolSelectionComboBox.addItem("http", "http")
+        self.protocolSelectionComboBox.addItem("https", "https")
+
+        # rebar location
+        rebarLocation = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).command()
+        self.rebarLocation.setText(rebarLocation)
+
+        # domain
+        domain = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).domain()
+        self.domainInput.setText(domain)
+
+        # port number
+        port = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).port()
+        self.portNumberInput.setText(str(port))
+
     # endregion
 
     # region - Configure
     def __configure(self):
+        self.portNumberInput.setValidator(QIntValidator())
+
         self.frameRateInput.textEdited.connect(self.__handleFrameRateChanged)
         self.outputFile.textChanged.connect(self.__handleFileChanged)
         self.outputFile.textChanged.connect(self.__handleServerPathChanged)
         self.selectOutputFileButton.clicked.connect(self.__handleOutputFileButtonClicked)
         self.selectServerPathButton.clicked.connect(self.__handleSelectServerPathButtonClicked)
 
+        self.rebarLocation.textChanged.connect(self.__handleRebarLocationTextChanged)
+        self.selectRebarFileButton.clicked.connect(self.__handleSelectRebarFileClicked)
+
+        self.protocolSelectionComboBox.currentIndexChanged.connect(self.__handleProtocolCurrentIndexChanged)
+        self.portNumberInput.textEdited.connect(self.__handlePortNumberTextChanged)
+        self.domainInput.textEdited.connect(self.__handleDomainInputTextChanged)
+
     # endregion
 
     # region - Event Handlers
+
+    def __handleRebarLocationTextChanged(self, _: str):
+        file = self.rebarLocation.text()
+        if file == "":
+            createSystemErrorAlert(f"Invalid file for rebar. {file}")
+            return
+
+        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setCommand(file)
+
+    def __handleSelectRebarFileClicked(self):
+        file: str | None = selectFile(self)
+        if file is None:
+            return
+        self.rebarLocation.setText(file)
+
+    def __handleProtocolCurrentIndexChanged(self, index):
+        protocol: str = self.protocolSelectionComboBox.itemData(index)
+        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setHTTPMode(protocol)
+
+    def __handlePortNumberTextChanged(self, _: str):
+        value = self.portNumberInput.text()
+        if value == "":
+            return
+        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setPort(int(value))
+
+    def __handleDomainInputTextChanged(self, _: str):
+        value = self.domainInput.text()
+        if value == "":
+            return
+        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setDomain(value)
+
     def __handleServerPathChanged(self, _: str):
         path = self.serverPathInput.text()
         server = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG)
@@ -87,6 +144,7 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
             return
 
         self.outputFile.setText(file)
+
     # endregion
 
     # region - Workers

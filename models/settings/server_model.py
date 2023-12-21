@@ -16,9 +16,10 @@ class ServerModel:
         self.__url = f"{self.__httpMode}://{self.__domain}:{self.__port}/"
 
         # self.__command = "C:\\Tools\\rebar3\\rebar3.cmd"
-        self.__command = "C:\\Tools\\rebar3.cmd"
-        # self.__arguments = ["E:\\Work\\School\\VCS418\\vc418_server", "shell", "--apps", "vc418_server"]
-        self.__arguments = ["C:\\Work\\School\\CPSC418\\Project\\vc418_server", "shell", "--apps", "vc418_server"]
+        # self.__command = "C:\\Tools\\rebar3.cmd"
+        self.__command = "rebar3.cmd"
+        self.__arguments = ["E:\\Work\\School\\VCS418\\vc418_server", "shell", "--apps", "vc418_server"]
+        # self.__arguments = ["C:\\Work\\School\\CPSC418\\Project\\vc418_server", "shell", "--apps", "vc418_server"]
 
     # region - Getters
 

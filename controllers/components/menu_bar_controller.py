@@ -104,6 +104,7 @@ class MenuBarController(MenuBarView):
 
     def __startServer(self, serverID: ServerType):
         server = ss.APP_SETTINGS.SERVER.servers(serverID)
+        print(server.command(), server.arguments()[0], server.arguments()[1:])
         # set server state to transition
         server.setstate(ServerState.TRANSITION)
         ss.APP_SETTINGS.SERVER.updateServer(serverID, server)

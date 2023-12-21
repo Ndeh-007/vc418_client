@@ -115,6 +115,7 @@ class PropertyExplorerView(QFrame):
         hLayout.addWidget(l4)
         hLayout.addWidget(self.currentPidSelectionInput)
 
+        hLayout.setStretch(4, 2)
         h.setLayout(hLayout)
         bodyContentLayout.addWidget(h)
 

@@ -53,7 +53,7 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
 
         self.frameRateInput.textEdited.connect(self.__handleFrameRateChanged)
         self.outputFile.textChanged.connect(self.__handleFileChanged)
-        self.outputFile.textChanged.connect(self.__handleServerPathChanged)
+        self.serverPathInput.textChanged.connect(self.__handleServerPathChanged)
         self.selectOutputFileButton.clicked.connect(self.__handleOutputFileButtonClicked)
         self.selectServerPathButton.clicked.connect(self.__handleSelectServerPathButtonClicked)
 
@@ -109,7 +109,9 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
     def __handleServerPathChanged(self, _: str):
         path = self.serverPathInput.text()
         server = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG)
-        server.arguments()[0] = path
+        args = server.arguments()
+        args[0] = path
+        server.setArguments(args)
         ss.APP_SETTINGS.SERVER.updateServer(server.id(), server)
 
     def __handleSelectServerPathButtonClicked(self):

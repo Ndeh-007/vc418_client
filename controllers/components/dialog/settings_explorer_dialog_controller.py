@@ -7,6 +7,7 @@ from views.components.dialog.dialog_options import DialogControls
 class SettingsExplorerDialogController:
     def __init__(self):
         options = DialogControls()
+        options.hasCancel = False
         content = SettingsExplorerController()
         self.__settingsDialog = CustomDialog("Settings", content=content, on_accept=None, on_reject=None,
                                              dialog_controls=options)

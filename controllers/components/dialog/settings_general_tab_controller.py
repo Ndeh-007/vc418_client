@@ -49,6 +49,7 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
     # region - Configure
     def __configure(self):
         self.portNumberInput.setValidator(QIntValidator())
+        self.frameRateInput.setValidator(QIntValidator())
 
         self.frameRateInput.textEdited.connect(self.__handleFrameRateChanged)
         self.outputFile.textChanged.connect(self.__handleFileChanged)
@@ -73,7 +74,9 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
             createSystemErrorAlert(f"Invalid file for rebar. {file}")
             return
 
-        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setCommand(file)
+        server = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG)
+        server.setCommand(file)
+        ss.APP_SETTINGS.SERVER.updateServer(server.id(), server)
 
     def __handleSelectRebarFileClicked(self):
         file: str | None = selectFile(self)
@@ -83,19 +86,25 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
 
     def __handleProtocolCurrentIndexChanged(self, index):
         protocol: str = self.protocolSelectionComboBox.itemData(index)
-        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setHTTPMode(protocol)
+        server = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG)
+        server.setHTTPMode(protocol)
+        ss.APP_SETTINGS.SERVER.updateServer(server.id(), server)
 
     def __handlePortNumberTextChanged(self, _: str):
         value = self.portNumberInput.text()
         if value == "":
             return
-        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setPort(int(value))
+        server = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG)
+        server.setPort(int(value))
+        ss.APP_SETTINGS.SERVER.updateServer(server.id(), server)
 
     def __handleDomainInputTextChanged(self, _: str):
         value = self.domainInput.text()
         if value == "":
             return
-        ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG).setDomain(value)
+        server = ss.APP_SETTINGS.SERVER.servers(ServerType.ERLANG)
+        server.setDomain(value)
+        ss.APP_SETTINGS.SERVER.updateServer(server.id(), server)
 
     def __handleServerPathChanged(self, _: str):
         path = self.serverPathInput.text()
@@ -127,6 +136,9 @@ class SettingsGeneralTabContentController(SettingsGeneralTabContentView):
         text = self.frameRateInput.text()
         if text == "":
             return
+        if int(text) == "0":
+            text = 1
+            self.frameRateInput.setText("1")
         fps = int(text)
         ss.APP_SETTINGS.CONFIGURATION.setAnimationFrequency(fps)
 

@@ -65,8 +65,7 @@ class ServerProcessModel(QObject):
         signalBus.onLogErrorToOutput.emit(stderr)
 
     def __handleErrorOccurred(self, error: QProcess.ProcessError):
-        alert = SystemAlert(f"Server process error: {error}")
-        signalBus.onSystemAlert.emit(alert)
+        signalBus.onLogErrorToOutput.emit(f"Server process error: {error}")
         self.onLaunchFailed.emit(self.__server)
 
     # endregion

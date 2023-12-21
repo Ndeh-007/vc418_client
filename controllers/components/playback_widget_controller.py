@@ -5,6 +5,7 @@ from PySide6.QtCore import QObject, Signal, QTimer
 from PySide6.QtGui import QIntValidator
 
 from interfaces.structs import AnimationPlayerState
+from utils.signal_bus import signalBus
 from views.components.playback_widget import PlayBackView
 
 import store.settings as ss
@@ -59,6 +60,7 @@ class PlayBackWidgetController(PlayBackView, QObject):
         :return:
         """
         self.__initializeTimer()
+        self.__timer.start()
 
     # endregion
 
@@ -113,7 +115,7 @@ class PlayBackWidgetController(PlayBackView, QObject):
     # region - Connect Signals
 
     def __connectSignals(self):
-        pass
+        signalBus.onSettingsFrameRateChanged.connect(self.__handleFrequencyChanged)
 
     # endregion
 

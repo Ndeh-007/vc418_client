@@ -1,5 +1,7 @@
 from typing import Any
 
+from utils.signal_bus import signalBus
+
 
 class ConfigurationSettings:
     def __init__(self):
@@ -44,6 +46,7 @@ class ConfigurationSettings:
     # region - Setters
     def setAnimationFrequency(self, value: int):
         self.__animationFrequency = value
+        signalBus.onSettingsFrameRateChanged.emit()
 
     def setHttpResponseJSONFile(self, path: str):
         self.__httpResponseJSONFile = path

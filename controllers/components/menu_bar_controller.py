@@ -104,7 +104,6 @@ class MenuBarController(MenuBarView):
 
     def __startServer(self, serverID: ServerType):
         server = ss.APP_SETTINGS.SERVER.servers(serverID)
-
         # set server state to transition
         server.setstate(ServerState.TRANSITION)
         ss.APP_SETTINGS.SERVER.updateServer(serverID, server)
@@ -138,7 +137,7 @@ class MenuBarController(MenuBarView):
         signalBus.onOpenSettings.emit()
 
     def __killApplication(self, _):
-        self.__signalAlert("Application killed")
+        signalBus.onKillApplication.emit()
 
     def __toggleSection(self, action):
         if not isinstance(action, MenuBarActionType):
@@ -213,7 +212,7 @@ class MenuBarController(MenuBarView):
         :return:
         """
         server.setstate(ServerState.OFF)
-        ss.APP_SETTINGS.SERVER.updateServer(server.id, server)
+        ss.APP_SETTINGS.SERVER.updateServer(server.id(), server)
 
     # endregion
 

@@ -47,5 +47,9 @@ class SignalBus(QObject):
     onReloadPlayer = Signal()
     onLoadPlayer = Signal(list)
 
+    onSettingsFrameRateChanged = Signal()
+
+    onKillApplication = Signal()
+
 
 signalBus = SignalBus()
